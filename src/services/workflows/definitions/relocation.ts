@@ -1,0 +1,72 @@
+import type { WorkflowDefinition } from "@/services/planner/types";
+
+export const relocationDefinition: WorkflowDefinition = {
+  id: "relocation",
+  purpose: "Help someone settle into the area with multi-domain retrieval",
+  requiredFields: [],
+  optionalFields: [],
+  clarify: {},
+  defaultExecutionPlan: [
+    {
+      id: "estate_agents",
+      capability: "business_search",
+      type: "business_search",
+      query: "estate agents",
+      params: { verticalHint: "property", limit: 8 },
+      priority: 1,
+      optional: true,
+    },
+    {
+      id: "schools",
+      capability: "business_search",
+      type: "business_search",
+      query: "schools",
+      params: { verticalHint: "schools", limit: 8 },
+      priority: 2,
+      optional: true,
+    },
+    {
+      id: "telecom",
+      capability: "business_search",
+      type: "business_search",
+      query: "fibre internet providers",
+      params: { verticalHint: "telecom", limit: 8 },
+      priority: 3,
+      optional: true,
+    },
+    {
+      id: "movers",
+      capability: "business_search",
+      type: "business_search",
+      query: "moving companies",
+      params: { verticalHint: "movers", limit: 8 },
+      priority: 4,
+      optional: true,
+    },
+    {
+      id: "healthcare",
+      capability: "business_search",
+      type: "business_search",
+      query: "doctors and clinics",
+      params: { verticalHint: "healthcare", limit: 8 },
+      priority: 5,
+      optional: true,
+    },
+    {
+      id: "security",
+      capability: "business_search",
+      type: "business_search",
+      query: "security companies",
+      params: { verticalHint: "security", limit: 8 },
+      priority: 6,
+      optional: true,
+    },
+  ],
+  rankConfig: { typeBoost: 0.14, quality: 0.08, limit: 12 },
+  responseBehaviour: {
+    allowExecuteWithoutRequired: true,
+    emptyResultsMessage:
+      "I don't have strong settling-in listings yet. Tell me if housing, schools, or services matter most.",
+  },
+  defaultCompositionStrategy: "grouped_sections",
+};
