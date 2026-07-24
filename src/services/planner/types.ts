@@ -15,6 +15,7 @@ export type WorkflowId =
   | "healthcare"
   | "accommodation"
   | "relocation"
+  | "special_occasion"
   | "general"
   | "emergency";
 
@@ -70,6 +71,8 @@ export interface ConstraintFlags {
   lunch: boolean | null;
   dinner: boolean | null;
   quiet: boolean | null;
+  /** Prefer venues good when it rains (indoor / covered). Set by weather bias. */
+  rainFriendly: boolean | null;
 }
 
 export interface ConstraintModel {
@@ -113,6 +116,14 @@ export interface ExecutionStep {
   optional: boolean;
 }
 
+/** Planner-owned celebration checklist item (dynamic per ask). */
+export interface PlanFacet {
+  id: string;
+  label: string;
+  searchQuery: string;
+  verticalHint: string | null;
+}
+
 export interface PlannerDraft {
   intent: string;
   goal: GoalModel;
@@ -121,6 +132,8 @@ export interface PlannerDraft {
   entities: EntityModel;
   constraints: ConstraintModel;
   draftQueries: string[];
+  /** Dynamic celebration facets — empty for non-event asks. */
+  planFacets: PlanFacet[];
   notes: string | null;
 }
 
@@ -203,6 +216,7 @@ export function emptyConstraintFlags(): ConstraintFlags {
     lunch: null,
     dinner: null,
     quiet: null,
+    rainFriendly: null,
   };
 }
 
@@ -228,5 +242,6 @@ export const FALLBACK_DRAFT: PlannerDraft = {
   entities: emptyEntityModel(),
   constraints: emptyConstraintModel(),
   draftQueries: [],
+  planFacets: [],
   notes: null,
 };

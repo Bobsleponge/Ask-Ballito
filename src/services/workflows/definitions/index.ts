@@ -6,6 +6,7 @@ import { propertyDefinition } from "./property";
 import { healthcareDefinition } from "./healthcare";
 import { emergencyDefinition } from "./emergency";
 import { relocationDefinition } from "./relocation";
+import { specialOccasionDefinition } from "./special-occasion";
 import { servicesDefinition } from "./services";
 import { generalDefinition } from "./general";
 
@@ -17,6 +18,7 @@ export const WORKFLOW_DEFINITIONS: Record<WorkflowId, WorkflowDefinition> = {
   healthcare: healthcareDefinition,
   emergency: emergencyDefinition,
   relocation: relocationDefinition,
+  special_occasion: specialOccasionDefinition,
   services: servicesDefinition,
   general: generalDefinition,
 };

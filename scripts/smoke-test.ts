@@ -15,8 +15,15 @@ async function main() {
   const city = getCity("ballito")!;
   console.log(`> ${message}\n`);
 
-  const { plan, workflowId, businesses, llmInvoked, clarification, text } =
-    await conversationService.complete({
+  const {
+    plan,
+    workflowId,
+    businesses,
+    llmInvoked,
+    clarification,
+    composition,
+    text,
+  } = await conversationService.complete({
       city,
       message,
     });
@@ -25,6 +32,7 @@ async function main() {
   console.log("Response mode:", plan.responseMode);
   console.log("LLM invoked:", llmInvoked);
   console.log("Clarification:", clarification);
+  console.log("Grounding:", composition.grounding ?? null);
   console.log("Goal:", plan.goal);
   console.log(
     "Execution:",

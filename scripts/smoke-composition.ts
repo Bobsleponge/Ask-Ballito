@@ -147,6 +147,25 @@ function assert(cond: boolean, msg: string) {
   });
   assert(day.request.strategy === "itinerary", "expected itinerary");
 
+  const weekend = buildCompositionRequest({
+    goalPrimary: "things_to_do",
+    goalDescription: "fun things this weekend",
+    intent: "activities",
+    workflowId: "activities",
+    defaultStrategy: "ranked_list",
+    entities: emptyEntityModel(),
+    constraints: emptyConstraintModel(),
+    locationRef: null,
+  });
+  assert(
+    weekend.request.strategy === "grouped_sections",
+    "activities weekend grouped",
+  );
+  assert(
+    weekend.request.bucketProfile === "activities",
+    "activities bucket profile",
+  );
+
   const relocate = buildCompositionRequest({
     goalPrimary: "relocate",
     goalDescription: "moving to Ballito",

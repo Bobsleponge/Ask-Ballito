@@ -35,7 +35,9 @@ function buildInput(params: GenerateParams) {
   } else if (businesses) {
     input.push({ role: "system", content: buildBusinessContext(businesses) });
   }
+  // Defense in depth: only forward user/assistant turns from client history.
   for (const m of history.slice(-8)) {
+    if (m.role !== "user" && m.role !== "assistant") continue;
     input.push({ role: m.role, content: m.content });
   }
   input.push({ role: "user", content: wrapUserContent(userMessage) });

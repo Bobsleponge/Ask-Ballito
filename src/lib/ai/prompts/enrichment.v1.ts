@@ -29,7 +29,9 @@ export function buildEnrichmentSystem(): string {
     "Empty arrays are correct when evidence is thin.",
     "services: specific offerings customers would ask for, only when evidenced (e.g. 'acrylic nails' only if reviews/listing say acrylic).",
     "keywords: short searchable aliases drawn from those same evidenced services/terms. Lowercase preferred.",
-    "attributes: set amenity flags only when clearly evidenced; otherwise leave unset/null.",
+    "attributes: set amenity/capability flags only when clearly evidenced; otherwise leave unset/null.",
+    "Common attribute keys include: familyFriendly, romantic, kidsArea, seaView, wheelchair, petFriendly, breakfast, parking, outdoorSeating, noiseLevel (quiet|moderate|lively), bookingRequired, rainFriendly, lateNight, emergencyCallOut, afterHours, freeQuotes, insuredRegistered, residential, commercial, takeaway, delivery, reservations, walkIns, appointmentsOnly, medicalAidAccepted, homeVisits, open24Hours, towingRoadside, onlineBooking, cardPayments, wifi, and other booleans matching the listing schema.",
+    "Prefer vertical-relevant flags (e.g. emergencyCallOut for plumbers/trades; outdoorSeating for restaurants) and leave others unset.",
     "summary: optional one sentence grounded strictly in the sources — no marketing fluff.",
     "Prefer precision over recall — fabricated services destroy search quality.",
   ].join(" ");

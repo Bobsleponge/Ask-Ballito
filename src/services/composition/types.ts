@@ -27,6 +27,24 @@ export interface CompositionRequest {
   maxSections: number;
   maxItemsPerSection: number;
   sectionHints: SectionHint[];
+  /** How to bucket businesses for grouped_sections. */
+  bucketProfile?: "activities" | "special_occasion" | "plan_facets" | "default";
+  /**
+   * Dynamic celebration facets (section titles + matching). Used when
+   * bucketProfile is plan_facets.
+   */
+  planFacets?: Array<{
+    id: string;
+    label: string;
+    searchQuery: string;
+    verticalHint: string | null;
+  }>;
+  /** When true (rainy weather), push beaches / outdoor sections later. */
+  preferIndoorDueToWeather?: boolean;
+  /** When true (sunny / dry), lead with sea-view / outdoor sections. */
+  preferOutdoorDueToWeather?: boolean;
+  /** Soft weather lean for ranking — prioritize, never hard-filter. */
+  weatherBias?: "favor_outdoor" | "favor_indoor" | "neutral" | null;
 }
 
 export interface ExperienceSection {
@@ -38,6 +56,17 @@ export interface ExperienceSection {
   businessIds: string[];
 }
 
+/** How tightly results match the user's ask. */
+export type CompositionGroundingMode = "exact" | "related";
+
+export interface CompositionGrounding {
+  mode: CompositionGroundingMode;
+  /** Niche service the user asked for (e.g. "ombre"). */
+  requestedService: string;
+  /** Short note for prompts / UI. */
+  note: string;
+}
+
 /** Post-rank artifact for prompts + SSE + UI. */
 export interface ExperienceComposition {
   strategy: PresentationStrategy;
@@ -45,12 +74,14 @@ export interface ExperienceComposition {
   sections: ExperienceSection[];
   /** Deduped catalog; presentation order lives in sections. */
   businesses: BusinessResult[];
+  /** Present when results are related near-misses rather than exact matches. */
+  grounding?: CompositionGrounding;
 }
 
 /** Wire/UI payload without repeating the business catalog. */
 export type CompositionPayload = Pick<
   ExperienceComposition,
-  "strategy" | "title" | "sections"
+  "strategy" | "title" | "sections" | "grounding"
 >;
 
 export function emptyComposition(
@@ -64,8 +95,16 @@ export function emptyComposition(
   };
 }
 
-/** Hard cap across all sections for a single reply. */
-export const MAX_COMPOSITION_BUSINESSES = 12;
+/** Attach grounding on a composition (immutable). */
+export function withCompositionGrounding(
+  composition: ExperienceComposition,
+  grounding: CompositionGrounding,
+): ExperienceComposition {
+  return { ...composition, grounding };
+}
+
+/** Hard ceiling across all sections for a single reply (not a fill target). */
+export const MAX_COMPOSITION_BUSINESSES = 25;
 
 export function defaultCompositionRequest(
   strategy: PresentationStrategy = "ranked_list",
@@ -73,8 +112,8 @@ export function defaultCompositionRequest(
   return {
     strategy,
     titleHint: null,
-    maxSections: 4,
-    maxItemsPerSection: 4,
+    maxSections: 5,
+    maxItemsPerSection: 5,
     sectionHints: [],
   };
 }

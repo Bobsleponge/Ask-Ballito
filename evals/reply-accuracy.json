@@ -1,0 +1,253 @@
+{
+  "version": 1,
+  "description": "Reply-accuracy cases for exact-niche fail-closed behaviour. Run: npm run verify:replies",
+  "cases": [
+    {
+      "id": "guitar-restring",
+      "query": "i need to restring my guitar",
+      "expectExact": true,
+      "expectStrategy": "ranked_list",
+      "forbidCategorySubstrings": [
+        "car repair",
+        "tire",
+        "tyre",
+        "locksmith",
+        "panel"
+      ],
+      "allowEmpty": true,
+      "pool": [
+        {
+          "id": "auto1",
+          "name": "Prestige Auto Ballito (Panel & Paint)",
+          "category": "Car repair and maintenance service",
+          "description": "panel beating"
+        },
+        {
+          "id": "tyre1",
+          "name": "Tiger Wheel & Tyre Ballito",
+          "category": "Tire Shop",
+          "description": "tyres"
+        },
+        {
+          "id": "music1",
+          "name": "Musicians Gear Zone",
+          "category": "Musical instrument store",
+          "description": "guitar restringing and strings"
+        }
+      ],
+      "expectKeepIds": ["music1"],
+      "expectDropIds": ["auto1", "tyre1"]
+    },
+    {
+      "id": "gaming-mouse",
+      "query": "where can I buy a gaming mouse in Ballito",
+      "expectExact": true,
+      "expectStrategy": "ranked_list",
+      "forbidCategorySubstrings": ["pet store", "bakery", "car repair"],
+      "allowEmpty": true,
+      "pool": [
+        {
+          "id": "pet1",
+          "name": "Absolute Pets",
+          "category": "Pet Store",
+          "description": "dog food"
+        },
+        {
+          "id": "elec1",
+          "name": "Incredible Connection Ballito Junction",
+          "category": "Electronics Store",
+          "description": "laptops gaming gear phones"
+        },
+        {
+          "id": "game1",
+          "name": "Game Ballito Junction",
+          "category": "Electronics Store",
+          "description": "gaming consoles and accessories"
+        }
+      ],
+      "expectKeepIds": ["elec1", "game1"],
+      "expectDropIds": ["pet1"]
+    },
+    {
+      "id": "obscure-taxidermy",
+      "query": "I need a taxidermist in Ballito",
+      "expectExact": true,
+      "expectStrategy": "ranked_list",
+      "allowEmpty": true,
+      "pool": [
+        {
+          "id": "auto1",
+          "name": "Ballito Auto Fix",
+          "category": "Car repair and maintenance service",
+          "description": "servicing"
+        },
+        {
+          "id": "surf1",
+          "name": "Singlefin Surf Shop",
+          "category": "Sporting Goods Store",
+          "description": "surfboards"
+        }
+      ],
+      "expectKeepIds": [],
+      "expectDropIds": ["auto1", "surf1"]
+    },
+    {
+      "id": "weekend-browse",
+      "query": "Fun outdoor activities this weekend",
+      "expectExact": false,
+      "expectStrategy": "grouped_sections"
+    },
+    {
+      "id": "plumber-exact",
+      "query": "I need a plumber for a burst pipe",
+      "expectExact": true,
+      "expectStrategy": "ranked_list",
+      "forbidCategorySubstrings": ["car repair", "tire"],
+      "pool": [
+        {
+          "id": "plumb1",
+          "name": "North Coast Plumbers",
+          "category": "Plumber",
+          "description": "burst pipes and geysers"
+        },
+        {
+          "id": "auto1",
+          "name": "Bosch Car Service",
+          "category": "Car repair and maintenance service",
+          "description": "car service"
+        }
+      ],
+      "expectKeepIds": ["plumb1"],
+      "expectDropIds": ["auto1"]
+    },
+    {
+      "id": "propose-wife",
+      "query": "I am going to propose to my wife",
+      "expectExact": false,
+      "expectStrategy": "grouped_sections",
+      "expectBucketProfile": "plan_facets",
+      "expectTitleHintIncludes": "proposal",
+      "expectWorkflow": "special_occasion",
+      "romanticFilter": true,
+      "planFacets": [
+        {
+          "id": "rings",
+          "label": "Engagement rings",
+          "searchQuery": "engagement rings jewellers",
+          "verticalHint": "jewellery"
+        },
+        {
+          "id": "flowers",
+          "label": "Flowers",
+          "searchQuery": "florist bouquet",
+          "verticalHint": "florists"
+        },
+        {
+          "id": "photo",
+          "label": "Photographer",
+          "searchQuery": "proposal photographer",
+          "verticalHint": "photography"
+        }
+      ],
+      "forbidCategorySubstrings": [
+        "laser",
+        "go-kart",
+        "go kart",
+        "playground",
+        "arcade"
+      ],
+      "pool": [
+        {
+          "id": "jewel1",
+          "name": "Ballito Jewellers",
+          "category": "Jewelry store",
+          "description": "engagement rings",
+          "verticals": ["jewellery"]
+        },
+        {
+          "id": "flor1",
+          "name": "Love Laugh Ballito",
+          "category": "Florist",
+          "description": "bouquets and proposal flowers",
+          "verticals": ["florists"]
+        },
+        {
+          "id": "photo1",
+          "name": "Coastal Moments Photography",
+          "category": "Photographer",
+          "description": "engagement and proposal photoshoots",
+          "verticals": ["photography"]
+        },
+        {
+          "id": "laser1",
+          "name": "Laser Rush Ballito",
+          "category": "Laser tag center",
+          "description": "laser tag for kids"
+        },
+        {
+          "id": "kart1",
+          "name": "Ace Karting",
+          "category": "Go-kart track",
+          "description": "go karting"
+        }
+      ],
+      "expectKeepIds": ["jewel1", "flor1", "photo1"],
+      "expectDropIds": ["laser1", "kart1"]
+    },
+    {
+      "id": "kids-birthday",
+      "query": "its my kids birthday on monday",
+      "expectExact": false,
+      "expectStrategy": "grouped_sections",
+      "expectBucketProfile": "plan_facets",
+      "expectTitleHintIncludes": "birthday",
+      "expectWorkflow": "special_occasion",
+      "familyFilter": true,
+      "planFacets": [
+        {
+          "id": "party_venues",
+          "label": "Party venues & play",
+          "searchQuery": "kids party venues soft play laser tag",
+          "verticalHint": "family"
+        },
+        {
+          "id": "cake",
+          "label": "Birthday cake",
+          "searchQuery": "birthday cake bakery",
+          "verticalHint": "bakeries"
+        },
+        {
+          "id": "family_meal",
+          "label": "Family meal",
+          "searchQuery": "family restaurants kids",
+          "verticalHint": "restaurants"
+        }
+      ],
+      "forbidCategorySubstrings": ["jewelry", "jewellery", "diamond"],
+      "pool": [
+        {
+          "id": "play1",
+          "name": "Sugar Rush Park",
+          "category": "Amusement park",
+          "description": "kids play party venues"
+        },
+        {
+          "id": "cake1",
+          "name": "Ballito Bakehouse",
+          "category": "Bakery",
+          "description": "birthday cakes",
+          "verticals": ["bakeries"]
+        },
+        {
+          "id": "jewel1",
+          "name": "THE KARAT GUY",
+          "category": "Jewelry store",
+          "description": "gold diamond buyers",
+          "verticals": ["jewellery"]
+        }
+      ],
+      "expectKeepIds": ["play1", "cake1"],
+      "expectDropIds": ["jewel1"]
+    }
+  ]
+}

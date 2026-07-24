@@ -6,6 +6,7 @@ import { propertyWorkflow } from "./property";
 import { healthcareWorkflow } from "./healthcare";
 import { emergencyWorkflow } from "./emergency";
 import { relocationWorkflow } from "./relocation";
+import { specialOccasionWorkflow } from "./special-occasion";
 import { servicesWorkflow } from "./services";
 import { generalWorkflow } from "./general";
 import type { RuntimeWorkflowId, Workflow } from "./types";
@@ -18,6 +19,7 @@ const WORKFLOWS: Record<RuntimeWorkflowId, Workflow> = {
   healthcare: healthcareWorkflow,
   emergency: emergencyWorkflow,
   relocation: relocationWorkflow,
+  special_occasion: specialOccasionWorkflow,
   services: servicesWorkflow,
   general: generalWorkflow,
 };

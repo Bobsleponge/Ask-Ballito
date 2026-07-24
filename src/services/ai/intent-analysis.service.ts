@@ -8,7 +8,7 @@ import {
   buildIntentSystem,
   type Intent,
 } from "@/lib/ai/prompts/intent.v1";
-import { wrapUserContent } from "@/lib/ai/safety";
+import { wrapUserContent, mapHistoryToModelTurns } from "@/lib/ai/safety";
 import type { City } from "@/config/cities";
 import type { ChatMessage } from "@/lib/schemas/chat";
 
@@ -41,7 +41,7 @@ export class IntentAnalysisService {
 
     const input = [
       { role: "system" as const, content: buildIntentSystem(city.name) },
-      ...history.slice(-6).map((m) => ({ role: m.role, content: m.content })),
+      ...mapHistoryToModelTurns(history.slice(-6)),
       { role: "user" as const, content: wrapUserContent(message) },
     ];
 

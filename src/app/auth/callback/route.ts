@@ -1,14 +1,18 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { safeRedirectPath } from "@/lib/security/safe-redirect";
+import { env } from "@/lib/env";
 
 /**
  * OAuth / magic-link callback. Exchanges the auth code for a session and
- * redirects to the intended destination.
+ * redirects to the intended destination on the configured site origin
+ * (not the request Host header).
  */
 export async function GET(request: NextRequest) {
-  const { searchParams, origin } = new URL(request.url);
+  const { searchParams } = new URL(request.url);
+  const origin = env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/";
+  const next = safeRedirectPath(searchParams.get("next"));
   const authError = searchParams.get("error_description");
 
   if (authError) {

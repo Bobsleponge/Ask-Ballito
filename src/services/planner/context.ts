@@ -1,12 +1,16 @@
 import type { City } from "@/config/cities";
 import type { ChatMessage } from "@/lib/schemas/chat";
 import {
-  emptyConstraintModel,
   emptyEntityModel,
+  type ConstraintModel,
   type ConversationContext,
   type EntityModel,
 } from "./types";
 import { GEO_REFERENCES } from "@/config/geo-references";
+import {
+  stickySummaryToContext,
+  type StickySummary,
+} from "./sticky-summary";
 
 const AREA_PATTERNS: { re: RegExp; field: keyof EntityModel; value: string }[] =
   [
@@ -52,13 +56,22 @@ export function extractStickyFromHistory(history: ChatMessage[]): EntityModel {
 export function buildConversationContext(opts: {
   city: City;
   history?: ChatMessage[];
+  /** Persisted conversation sticky_summary (JSON), if any. */
+  stickySummary?: StickySummary | null;
 }): ConversationContext {
   const history = opts.history ?? [];
+  const fromHistory = extractStickyFromHistory(history);
+  const fromSummary = stickySummaryToContext(opts.stickySummary ?? null);
+  const { merged: stickyEntities } = mergeEntities(
+    fromSummary.stickyEntities,
+    fromHistory,
+  );
+
   return {
     city: opts.city,
     history: history.slice(-8),
-    stickyEntities: extractStickyFromHistory(history),
-    stickyConstraints: {},
+    stickyEntities,
+    stickyConstraints: fromSummary.stickyConstraints,
   };
 }
 
@@ -82,10 +95,18 @@ export function mergeEntities(
   return { merged, stickyUsed };
 }
 
-export function mergeConstraints<T extends ReturnType<typeof emptyConstraintModel>>(
-  _sticky: Partial<T>,
-  turn: T,
-): T {
-  // V2 day-one: prefer turn constraints; sticky constraint merge can expand later.
-  return turn;
+/** Turn wins when set; sticky fills null/empty scalar constraints. */
+export function mergeConstraints(
+  sticky: Partial<ConstraintModel>,
+  turn: ConstraintModel,
+): ConstraintModel {
+  return {
+    ...turn,
+    openNow: turn.openNow ?? sticky.openNow ?? null,
+    budget: turn.budget ?? sticky.budget ?? null,
+    partySize: turn.partySize ?? sticky.partySize ?? null,
+    distanceLabel: turn.distanceLabel ?? sticky.distanceLabel ?? null,
+    distanceMeters: turn.distanceMeters ?? sticky.distanceMeters ?? null,
+    emergency: turn.emergency ?? sticky.emergency ?? null,
+  };
 }

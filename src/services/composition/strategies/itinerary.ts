@@ -1,4 +1,5 @@
 import type { BusinessResult } from "@/lib/schemas/business";
+import { isHardOffIntentCategory } from "@/lib/business-vertical-filter";
 import type { CompositionRequest, ExperienceSection, SectionHint } from "../types";
 
 function matchesHint(b: BusinessResult, hint: SectionHint): boolean {
@@ -32,11 +33,14 @@ export function composeItinerary(
 
   const used = new Set<string>();
   const sections: ExperienceSection[] = [];
+  const leisurePool = ranked.filter(
+    (b) => !isHardOffIntentCategory(b.category),
+  );
 
   for (const hint of hints) {
     if (sections.length >= request.maxSections) break;
     const picks: string[] = [];
-    for (const b of ranked) {
+    for (const b of leisurePool) {
       if (used.has(b.id)) continue;
       if (!matchesHint(b, hint)) continue;
       picks.push(b.id);
@@ -44,9 +48,9 @@ export function composeItinerary(
       if (picks.length >= request.maxItemsPerSection) break;
     }
 
-    // Soft fill: if no keyword match, take next unused by rank.
+    // Soft fill: next unused leisure match by rank (never hotels/schools/etc.).
     if (picks.length === 0) {
-      for (const b of ranked) {
+      for (const b of leisurePool) {
         if (used.has(b.id)) continue;
         picks.push(b.id);
         used.add(b.id);

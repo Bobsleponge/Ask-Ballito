@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { VERTICALS, TOP_PER_VERTICAL, type Vertical } from "@/config/verticals";
 import { popularityScore } from "@/lib/business-ranking";
 import type { BusinessResult, BusinessPhoto } from "@/lib/schemas/business";
+import { enrichBusinessResults } from "@/lib/business-portal/enrich-business-results";
 
 export interface VerticalDirectorySection {
   vertical: Vertical;
@@ -69,7 +70,7 @@ export async function getVerticalDirectory(
 
   if (error) throw new Error(`Failed to load directory: ${error.message}`);
 
-  const rows = (data ?? []).map(rowToResult);
+  const rows = await enrichBusinessResults((data ?? []).map(rowToResult));
 
   return VERTICALS.map((vertical) => {
     const businesses = rows

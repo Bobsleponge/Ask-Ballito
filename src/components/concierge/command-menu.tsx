@@ -11,7 +11,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
-import { SUGGESTION_PROMPTS } from "./suggestions";
+import { SUGGESTION_CARDS, SEED_TRENDING } from "@/config/discover";
 import { analytics } from "@/lib/analytics/events";
 
 export function CommandMenu({ onPick }: { onPick: (prompt: string) => void }) {
@@ -28,12 +28,17 @@ export function CommandMenu({ onPick }: { onPick: (prompt: string) => void }) {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
+  const ideas = [
+    ...SUGGESTION_CARDS.map((c) => c.prompt),
+    ...SEED_TRENDING.map((t) => t.query),
+  ];
+
   return (
     <>
       <Button
         variant="ghost"
         size="sm"
-        className="gap-2 text-muted-foreground"
+        className="h-9 gap-2 rounded-xl text-muted-foreground"
         onClick={() => {
           analytics.capture("search_opened");
           setOpen(true);
@@ -51,7 +56,7 @@ export function CommandMenu({ onPick }: { onPick: (prompt: string) => void }) {
         <CommandList>
           <CommandEmpty>No ideas found.</CommandEmpty>
           <CommandGroup heading="Popular requests">
-            {SUGGESTION_PROMPTS.map((prompt) => (
+            {ideas.map((prompt) => (
               <CommandItem
                 key={prompt}
                 onSelect={() => {

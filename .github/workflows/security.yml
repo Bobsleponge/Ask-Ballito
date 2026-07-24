@@ -1,0 +1,42 @@
+name: Security
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Security smoke
+        run: npm run smoke:security
+
+      - name: Authz smoke
+        run: npm run smoke:authz
+
+      - name: AI safety smoke
+        run: npm run smoke:ai-safety
+
+      - name: Eval smoke
+        run: npm run eval:smoke
+
+      - name: npm audit (high+)
+        run: npm audit --audit-level=high
+        continue-on-error: true

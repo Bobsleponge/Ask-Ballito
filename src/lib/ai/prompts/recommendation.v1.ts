@@ -1,9 +1,10 @@
 import type { PromptMeta } from "./types";
 import type { ExperienceComposition } from "@/services/composition/types";
+import { listingAfterHoursFlags } from "@/services/planner/trade-query";
 
 export const RECOMMENDATION_PROMPT: PromptMeta<"recommendation"> = {
   name: "recommendation",
-  version: "v1.4",
+  version: "v1.9",
 };
 
 export interface RecommendationBusiness {
@@ -17,19 +18,55 @@ export interface RecommendationBusiness {
   priceLevel: number | null;
   /** Deterministic rank score 0–100 from RankingEngine (explain, do not reorder). */
   score?: number;
+  phone?: string | null;
+  /** Evidenced after-hours signals from listing text (never invent beyond these). */
+  afterHoursFlags?: string[];
+  serviceHighlights?: string[];
 }
 
-/** Shared addendum for casual, section-aware, card-anchored replies. */
+/** Call-first addendum for professional services (not leisure variety). */
+export const SERVICES_SECTION_ADDENDUM = [
+  "Voice & layout:",
+  "- Sound practical and calm — like helping someone sort a real job.",
+  "- Call-first: say who to phone, and why (rating, nearby, or fit for the job).",
+  "- Intro: 1–2 sentences. Section blurb: 2–4 sentences covering the strongest options.",
+  "- When a listing has AFTER-HOURS FLAGS AND the user asked for after-hours / 24-hour / emergency call-out, cite that evidence by name. Never invent coverage.",
+  "- Do not add filler disclaimers: do not mention missing 24-hour flags, tell the user to confirm availability when calling, or warn them away from listed providers (e.g. panel beaters) unless they are clearly the wrong trade.",
+  "- Never substitute a different trade for the user's ask. If the list is empty, say so plainly.",
+  "- Do not invent phones or places. Prefer phone-ready providers by exact name.",
+  "- Emphasis: wrap place names, phone numbers, and ask-relevant facts in **double asterisks** so they stand out.",
+  "- Markers [[biz:ID]] only with a real id from that section.",
+  "- Do not invent places or invent new section titles.",
+  "",
+  "REQUIRED OUTPUT FORMAT (the UI places each blurb next to its section):",
+  "<<<INTRO>>>",
+  "1–2 sentences on the job and the strongest options.",
+  "<<<SECTION:Exact Section Title>>>",
+  "2–4 sentences: who to call first and why, plus a couple of strong alternatives. Use the EXACT section title.",
+  "Repeat <<<SECTION:Exact Section Title>>> for every section provided — do not skip sections.",
+  "Do not use ## markdown headings. Do not dump all section copy only in the intro.",
+].join("\n");
+
+/** Shared addendum for casual, section-aware replies (cards render in the UI grid). */
 export const SECTION_EXPLAINER_ADDENDUM = [
   "Voice & layout:",
-  "- Sound like a helpful local friend: warm and casual, but always correct spelling and grammar. No slang typos, no telegram-style shorthand.",
-  "- Use natural South African English. Prefer full words and clear sentences over fragmented chat-speak.",
-  "- Walk the user through the sections intuitively (for example fine dining, sea views, then chill cafes). One short intro, then section by section.",
-  "- When you name a place, use its EXACT name from the list, then put [[biz:ID]] on the next line (use the id from the list). The app shows a card there.",
-  "- After the marker, one short friendly line is enough. Do not write mini-reviews or repeat address or rating — the card already has those.",
-  "- Cover the places in the sections. You may mention every provided business. Do not invent places or reorder sections.",
-  "- Skip markdown headings like ##. Use short paragraphs with a blank line between thoughts. You may wrap a place name in **double asterisks** once when you introduce it.",
-  "- Prefer easy scanning: one idea per paragraph, then the [[biz:id]] card marker, then one short follow-on line if needed.",
+  "- Sound like a helpful local friend: warm and casual, but always correct spelling and grammar.",
+  "- Use natural South African English. Prefer full words and clear sentences.",
+  "- Prefer variety across sections (adventure, family, outdoors, dining vibes) — not one crowded category.",
+  "- The UI shows equal-weight option cards under each section. Do not imply a single favourite ranking.",
+  "- You may highlight at most one standout place by exact name inside a section blurb. Markers are optional: [[biz:ID]] only with a real id from that section.",
+  "- Emphasis: wrap place names and ask-relevant facts (prices, times, kid-friendly, sea view, etc.) in **double asterisks**. Do not bold whole sentences.",
+  "- Skip hotels, guest houses, travel agencies, schools, clinics, banks, and estate agents unless the user asked for them.",
+  "- Do not invent places or invent new section order.",
+  "- If EXPERIENCE SECTIONS are empty / none, say so honestly — no section markers.",
+  "",
+  "REQUIRED OUTPUT FORMAT (the UI places each blurb next to its section):",
+  "<<<INTRO>>>",
+  "One short overall sentence welcoming the ask (no section parade).",
+  "<<<SECTION:Exact Section Title>>>",
+  "One or two sentences about that vibe / why these options fit. Use the EXACT section title from the list.",
+  "Repeat <<<SECTION:Exact Section Title>>> for every section provided — do not skip sections.",
+  "Do not use ## markdown headings. Do not dump all section copy only in the intro.",
 ].join("\n");
 
 export function buildRecommendationSystem(cityName: string): string {
@@ -71,7 +108,7 @@ export function buildBusinessContext(
   });
 
   return [
-    "RANKED CANDIDATE BUSINESSES (already ordered — name them with [[biz:id]] markers):",
+    "RANKED CANDIDATE BUSINESSES (cards show in the UI; name a standout only if helpful):",
     lines.join("\n"),
   ].join("\n");
 }
@@ -82,10 +119,17 @@ function formatBizLine(b: RecommendationBusiness): string {
     `id=${b.id}`,
     b.score != null ? `(score ${Math.round(b.score)})` : "",
     b.category ? `[${b.category}]` : "",
+    b.phone ? `phone ${b.phone}` : "",
     b.priceLevel != null
       ? `price ${"R".repeat(Math.max(1, b.priceLevel))}`
       : "",
     b.rating != null ? `rating ${b.rating}` : "",
+    b.afterHoursFlags?.length
+      ? `AFTER-HOURS FLAGS: ${b.afterHoursFlags.join(", ")}`
+      : "",
+    b.serviceHighlights?.length
+      ? `services: ${b.serviceHighlights.slice(0, 4).join("; ")}`
+      : "",
   ].filter(Boolean);
   return parts.join(" ");
 }
@@ -100,6 +144,12 @@ export function buildCompositionContext(
 
   const byId = new Map<string, RecommendationBusiness>();
   for (const b of composition.businesses) {
+    const services = Array.isArray(b.metadata?.services)
+      ? (b.metadata!.services as unknown[]).filter(
+          (s): s is string => typeof s === "string" && s.trim().length > 0,
+        )
+      : [];
+
     byId.set(b.id, {
       id: b.id,
       name: b.name,
@@ -110,6 +160,9 @@ export function buildCompositionContext(
       ratingCount: b.ratingCount,
       priceLevel: b.priceLevel,
       score: b.score,
+      phone: b.phone,
+      afterHoursFlags: listingAfterHoursFlags(b),
+      serviceHighlights: services.slice(0, 5),
     });
   }
 
@@ -119,23 +172,36 @@ export function buildCompositionContext(
       .filter((b): b is RecommendationBusiness => b != null)
       .map(formatBizLine);
     const head = [
-      `Section ${i + 1}: ${section.title}`,
+      `Section ${i + 1}: ${section.title} (${lines.length} options — cards in UI)`,
       section.subtitle ? `(${section.subtitle})` : "",
+      `→ emit marker exactly as: <<<SECTION:${section.title}>>>`,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join("\n");
     return [head, ...lines].join("\n");
   });
 
+  const related =
+    composition.grounding?.mode === "related"
+      ? [
+          "RELATED MATCH (read carefully):",
+          `- The user asked for "${composition.grounding.requestedService}".`,
+          `- No listing confirms that exact service as a stipulated / listed offering.`,
+          `- ${composition.grounding.note}`,
+          "- Recommend ONLY the businesses listed below as the best related options.",
+          `- In <<<INTRO>>>, clearly say "${composition.grounding.requestedService}" is not confirmed as a listed service, then point to related options.`,
+          "- Invite the user to ask the salon/provider whether they offer it.",
+          "- Still use only real place names / [[biz:id]] values from the sections. Never invent places or ids.",
+        ].join("\n")
+      : null;
+
   return [
+    related,
     `PRESENTATION STRATEGY: ${composition.strategy}`,
     composition.title ? `ANGLE: ${composition.title}` : "",
-    "EXPERIENCE SECTIONS (chat through these casually; after each exact name put [[biz:id]] on the next line):",
+    "EXPERIENCE SECTIONS (write <<<INTRO>>> then one <<<SECTION:Exact Title>>> blurb for EACH section below):",
     blocks.join("\n\n"),
-    "Example beat:",
-    "If you want a sea view, try The Beach House",
-    "[[biz:example-id]]",
-    "Great for sunset drinks.",
+    "Grounding: every named place or [[biz:id]] must match an id= value in the sections above. Never invent names or ids.",
   ]
     .filter(Boolean)
     .join("\n");

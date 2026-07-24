@@ -14,13 +14,20 @@ export const activitiesDefinition: WorkflowDefinition = {
       id: "activities_search",
       capability: "business_search",
       type: "business_search",
-      query: "things to do and attractions",
-      params: { verticalHint: "attractions", limit: 12 },
+      query: "beaches outdoor attractions experiences family activities",
+      params: { verticalHint: "attractions", limit: 30 },
       priority: 1,
       optional: false,
     },
   ],
-  rankConfig: { attributeBoost: 0.1, quality: 0.08, limit: 12 },
+  rankConfig: {
+    attributeBoost: 0.12,
+    typeBoost: 0.18,
+    keywordBoost: 0.14,
+    similarity: 0.32,
+    quality: 0.08,
+    limit: 25,
+  },
   responseBehaviour: {
     allowExecuteWithoutRequired: false,
     emptyResultsMessage:

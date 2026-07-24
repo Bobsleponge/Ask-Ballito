@@ -15,6 +15,8 @@ import {
   countAttributes,
 } from "@/services/ai/business-quality";
 import { extractServicesService } from "./extract-services.service";
+import { businessProfileService } from "@/services/business-portal/business-profile.service";
+import { businessMenuItemService } from "@/services/business-portal/business-menu-item.service";
 import type { Json } from "@/types/database";
 
 export interface EnrichOptions {
@@ -159,6 +161,56 @@ export class EnrichBusinessService {
     return result;
   }
 
+  /**
+   * Enrich a single business (Place Details + LLM extract + embed).
+   * Used by claim Ingest and city batch jobs.
+   */
+  async enrichBusinessById(
+    businessId: string,
+    opts: { force?: boolean } = {},
+  ): Promise<{ enriched: boolean; withReviews: boolean; skippedReason?: string }> {
+    const admin = createAdminClient();
+    const { data, error } = await admin
+      .from("businesses")
+      .select(
+        "id, provider, external_id, city_slug, name, category, categories, description, address, phone, website, rating, rating_count, price_level, lat, lng, photos, metadata",
+      )
+      .eq("id", businessId)
+      .maybeSingle();
+
+    if (error) throw new Error(`Failed to load business: ${error.message}`);
+    if (!data) {
+      return { enriched: false, withReviews: false, skippedReason: "not_found" };
+    }
+
+    const row = data as BusinessRow;
+    if (!opts.force && alreadyEnriched(row.metadata)) {
+      return {
+        enriched: false,
+        withReviews: false,
+        skippedReason: "already_enriched",
+      };
+    }
+
+    const city = getCity(row.city_slug);
+    if (!city) {
+      return {
+        enriched: false,
+        withReviews: false,
+        skippedReason: "unknown_city",
+      };
+    }
+    if (!googlePlacesProvider.isConfigured()) {
+      return {
+        enriched: false,
+        withReviews: false,
+        skippedReason: "places_not_configured",
+      };
+    }
+
+    return this.enrichOne(row, city);
+  }
+
   private async enrichOne(
     row: BusinessRow,
     city: City,
@@ -236,15 +288,29 @@ export class EnrichBusinessService {
       provider: row.provider,
     });
 
+    const ownerProfile = await businessProfileService.get(row.id);
+    const menuRows = await businessMenuItemService.list(row.id);
+    const menuItems = menuRows.map((m) => ({
+      name: m.name,
+      description: m.description ?? undefined,
+      category: m.category ?? undefined,
+    }));
+
     const embeddingText = buildEmbeddingText({
       name: business.name || row.name,
       category: business.category ?? row.category,
       categories: business.categories?.length
         ? business.categories
         : row.categories,
-      description,
+      description:
+        [ownerProfile?.tagline?.trim(), ownerProfile?.description?.trim()]
+          .filter(Boolean)
+          .join(". ") || description,
       address: business.address ?? row.address,
       metadata: mergedMeta,
+      ownerServices: ownerProfile?.services ?? [],
+      ownerKeywords: ownerProfile?.keywords ?? [],
+      menuItems,
     });
     const embedding = await embedText(embeddingText);
 

@@ -15,12 +15,12 @@ export const accommodationDefinition: WorkflowDefinition = {
       capability: "business_search",
       type: "business_search",
       query: "hotels and accommodation",
-      params: { verticalHint: "hotels", limit: 12 },
+      params: { verticalHint: "hotels", limit: 30 },
       priority: 1,
       optional: false,
     },
   ],
-  rankConfig: { quality: 0.1, limit: 12 },
+  rankConfig: { quality: 0.1, limit: 25 },
   responseBehaviour: {
     allowExecuteWithoutRequired: false,
     emptyResultsMessage:

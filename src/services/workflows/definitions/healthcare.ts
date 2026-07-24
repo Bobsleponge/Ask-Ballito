@@ -14,12 +14,14 @@ export const healthcareDefinition: WorkflowDefinition = {
       capability: "business_search",
       type: "business_search",
       query: "doctors and medical clinics",
-      params: { verticalHint: "healthcare", limit: 12 },
+      // Resolved per-ask in the planner (doctors / hospitals / …) — never leave
+      // the broad family that previously mixed in veterinary care.
+      params: { verticalHint: "doctors", limit: 30 },
       priority: 1,
       optional: false,
     },
   ],
-  rankConfig: { quality: 0.1, limit: 12 },
+  rankConfig: { quality: 0.1, limit: 25 },
   responseBehaviour: {
     allowExecuteWithoutRequired: true,
     emptyResultsMessage:

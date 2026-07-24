@@ -14,27 +14,54 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import {
+  signInAsDemoAccount,
   signInWithGoogle,
   signInWithMagicLink,
   type AuthActionState,
 } from "@/lib/auth/actions";
+import { DEMO_ACCOUNTS, type DemoAccountRole } from "@/config/demo-accounts";
 import { analytics } from "@/lib/analytics/events";
 
 const initialState: AuthActionState = { status: "idle" };
 
+const DEFAULT_DESCRIPTION =
+  "Save your conversations and get tailored local recommendations.";
+
+const showDemoLogin =
+  process.env.NODE_ENV === "development" ||
+  process.env.NEXT_PUBLIC_ENABLE_DEMO_LOGIN === "true";
+
 export function AuthDialog({
   trigger,
   next,
+  open: controlledOpen,
+  onOpenChange,
+  description = DEFAULT_DESCRIPTION,
+  title = "Sign in to Ask Ballito",
 }: {
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
   next?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  description?: string;
+  title?: string;
 }) {
-  const [open, setOpen] = useState(false);
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
+  const isControlled = controlledOpen !== undefined;
+  const open = isControlled ? controlledOpen : uncontrolledOpen;
+
+  function setOpen(value: boolean) {
+    if (!isControlled) setUncontrolledOpen(value);
+    onOpenChange?.(value);
+  }
+
   const [state, formAction, pending] = useActionState(
     signInWithMagicLink,
     initialState,
   );
   const [googlePending, startGoogle] = useTransition();
+  const [demoRole, setDemoRole] = useState<DemoAccountRole | null>(null);
+  const [demoPending, startDemo] = useTransition();
 
   function handleGoogle() {
     analytics.capture("auth_started", { method: "google" });
@@ -43,23 +70,68 @@ export function AuthDialog({
     });
   }
 
+  function handleDemo(role: DemoAccountRole) {
+    analytics.capture("auth_started", { method: `demo_${role}` });
+    setDemoRole(role);
+    startDemo(async () => {
+      await signInAsDemoAccount(role, next);
+    });
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      {trigger ? <DialogTrigger asChild>{trigger}</DialogTrigger> : null}
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Sign in to Ask Ballito</DialogTitle>
-          <DialogDescription>
-            Save your conversations and get tailored local recommendations.
-          </DialogDescription>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col gap-4">
+          {showDemoLogin ? (
+            <>
+              <div className="space-y-2">
+                <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                  Quick login
+                </p>
+                <div className="grid gap-2">
+                  {DEMO_ACCOUNTS.map((account) => (
+                    <Button
+                      key={account.role}
+                      type="button"
+                      variant="secondary"
+                      className="h-auto justify-start py-2.5 text-left"
+                      disabled={demoPending}
+                      onClick={() => handleDemo(account.role)}
+                    >
+                      <span className="flex flex-col items-start gap-0.5">
+                        <span className="font-medium">
+                          {demoPending && demoRole === account.role
+                            ? `Signing in as ${account.label}…`
+                            : `Continue as ${account.label}`}
+                        </span>
+                        <span className="text-xs font-normal text-muted-foreground">
+                          {account.description}
+                        </span>
+                      </span>
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                <Separator className="flex-1" />
+                or
+                <Separator className="flex-1" />
+              </div>
+            </>
+          ) : null}
+
           <Button
             type="button"
             variant="outline"
             onClick={handleGoogle}
-            disabled={googlePending}
+            disabled={googlePending || demoPending}
           >
             <GoogleIcon className="size-4" />
             {googlePending ? "Redirecting..." : "Continue with Google"}
@@ -74,7 +146,9 @@ export function AuthDialog({
           <form
             action={formAction}
             className="flex flex-col gap-3"
-            onSubmit={() => analytics.capture("auth_started", { method: "magic_link" })}
+            onSubmit={() =>
+              analytics.capture("auth_started", { method: "magic_link" })
+            }
           >
             {next ? <input type="hidden" name="next" value={next} /> : null}
             <div className="flex flex-col gap-2">
@@ -88,7 +162,7 @@ export function AuthDialog({
                 autoComplete="email"
               />
             </div>
-            <Button type="submit" disabled={pending}>
+            <Button type="submit" disabled={pending || demoPending}>
               {pending ? "Sending..." : "Send magic link"}
             </Button>
           </form>

@@ -14,6 +14,7 @@ export const workflowIdSchema = z.enum([
   "healthcare",
   "accommodation",
   "relocation",
+  "special_occasion",
   "general",
 ]);
 
@@ -61,9 +62,11 @@ export function buildPlannerSystem(cityName: string): string {
     "- Set needsClarification=true only when the request is too vague to search at all (e.g. \"somewhere nice\" with no type) AND searchQueries would be empty. If you can emit useful searchQueries, set needsClarification=false.",
     "- For anniversary/romantic evenings, relocation, coffee, dinner, etc., prefer searching immediately over asking follow-ups.",
     "- When the goal spans multiple domains (e.g. moving to the area), emit several searchQueries (estate agents, schools, internet, movers, doctors, security, etc.).",
-    "- Set constraints.emergency=true for urgent medical, safety, or crisis situations; otherwise null/false.",
+    "- Set constraints.emergency=true ONLY for life-threatening medical, police, fire, or personal-safety crises; otherwise null/false.",
+    "- Do NOT set emergency for plumbers, electricians, welders, fabricators, locksmiths, tow trucks, trailer work, or \"24 hour\" trade call-outs — use workflow=services.",
     "- workflow must be one of: restaurants, activities, property, services, healthcare, accommodation, relocation, general.",
     "- For dining/coffee/food requests use workflow=restaurants.",
+    "- For plumber/electrician/welder/locksmith/repairs use workflow=services.",
     "- searchQueries should be concise, city-agnostic phrases suitable for semantic search over local businesses.",
     "- For greetings or meta chat with no local lookup needed, use workflow=general, needsClarification=false, and empty searchQueries.",
     "- Use null for unknown constraint fields. Empty arrays when no entities.",

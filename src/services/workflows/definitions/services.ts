@@ -7,7 +7,7 @@ export const servicesDefinition: WorkflowDefinition = {
   optionalFields: [],
   clarify: {
     service_type:
-      "What kind of service do you need — beauty, fitness, repairs, or something else?",
+      "What kind of service do you need — beauty, fitness, repairs, welding, or something else?",
   },
   defaultExecutionPlan: [
     {
@@ -15,16 +15,18 @@ export const servicesDefinition: WorkflowDefinition = {
       capability: "business_search",
       type: "business_search",
       query: "professional services",
-      params: { verticalHint: "home-services", limit: 12 },
+      // verticalHint is set per-ask in the planner resolver — never default to
+      // home-services or plumbers dominate every trade query.
+      params: { limit: 30 },
       priority: 1,
       optional: false,
     },
   ],
-  rankConfig: { quality: 0.1, limit: 12 },
+  rankConfig: { quality: 0.1, limit: 25 },
   responseBehaviour: {
     allowExecuteWithoutRequired: false,
     emptyResultsMessage:
-      "I couldn't find matching services yet. What type of help do you need?",
+      "I couldn't find a clear match for that service yet. Try naming the trade or job — for example plumber, electrician, welder, trailer fabrication, or a salon — and I'll look again.",
   },
   defaultCompositionStrategy: "ranked_list",
 };

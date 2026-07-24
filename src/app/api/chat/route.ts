@@ -2,9 +2,28 @@ import { NextResponse, type NextRequest } from "next/server";
 import * as Sentry from "@sentry/nextjs";
 import { chatRequestSchema } from "@/lib/schemas/chat";
 import { getCity } from "@/config/cities";
-import { checkRateLimit, getClientIp } from "@/lib/security/rate-limit";
+import {
+  checkAnonymousChatQuota,
+  checkChatRateLimit,
+  checkGlobalChatQuota,
+  checkUserDailyChatQuota,
+  checkUserMonthlyChatQuota,
+  checkUserNewAccountChatQuota,
+  getClientIp,
+  isRateLimitConfigured,
+  USER_CHAT_NEW_ACCOUNT_HOURS,
+} from "@/lib/security/rate-limit";
+import { captureAbuseEvent } from "@/lib/security/abuse-events";
+import { maybeEmitAiBudgetAlerts } from "@/lib/security/ai-budget-alerts";
+import {
+  isUpstreamAiError,
+  upstreamAiUserMessage,
+} from "@/lib/ai/upstream-errors";
 import { conversationService } from "@/services/ai/conversation.service";
 import { getCurrentUser } from "@/lib/auth/user";
+import { getCurrentProfile } from "@/lib/auth/require-admin";
+import { env } from "@/lib/env";
+import { recordSearchEvent } from "@/lib/discover/record-search-event";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -13,18 +32,177 @@ function sse(event: string, data: unknown): string {
   return `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
 }
 
+function failClosed503() {
+  return NextResponse.json(
+    { error: "Service temporarily unavailable." },
+    { status: 503 },
+  );
+}
+
 export async function POST(request: NextRequest) {
-  // 1. Rate limit (abuse protection).
+  // 1. Production requires Upstash — fail closed when missing.
+  if (env.NODE_ENV === "production" && !isRateLimitConfigured()) {
+    return failClosed503();
+  }
+
   const ip = getClientIp(request);
-  const rl = await checkRateLimit(`chat:${ip}`);
+  const user = await getCurrentUser();
+
+  if (user) {
+    const profile = await getCurrentProfile();
+    if (profile?.abuse_suspended) {
+      captureAbuseEvent({
+        event: "abuse_suspended",
+        distinctId: user.id,
+        properties: { route: "api/chat" },
+      });
+      return NextResponse.json(
+        {
+          error: "Your account is temporarily restricted from chat.",
+          code: "abuse_suspended",
+        },
+        { status: 403 },
+      );
+    }
+  }
+
+  // 2. Burst rate limit first (so a 429 does not burn daily / global quotas).
+  const rl = await checkChatRateLimit(user ? `user:${user.id}` : `ip:${ip}`);
+  if (!rl.configured && env.NODE_ENV === "production") {
+    return failClosed503();
+  }
   if (!rl.success) {
+    captureAbuseEvent({
+      event: "rate_limited",
+      distinctId: user?.id ?? ip,
+      properties: { route: "api/chat", scope: "burst" },
+    });
     return NextResponse.json(
       { error: "Too many requests. Please slow down." },
       { status: 429 },
     );
   }
 
-  // 2. Validate input.
+  // 3. App-wide daily ceiling (org OpenAI spend backstop).
+  const global = await checkGlobalChatQuota();
+  if (!global.configured && env.NODE_ENV === "production") {
+    return failClosed503();
+  }
+  if (!global.success) {
+    captureAbuseEvent({
+      event: "global_chat_cap",
+      distinctId: user?.id ?? ip,
+      properties: { route: "api/chat" },
+    });
+    return NextResponse.json(
+      {
+        error:
+          "The concierge is at capacity for today. Please try again tomorrow.",
+        code: "global_cap",
+      },
+      { status: 503 },
+    );
+  }
+  maybeEmitAiBudgetAlerts(global, user?.id ?? ip);
+
+  // 4. Hybrid gate: anonymous users get a small daily allowance, then must sign in.
+  if (!user) {
+    const anon = await checkAnonymousChatQuota(ip);
+    if (!anon.configured && env.NODE_ENV === "production") {
+      return failClosed503();
+    }
+    if (!anon.success) {
+      captureAbuseEvent({
+        event: "anon_quota_exhausted",
+        distinctId: ip,
+        properties: { route: "api/chat" },
+      });
+      captureAbuseEvent({
+        event: "auth_required",
+        distinctId: ip,
+        properties: { route: "api/chat" },
+      });
+      return NextResponse.json(
+        {
+          error: "Sign in to continue chatting.",
+          code: "auth_required",
+        },
+        { status: 401 },
+      );
+    }
+  } else {
+    // Signed-in daily spend cap (weighted for multi-call turns).
+    const daily = await checkUserDailyChatQuota(user.id);
+    if (!daily.configured && env.NODE_ENV === "production") {
+      return failClosed503();
+    }
+    if (!daily.success) {
+      captureAbuseEvent({
+        event: "user_daily_cap",
+        distinctId: user.id,
+        properties: { route: "api/chat" },
+      });
+      return NextResponse.json(
+        {
+          error:
+            "You've reached today's chat limit. Please try again tomorrow.",
+          code: "daily_cap",
+        },
+        { status: 429 },
+      );
+    }
+
+    const monthly = await checkUserMonthlyChatQuota(user.id);
+    if (!monthly.configured && env.NODE_ENV === "production") {
+      return failClosed503();
+    }
+    if (!monthly.success) {
+      captureAbuseEvent({
+        event: "user_monthly_cap",
+        distinctId: user.id,
+        properties: { route: "api/chat" },
+      });
+      return NextResponse.json(
+        {
+          error:
+            "You've reached this month's chat limit. Please try again later.",
+          code: "monthly_cap",
+        },
+        { status: 429 },
+      );
+    }
+
+    const createdAt = user.created_at
+      ? new Date(user.created_at).getTime()
+      : 0;
+    const ageMs = Date.now() - createdAt;
+    if (
+      createdAt > 0 &&
+      ageMs < USER_CHAT_NEW_ACCOUNT_HOURS * 60 * 60 * 1000
+    ) {
+      const ramp = await checkUserNewAccountChatQuota(user.id);
+      if (!ramp.configured && env.NODE_ENV === "production") {
+        return failClosed503();
+      }
+      if (!ramp.success) {
+        captureAbuseEvent({
+          event: "user_new_account_cap",
+          distinctId: user.id,
+          properties: { route: "api/chat" },
+        });
+        return NextResponse.json(
+          {
+            error:
+              "New accounts have a temporary chat limit. Please try again tomorrow.",
+            code: "new_account_cap",
+          },
+          { status: 429 },
+        );
+      }
+    }
+  }
+
+  // 5. Validate input.
   let body: unknown;
   try {
     body = await request.json();
@@ -48,11 +226,16 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // 3. Identify user (optional; conversations work anonymously too).
-  const user = await getCurrentUser();
-
-  // 4. Run the concierge turn and stream the response as SSE.
+  // 6. Run the concierge turn and stream the response as SSE.
   try {
+    // Best-effort trending feed (non-blocking).
+    void recordSearchEvent({
+      citySlug: city.slug,
+      query: parsed.data.message,
+      userId: user?.id ?? null,
+      source: "chat",
+    });
+
     const {
       businesses,
       composition,
@@ -67,37 +250,50 @@ export async function POST(request: NextRequest) {
       history: parsed.data.history,
       userId: user?.id ?? null,
       conversationId: parsed.data.conversationId ?? null,
+      excludeBusinessIds: parsed.data.excludeBusinessIds,
+      retry: parsed.data.retry,
     });
 
     const encoder = new TextEncoder();
+    const isProd = env.NODE_ENV === "production";
     const readable = new ReadableStream<Uint8Array>({
       async start(controller) {
-        controller.enqueue(
-          encoder.encode(
-            sse("meta", {
-              businesses,
-              composition: {
-                strategy: composition.strategy,
-                title: composition.title,
-                sections: composition.sections,
-              },
-              plan: {
-                intent: plan.intent,
-                goal: plan.goal,
-                workflow: plan.workflow,
-                needsClarification: plan.needsClarification,
-                responseMode: plan.responseMode,
-                llmRequired: plan.llmRequired,
-                executionSteps: plan.executionPlan.map((s) => s.id),
-                locationRef: plan.locationRef?.label ?? null,
-                compositionStrategy: plan.composition.strategy,
-              },
-              workflow: workflowId,
-              llmInvoked,
-              clarification,
-            }),
-          ),
-        );
+        const meta: Record<string, unknown> = {
+          businesses,
+          composition: {
+            strategy: composition.strategy,
+            title: composition.title,
+            sections: composition.sections,
+            grounding: composition.grounding,
+          },
+          workflow: workflowId,
+          llmInvoked,
+          clarification,
+        };
+
+        // Trim planner internals in production (reduce attack-surface / info leak).
+        if (!isProd) {
+          meta.plan = {
+            intent: plan.intent,
+            goal: plan.goal,
+            workflow: plan.workflow,
+            needsClarification: plan.needsClarification,
+            responseMode: plan.responseMode,
+            llmRequired: plan.llmRequired,
+            executionSteps: plan.executionPlan.map((s) => s.id),
+            locationRef: plan.locationRef?.label ?? null,
+            compositionStrategy: plan.composition.strategy,
+          };
+        } else {
+          meta.plan = {
+            workflow: plan.workflow,
+            needsClarification: plan.needsClarification,
+            responseMode: plan.responseMode,
+            compositionStrategy: plan.composition.strategy,
+          };
+        }
+
+        controller.enqueue(encoder.encode(sse("meta", meta)));
 
         try {
           for await (const delta of stream) {
@@ -106,11 +302,21 @@ export async function POST(request: NextRequest) {
           controller.enqueue(encoder.encode(sse("done", {})));
         } catch (err) {
           Sentry.captureException(err, { tags: { route: "api/chat" } });
+          const upstream = isUpstreamAiError(err);
+          if (upstream) {
+            captureAbuseEvent({
+              event: "upstream_ai_unavailable",
+              distinctId: user?.id ?? ip,
+              properties: { route: "api/chat", scope: "stream" },
+            });
+          }
           controller.enqueue(
             encoder.encode(
               sse("error", {
-                message:
-                  "The concierge ran into a problem generating a response.",
+                message: upstream
+                  ? upstreamAiUserMessage()
+                  : "The concierge ran into a problem generating a response.",
+                code: upstream ? "upstream_unavailable" : "stream_error",
               }),
             ),
           );
@@ -129,6 +335,20 @@ export async function POST(request: NextRequest) {
     });
   } catch (err) {
     Sentry.captureException(err, { tags: { route: "api/chat" } });
+    if (isUpstreamAiError(err)) {
+      captureAbuseEvent({
+        event: "upstream_ai_unavailable",
+        distinctId: user?.id ?? ip,
+        properties: { route: "api/chat", scope: "pre_stream" },
+      });
+      return NextResponse.json(
+        {
+          error: upstreamAiUserMessage(),
+          code: "upstream_unavailable",
+        },
+        { status: 503 },
+      );
+    }
     return NextResponse.json(
       { error: "Failed to process your request." },
       { status: 500 },

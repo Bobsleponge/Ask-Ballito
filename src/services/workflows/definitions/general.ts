@@ -20,7 +20,7 @@ export const generalDefinition: WorkflowDefinition = {
       optional: true,
     },
   ],
-  rankConfig: { limit: 4, quality: 0.05 },
+  rankConfig: { limit: 12, quality: 0.05 },
   responseBehaviour: {
     allowExecuteWithoutRequired: true,
     emptyResultsMessage:

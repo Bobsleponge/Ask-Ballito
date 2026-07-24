@@ -2,6 +2,7 @@ import "server-only";
 import * as Sentry from "@sentry/nextjs";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { captureServerEvent } from "@/lib/analytics/posthog-server";
+import { estimateCostUsd } from "@/config/ai-pricing";
 import type { AiLogInsert } from "@/types/database";
 
 export interface AiCallLog {
@@ -22,8 +23,17 @@ export interface AiCallLog {
 /**
  * Persist a record of every AI call to ai_logs, and mirror failures to Sentry
  * and a PostHog server event. Never throws -- logging must not break requests.
+ *
+ * Retention: rows may contain user message text / planner I/O (PII). Keep for
+ * ~90 days for abuse debugging, then delete or anonymize (see README Security).
  */
 export async function logAiCall(log: AiCallLog): Promise<void> {
+  const estimatedCostUsd = estimateCostUsd({
+    model: log.model,
+    inputTokens: log.inputTokens,
+    outputTokens: log.outputTokens,
+  });
+
   const row: AiLogInsert = {
     service: log.service,
     prompt_version: log.promptVersion ?? null,
@@ -32,6 +42,7 @@ export async function logAiCall(log: AiCallLog): Promise<void> {
     output: (log.output ?? {}) as AiLogInsert["output"],
     input_tokens: log.inputTokens ?? null,
     output_tokens: log.outputTokens ?? null,
+    estimated_cost_usd: estimatedCostUsd,
     latency_ms: log.latencyMs ?? null,
     status: log.status ?? "success",
     error: log.error ?? null,
@@ -61,6 +72,9 @@ export async function logAiCall(log: AiCallLog): Promise<void> {
       model: log.model,
       latency_ms: log.latencyMs,
       prompt_version: log.promptVersion,
+      estimated_cost_usd: estimatedCostUsd,
+      input_tokens: log.inputTokens,
+      output_tokens: log.outputTokens,
     },
   });
 }

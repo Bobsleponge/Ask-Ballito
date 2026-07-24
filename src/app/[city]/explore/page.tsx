@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCity, getEnabledCities } from "@/config/cities";
-import { getCurrentUser } from "@/lib/auth/user";
+import { getHeaderAuth } from "@/lib/auth/header-auth";
 import { SiteHeader } from "@/components/site-header";
 import { VerticalDirectory } from "@/components/directory/vertical-directory";
 import { getVerticalDirectory } from "@/services/directory/vertical-directory.service";
-import type { SessionUser } from "@/components/user-menu";
 
 /** Directory data is ingest-driven; refresh periodically after Google pulls. */
-export const revalidate = 300;
+export const revalidate = 600;
 
 export function generateStaticParams() {
   return getEnabledCities().map((c) => ({ city: c.slug }));
@@ -37,26 +36,19 @@ export default async function ExplorePage({
   const city = getCity(slug);
   if (!city || !city.enabled) notFound();
 
-  const [user, sections] = await Promise.all([
-    getCurrentUser(),
+  const [{ user, isAdmin, hasBusiness }, sections] = await Promise.all([
+    getHeaderAuth(),
     getVerticalDirectory(city.slug),
   ]);
 
-  const sessionUser: SessionUser | null = user
-    ? {
-        id: user.id,
-        email: user.email ?? null,
-        name:
-          (user.user_metadata?.full_name as string | undefined) ??
-          (user.user_metadata?.name as string | undefined) ??
-          null,
-        avatarUrl: (user.user_metadata?.avatar_url as string | undefined) ?? null,
-      }
-    : null;
-
   return (
     <div className="flex min-h-screen flex-1 flex-col">
-      <SiteHeader city={city} user={sessionUser} />
+      <SiteHeader
+        city={city}
+        user={user}
+        isAdmin={isAdmin}
+        hasBusiness={hasBusiness}
+      />
       <main className="flex flex-1 flex-col">
         <VerticalDirectory city={city} sections={sections} />
       </main>

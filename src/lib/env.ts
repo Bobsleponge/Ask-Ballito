@@ -45,14 +45,26 @@ const serverSchema = z.object({
     (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
     z.string().min(1).optional(),
   ),
+  /** Optional dedicated Weather API key; falls back to GOOGLE_PLACES_API_KEY. */
+  GOOGLE_WEATHER_API_KEY: z.preprocess(
+    (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
+    z.string().min(1).optional(),
+  ),
   NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: z.preprocess(
     (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
     z.string().min(1).optional(),
   ),
 
-  // Upstash rate limiting (optional; limiter no-ops when absent)
+  // Upstash rate limiting — REQUIRED in production (chat/photo fail closed without it).
+  // Optional in development (limiter no-ops so local DX still works).
   UPSTASH_REDIS_REST_URL: z.string().min(1).optional(),
   UPSTASH_REDIS_REST_TOKEN: z.string().min(1).optional(),
+
+  // Vercel Cron / manual batch jobs (Bearer token for /api/cron/*).
+  CRON_SECRET: z.preprocess(
+    (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
+    z.string().min(16).optional(),
+  ),
 });
 
 export type ServerEnv = z.infer<typeof serverSchema>;

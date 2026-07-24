@@ -1,0 +1,92 @@
+[
+  {
+    "id": "sushi-ballito",
+    "query": "Best sushi in Ballito",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "coffee-beach",
+    "query": "Coffee near Willard Beach",
+    "city": "ballito",
+    "expectVertical": "cafes"
+  },
+  {
+    "id": "family-dinner",
+    "query": "Family friendly dinner tonight",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "gel-nails",
+    "query": "Gel nails appointment",
+    "city": "ballito",
+    "expectVertical": "beauticians"
+  },
+  {
+    "id": "balayage",
+    "query": "Balayage hair colour",
+    "city": "ballito",
+    "expectVertical": "hair_salons"
+  },
+  {
+    "id": "vet-emergency",
+    "query": "Emergency vet open now",
+    "city": "ballito",
+    "expectVertical": "veterinary"
+  },
+  {
+    "id": "outdoor-weekend",
+    "query": "Fun outdoor activities this weekend",
+    "city": "ballito",
+    "expectVertical": "activities"
+  },
+  {
+    "id": "plumber",
+    "query": "Plumber for a burst pipe",
+    "city": "ballito",
+    "expectVertical": "services"
+  },
+  {
+    "id": "hotel-sea",
+    "query": "Hotel with sea view",
+    "city": "ballito",
+    "expectVertical": "accommodation"
+  },
+  {
+    "id": "pizza-delivery",
+    "query": "Pizza delivery near me",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "kids-haircut",
+    "query": "Kids haircut",
+    "city": "ballito",
+    "expectVertical": "hair_salons"
+  },
+  {
+    "id": "sunset-drinks",
+    "query": "Sunset drinks with a view",
+    "city": "ballito",
+    "expectVertical": "bars"
+  },
+  {
+    "id": "propose-wife",
+    "query": "I am going to propose to my wife",
+    "city": "ballito",
+    "expectVertical": "special_occasion"
+  },
+  {
+    "id": "anniversary-plan",
+    "query": "Help me plan our anniversary celebration in Ballito",
+    "city": "ballito",
+    "expectVertical": "special_occasion"
+  },
+  {
+    "id": "kids-birthday",
+    "query": "its my kids birthday on monday",
+    "city": "ballito",
+    "expectVertical": "special_occasion"
+  }
+]

@@ -62,7 +62,7 @@ export const relocationDefinition: WorkflowDefinition = {
       optional: true,
     },
   ],
-  rankConfig: { typeBoost: 0.14, quality: 0.08, limit: 12 },
+  rankConfig: { typeBoost: 0.14, quality: 0.08, limit: 25 },
   responseBehaviour: {
     allowExecuteWithoutRequired: true,
     emptyResultsMessage:

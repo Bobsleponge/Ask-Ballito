@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Outfit, Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AppProviders } from "@/components/providers/app-providers";
+import { SiteFooter } from "@/components/site-footer";
 import { siteConfig } from "@/config/site";
 
-const geistSans = Geist({
+const outfit = Outfit({
+  variable: "--font-heading",
+  subsets: ["latin"],
+});
+
+const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-sans",
   subsets: ["latin"],
 });
@@ -38,11 +44,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${plusJakarta.variable} ${outfit.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground">
-        <AppProviders>{children}</AppProviders>
+      <body className="flex min-h-full flex-col bg-background text-foreground">
+        <AppProviders>
+          <div className="flex min-h-full flex-1 flex-col">{children}</div>
+          <SiteFooter />
+        </AppProviders>
       </body>
     </html>
   );

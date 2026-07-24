@@ -1,6 +1,8 @@
 "use client";
 
-import { LogOut, User as UserIcon } from "lucide-react";
+import { useTransition } from "react";
+import Link from "next/link";
+import { LayoutDashboard, LogOut, Shield, User as UserIcon } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,7 +23,17 @@ export interface SessionUser {
   avatarUrl: string | null;
 }
 
-export function UserMenu({ user }: { user: SessionUser | null }) {
+export function UserMenu({
+  user,
+  isAdmin = false,
+  hasBusiness = false,
+}: {
+  user: SessionUser | null;
+  isAdmin?: boolean;
+  hasBusiness?: boolean;
+}) {
+  const [pending, startTransition] = useTransition();
+
   if (!user) {
     return (
       <AuthDialog
@@ -41,13 +53,21 @@ export function UserMenu({ user }: { user: SessionUser | null }) {
     .slice(0, 2)
     .toUpperCase();
 
+  function handleSignOut() {
+    startTransition(() => {
+      void signOut();
+    });
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="rounded-full">
           <Avatar className="size-8">
             {user.avatarUrl ? <AvatarImage src={user.avatarUrl} alt="" /> : null}
-            <AvatarFallback>{initials || <UserIcon className="size-4" />}</AvatarFallback>
+            <AvatarFallback>
+              {initials || <UserIcon className="size-4" />}
+            </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -56,16 +76,36 @@ export function UserMenu({ user }: { user: SessionUser | null }) {
           {user.name ?? user.email}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <form action={signOut}>
+        {isAdmin ? (
           <DropdownMenuItem asChild>
-            <button
-              type="submit"
-              className="flex w-full cursor-pointer items-center gap-2"
-            >
-              <LogOut className="size-4" /> Sign out
-            </button>
+            <Link href="/admin" className="flex cursor-pointer items-center gap-2">
+              <Shield className="size-4" /> Admin portal
+            </Link>
           </DropdownMenuItem>
-        </form>
+        ) : null}
+        {hasBusiness ? (
+          <DropdownMenuItem asChild>
+            <Link
+              href="/business/dashboard"
+              className="flex cursor-pointer items-center gap-2"
+            >
+              <LayoutDashboard className="size-4" /> Business dashboard
+            </Link>
+          </DropdownMenuItem>
+        ) : null}
+        {isAdmin || hasBusiness ? <DropdownMenuSeparator /> : null}
+        <DropdownMenuItem
+          disabled={pending}
+          onSelect={(event) => {
+            // Prevent the menu from unmounting before the server action runs.
+            event.preventDefault();
+            handleSignOut();
+          }}
+          className="cursor-pointer"
+        >
+          <LogOut className="size-4" />
+          {pending ? "Signing out…" : "Sign out"}
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

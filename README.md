@@ -51,13 +51,26 @@ Migrations live in [`supabase/migrations`](supabase/migrations):
 2. `0002_match_businesses.sql` — semantic search RPC
 3. `0003_rls.sql` — Row Level Security policies
 4. `0004_seed_cities.sql` — city registry seed
-5. `0005_exclude_seed_from_match.sql` — exclude fake seed rows from search
+5. `0005_grants.sql` **and** `0005_exclude_seed_from_match.sql` — table grants + exclude fake seed rows from search (apply both)
+6. `0006_cap_match_businesses.sql` — cap public RPC `match_count` at 50
+7. `0007_lockdown_data_access.sql` — revoke anon vector RPC; hide embeddings; protect profiles/messages
+8. `0008_ai_logs_retention.sql` — `purge_old_ai_logs()` helper (90-day retention)
+9. `0009_business_claims.sql` — `is_admin`, `business_members`, `business_claims` + RLS
+10. `0010_allow_service_role_set_admin.sql` — service_role may set `is_admin`
+11. `0011_business_owner_content.sql` — `business_profiles`, specials, `business-media` storage
+12. `0012_business_offerings.sql` — owner services/keywords/menu jsonb on profiles
+13. `0013_portal_stage2.sql` — menu items table, gallery, invites, listing attrs
+14. `0014_search_events.sql` — search events + trending (service_role)
+15. `0015_city_events.sql` — city calendar events
+16. `0016_listing_vertical.sql` — `listing_vertical` on profiles
+17. `0017_search_ingest.sql` — ingest/restudy timestamps on businesses
+18. `0018_profiles_abuse_suspended.sql` — admin chat abuse suspend flag
 
-Apply them with the Supabase SQL editor, or the Supabase CLI:
+Apply them with the Supabase SQL editor, the Supabase CLI, or:
 
 ```bash
-supabase db push        # if using a linked project + supabase/migrations
-# or run each file against SUPABASE_DB_URL with psql
+npm run migrate                 # local DB (127.0.0.1 / localhost)
+CONFIRM_PROD=1 npm run migrate  # required for remote / production URLs
 ```
 
 Regenerate DB types after schema changes:
@@ -117,13 +130,43 @@ and mirrored to Sentry/PostHog.
 | `npm run enrich -- <city>` | Place Details + review/LLM service keywords + re-embed |
 | `npm run clear:seed` | Delete leftover seeded test businesses |
 | `npm run smoke -- "<query>"` | End-to-end concierge smoke test |
+| `npm run smoke:security` | Offline security unit checks (redirect, history, CSP helpers) |
 
 ## Security
 
-- Supabase Row Level Security on all tables; service-role key is server-only
-- Rate limiting (Upstash) on AI routes
-- Zod validation on all inputs
-- Prompt-injection defenses ([`src/lib/ai/safety.ts`](src/lib/ai/safety.ts))
+- Supabase Row Level Security on all tables; service-role key is server-only (`server-only` import guard)
+- **Upstash required in production** — `/api/chat`, `/api/photo`, `/api/trending`, `/api/events`, magic-link, and menu import fail closed without it
+- Hybrid chat: **5 anonymous turns / 24h per IP**, then sign-in; signed-in users get **20/min burst** + **~50 turns/day** (100 units at 2/turn for multi-call cost) + app-wide **2000 chats / 24h** ceiling
+- Discover feeds (`/api/trending`, `/api/events`): **60/min per IP** + CDN `Cache-Control` (`s-maxage=60`)
+- Menu AI import: **5/hour per user** + **20/day per business**
+- `match_businesses` is **service_role only**; anon/authenticated cannot SELECT `embedding` / `embedding_text`
+- Zod validation on chat inputs; client history roles limited to `user` | `assistant`
+- Prompt-injection: current message + history sanitized; flagged turns dropped; model history delimited ([`src/lib/ai/safety.ts`](src/lib/ai/safety.ts))
+- Auth callback uses `NEXT_PUBLIC_SITE_URL` (not request Host); `next` paths sanitized
+- Magic-link rate limited (5/hour per IP and email)
+- Security headers (HSTS, CSP, frame denial, nosniff) via [`next.config.ts`](next.config.ts)
+  - Residual: CSP still allows `'unsafe-inline'` / `'unsafe-eval'` for Next + Maps (nonce CSP is a follow-up)
+- Photo proxy: path allowlist, no redirects, image content-type allowlist, rate-limited
+- Menu import / media uploads: MIME from **magic bytes** (not client `File.type`)
+- Sentry: `sendDefaultPii: false` + `beforeSend` scrubbing (emails, bearer/JWT, request bodies/cookies)
+- Rate-limit IP trust model: prefer `x-vercel-forwarded-for` (Vercel platform header)
+
+### Pre-launch ops checklist
+
+1. Set `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` on Vercel production
+2. Set **OpenAI** and **Google Cloud** billing budgets / alerts (hard backstop beyond app rate limits)
+3. Restrict **Google Maps browser key** (`NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`) to production HTTP referrers
+4. Restrict **Places server key** (`GOOGLE_PLACES_API_KEY`) — never expose client-side; IP/API restrictions as applicable
+5. Confirm Supabase Auth redirect allowlist includes `https://<domain>/auth/callback`
+6. Confirm `NEXT_PUBLIC_SITE_URL` matches the production origin
+7. Apply migrations `0006`–`0018` on the **production** database (`CONFIRM_PROD=1 npm run migrate`)
+8. Confirm `CRON_SECRET` is set on Vercel so daily crons run (`/api/cron/search-restudy`, `/api/cron/purge-ai-logs`)
+
+### `ai_logs` retention / PII
+
+Every orchestrated chat turn (and AI sub-call) may persist **user message text and planner I/O** to `ai_logs` via the service-role client. Access is service-role only (RLS enabled, no public policies).
+
+**Policy (launch):** retain `ai_logs` for **90 days**. Purge runs daily via Vercel cron `GET /api/cron/purge-ai-logs` (Bearer `CRON_SECRET`), which calls `public.purge_old_ai_logs(90)` (migration `0008`). Do not export raw `ai_logs` to third parties without a legal review.
 
 ## Deployment (Vercel)
 

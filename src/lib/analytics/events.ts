@@ -15,10 +15,12 @@ export type AnalyticsEvent =
   | "chat_reset"
   | "chat_response_received"
   | "recommendation_shown"
+  | "recommendation_retry"
   | "business_viewed"
   | "business_clicked"
   | "auth_started"
   | "auth_completed"
+  | "auth_required_shown"
   | "error_shown";
 
 export type AnalyticsProps = Record<string, unknown>;

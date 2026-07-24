@@ -1,5 +1,10 @@
 import type { PlannerDraft, WorkflowDefinition } from "@/services/planner/types";
 import type { LocationRef } from "@/services/planner/types";
+import { isProductPurchaseAsk } from "@/services/planner/product-intent";
+import { isMusicInstrumentAsk } from "@/services/planner/music-intent";
+import { isExactNicheAsk } from "@/services/planner/exact-niche-guard";
+import { celebrationTitleHint } from "@/services/planner/special-occasion-intent";
+import { detectMealTime } from "@/services/planner/meal-time-intent";
 import {
   defaultCompositionRequest,
   type CompositionRequest,
@@ -60,6 +65,7 @@ export interface CompositionRequestInput {
   entities: PlannerDraft["entities"];
   constraints: PlannerDraft["constraints"];
   locationRef: LocationRef | null;
+  planFacets?: PlannerDraft["planFacets"];
 }
 
 /**
@@ -76,11 +82,121 @@ export function buildCompositionRequest(
     input.intent,
   ].join(" ");
 
+  // Product / buy asks: flat ranked list — never raw Google category vibe sections.
+  if (isProductPurchaseAsk(text)) {
+    rules.push("composition_product_ranked");
+    return {
+      request: {
+        ...defaultCompositionRequest("ranked_list"),
+        titleHint: "Where to buy",
+        maxSections: 1,
+        maxItemsPerSection: 10,
+        sectionHints: [],
+        bucketProfile: undefined,
+      },
+      rules,
+    };
+  }
+
+  if (isMusicInstrumentAsk(text)) {
+    rules.push("composition_music_ranked");
+    return {
+      request: {
+        ...defaultCompositionRequest("ranked_list"),
+        titleHint: "Music & instruments",
+        maxSections: 1,
+        maxItemsPerSection: 10,
+        sectionHints: [],
+        bucketProfile: undefined,
+      },
+      rules,
+    };
+  }
+
+  // Celebration planning — sections come from planner facets when present.
+  const facets = (input.planFacets ?? []).filter(
+    (f) => f.label?.trim() && f.searchQuery?.trim(),
+  );
+  if (input.workflowId === "special_occasion" || facets.length >= 2) {
+    rules.push("composition_plan_facets");
+    return {
+      request: {
+        ...defaultCompositionRequest("grouped_sections"),
+        titleHint: celebrationTitleHint(
+          text,
+          input.goalDescription,
+          input.goalPrimary,
+        ),
+        maxSections: Math.min(6, Math.max(3, facets.length || 4)),
+        maxItemsPerSection: 8,
+        sectionHints: facets.map((f) => ({
+          id: f.id,
+          title: f.label,
+          kind: "list" as const,
+        })),
+        bucketProfile: facets.length >= 1 ? "plan_facets" : "activities",
+        planFacets: facets,
+      },
+      rules,
+    };
+  }
+
+  // Generic exact niche: never "Ideas by vibe" padding.
+  if (isExactNicheAsk(text)) {
+    rules.push("composition_exact_niche_ranked");
+    return {
+      request: {
+        ...defaultCompositionRequest("ranked_list"),
+        titleHint: "Matching options",
+        maxSections: 1,
+        maxItemsPerSection: 10,
+        sectionHints: [],
+        bucketProfile: undefined,
+      },
+      rules,
+    };
+  }
+
   const wantsNear =
     Boolean(input.locationRef) &&
     (input.constraints.distanceMeters != null ||
       Boolean(input.constraints.distanceLabel) ||
       NEAR_RE.test(text));
+
+  const mealTime =
+    detectMealTime(text) ??
+    (input.constraints.preferred.breakfast === true
+      ? "breakfast"
+      : input.constraints.preferred.lunch === true
+        ? "lunch"
+        : input.constraints.preferred.dinner === true
+          ? "dinner"
+          : null);
+
+  // Meal-time asks keep relevance order. Pure distance reorder buries breakfast
+  // cafés under popular dinner spots that happen to be closer to the CBD.
+  if (wantsNear && mealTime) {
+    const mealTitle =
+      mealTime === "breakfast"
+        ? "Breakfast nearby"
+        : mealTime === "lunch"
+          ? "Lunch nearby"
+          : "Dinner nearby";
+    rules.push("composition_meal_ranked_over_nearest");
+    return {
+      request: {
+        ...defaultCompositionRequest("ranked_list"),
+        titleHint: input.locationRef
+          ? `${mealTitle} · ${input.locationRef.label}`
+          : mealTitle,
+        maxSections: 1,
+        maxItemsPerSection: 6,
+        sectionHints: [],
+        bucketProfile: undefined,
+      },
+      rules,
+    };
+  }
 
   if (wantsNear) {
     rules.push("composition_nearest_first");
@@ -104,7 +220,7 @@ export function buildCompositionRequest(
         ...defaultCompositionRequest("comparison"),
         titleHint: "Side-by-side options",
         maxSections: 2,
-        maxItemsPerSection: 3,
+        maxItemsPerSection: 5,
         sectionHints: [
           {
             id: "option_a",
@@ -134,7 +250,7 @@ export function buildCompositionRequest(
         ...defaultCompositionRequest("itinerary"),
         titleHint: "Suggested day plan",
         maxSections: 3,
-        maxItemsPerSection: 2,
+        maxItemsPerSection: 4,
         sectionHints: itineraryHints(),
       },
       rules,
@@ -144,6 +260,23 @@ export function buildCompositionRequest(
   const multiType =
     input.entities.businessTypes.length >= 2 ||
     input.entities.cuisines.length >= 2;
+
+  // Activities: group beaches / adventures / malls — not a flat card dump.
+  // (special_occasion already handled above)
+  if (input.workflowId === "activities") {
+    rules.push("composition_activities_grouped");
+    return {
+      request: {
+        ...defaultCompositionRequest("grouped_sections"),
+        titleHint: "Weekend ideas by vibe",
+        maxSections: 5,
+        maxItemsPerSection: 5,
+        bucketProfile: "activities",
+      },
+      rules,
+    };
+  }
+
   if (input.workflowId === "relocation" || multiType) {
     rules.push(
       input.workflowId === "relocation"
@@ -157,8 +290,8 @@ export function buildCompositionRequest(
           input.workflowId === "relocation"
             ? "Settling-in checklist"
             : "Ideas by vibe",
-        maxSections: 4,
-        maxItemsPerSection: 4,
+        maxSections: 5,
+        maxItemsPerSection: 5,
       },
       rules,
     };
@@ -171,8 +304,9 @@ export function buildCompositionRequest(
       ...defaultCompositionRequest(strategy),
       titleHint:
         strategy === "grouped_sections" ? "Ideas by vibe" : "A few solid options",
-      maxSections: strategy === "grouped_sections" ? 4 : 1,
-      maxItemsPerSection: strategy === "grouped_sections" ? 4 : 12,
+      maxSections: strategy === "grouped_sections" ? 5 : 1,
+      // Flat lists stay modest; grouped discovery can accumulate toward the 25 ceiling.
+      maxItemsPerSection: strategy === "grouped_sections" ? 5 : 12,
     },
     rules,
   };

@@ -15,7 +15,7 @@ export const restaurantsDefinition: WorkflowDefinition = {
       capability: "business_search",
       type: "business_search",
       query: "restaurants and cafes",
-      params: { verticalHint: "restaurants", limit: 18 },
+      params: { verticalHint: "restaurants", limit: 30 },
       priority: 1,
       optional: false,
     },
@@ -24,7 +24,7 @@ export const restaurantsDefinition: WorkflowDefinition = {
     attributeBoost: 0.12,
     typeBoost: 0.12,
     quality: 0.08,
-    limit: 12,
+    limit: 25,
   },
   responseBehaviour: {
     allowExecuteWithoutRequired: false,

@@ -13,6 +13,8 @@ export * from "./workflows/emergency.v1";
 export * from "./workflows/general.v1";
 export * from "./workflows/relocation.v1";
 export * from "./workflows/services.v1";
+export * from "./workflows/special-occasion.v1";
+export * from "./fit-verify.v1";
 export * from "./enrichment.v1";
 
 import { INTENT_PROMPT } from "./intent.v1";
@@ -29,6 +31,8 @@ import { EMERGENCY_PROMPT } from "./workflows/emergency.v1";
 import { GENERAL_PROMPT } from "./workflows/general.v1";
 import { RELOCATION_PROMPT } from "./workflows/relocation.v1";
 import { SERVICES_PROMPT } from "./workflows/services.v1";
+import { SPECIAL_OCCASION_PROMPT } from "./workflows/special-occasion.v1";
+import { FIT_VERIFY_PROMPT } from "./fit-verify.v1";
 import { ENRICHMENT_PROMPT } from "./enrichment.v1";
 
 /** Registry of active prompt versions, for logging and auditing. */
@@ -47,6 +51,8 @@ export const ACTIVE_PROMPTS = {
   general: GENERAL_PROMPT,
   relocation: RELOCATION_PROMPT,
   services: SERVICES_PROMPT,
+  special_occasion: SPECIAL_OCCASION_PROMPT,
+  fit_verify: FIT_VERIFY_PROMPT,
   enrichment: ENRICHMENT_PROMPT,
 } as const;
 

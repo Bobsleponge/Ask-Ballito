@@ -69,6 +69,25 @@ export type NormalizedBusiness = z.infer<typeof normalizedBusinessSchema>;
 export type BusinessPhoto = z.infer<typeof businessPhotoSchema>;
 
 /** Business shape returned to the client UI. */
+export interface BusinessActiveSpecial {
+  id: string;
+  title: string;
+  kind?: string;
+  discountLabel?: string | null;
+  terms?: string | null;
+  ctaUrl?: string | null;
+  imageUrl?: string | null;
+}
+
+export interface BusinessMenuItemResult {
+  id?: string;
+  name: string;
+  description?: string | null;
+  price?: string | null;
+  category?: string | null;
+  imageUrl?: string | null;
+}
+
 export interface BusinessResult {
   id: string;
   name: string;
@@ -87,4 +106,11 @@ export interface BusinessResult {
   similarity?: number;
   /** Deterministic rank score 0–100. */
   score?: number;
+  /** Owner-uploaded branding (preferred over Google photos when set). */
+  logoUrl?: string;
+  heroUrl?: string;
+  /** Currently live owner specials. */
+  activeSpecials?: BusinessActiveSpecial[];
+  /** Owner menu / service options for the detail sheet. */
+  menuItems?: BusinessMenuItemResult[];
 }

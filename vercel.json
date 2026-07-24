@@ -5,6 +5,22 @@
   "functions": {
     "src/app/api/chat/route.ts": {
       "maxDuration": 60
+    },
+    "src/app/api/cron/search-restudy/route.ts": {
+      "maxDuration": 60
+    },
+    "src/app/api/cron/purge-ai-logs/route.ts": {
+      "maxDuration": 60
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/cron/search-restudy",
+      "schedule": "0 4 * * *"
+    },
+    {
+      "path": "/api/cron/purge-ai-logs",
+      "schedule": "0 3 * * *"
+    }
+  ]
 }

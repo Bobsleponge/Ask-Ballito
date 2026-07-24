@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BusinessCard } from "@/components/concierge/business-card";
+import { DirectoryBusinessCards } from "@/components/directory/directory-business-cards";
 import type { VerticalDirectorySection } from "@/services/directory/vertical-directory.service";
 import type { City } from "@/config/cities";
 
@@ -22,10 +22,13 @@ export function VerticalDirectory({
         </h1>
         <p className="mt-2 text-muted-foreground">
           Top businesses by industry, pulled from Google Places. Ask the{" "}
-          <Link href={`/${city.slug}`} className="font-medium text-primary hover:underline">
+          <Link
+            href={`/${city.slug}`}
+            className="font-medium text-primary hover:underline"
+          >
             concierge
           </Link>{" "}
-          for tailored recommendations.
+          for tailored recommendations. Tap a card to open the full listing.
         </p>
       </div>
 
@@ -37,7 +40,11 @@ export function VerticalDirectory({
             <code className="rounded bg-muted px-1.5 py-0.5 text-xs">
               npm run ingest -- {city.slug}
             </code>{" "}
-            with a configured <code className="rounded bg-muted px-1.5 py-0.5 text-xs">GOOGLE_PLACES_API_KEY</code>.
+            with a configured{" "}
+            <code className="rounded bg-muted px-1.5 py-0.5 text-xs">
+              GOOGLE_PLACES_API_KEY
+            </code>
+            .
           </p>
         </div>
       ) : (
@@ -72,15 +79,10 @@ export function VerticalDirectory({
                     {vertical.description} · Top {businesses.length}
                   </p>
                 </div>
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {businesses.map((business, index) => (
-                    <BusinessCard
-                      key={business.id}
-                      business={business}
-                      index={index}
-                    />
-                  ))}
-                </div>
+                <DirectoryBusinessCards
+                  citySlug={city.slug}
+                  businesses={businesses}
+                />
               </section>
             ))}
           </div>

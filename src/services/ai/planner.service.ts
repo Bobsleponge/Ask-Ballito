@@ -9,7 +9,7 @@ import {
   FALLBACK_PLAN,
   type PlannerResult,
 } from "@/lib/ai/prompts/planner.v1";
-import { wrapUserContent } from "@/lib/ai/safety";
+import { wrapUserContent, mapHistoryToModelTurns } from "@/lib/ai/safety";
 import type { City } from "@/config/cities";
 import type { ChatMessage } from "@/lib/schemas/chat";
 
@@ -32,7 +32,7 @@ export class PlannerService {
 
     const input = [
       { role: "system" as const, content: buildPlannerSystem(city.name) },
-      ...history.slice(-6).map((m) => ({ role: m.role, content: m.content })),
+      ...mapHistoryToModelTurns(history.slice(-6)),
       { role: "user" as const, content: wrapUserContent(message) },
     ];
 

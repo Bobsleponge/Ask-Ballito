@@ -3,6 +3,8 @@
  * content before it reaches the model.
  */
 
+import type { ChatMessage } from "@/lib/schemas/chat";
+
 const MAX_INPUT_LENGTH = 2000;
 
 const INJECTION_PATTERNS: RegExp[] = [
@@ -54,4 +56,65 @@ export function sanitizeUserInput(raw: string): SanitizedInput {
  */
 export function wrapUserContent(content: string): string {
   return `<<<USER_MESSAGE\n${content}\nUSER_MESSAGE>>>`;
+}
+
+/** Delimit prior assistant text so forged history cannot act as trusted output. */
+export function wrapAssistantContent(content: string): string {
+  return `<<<PRIOR_ASSISTANT\n${content}\nPRIOR_ASSISTANT>>>`;
+}
+
+/**
+ * Sanitize client history for sticky/context extraction (unwrapped text).
+ * Drops turns that fail injection checks.
+ */
+export function sanitizeHistoryForContext(
+  history: ChatMessage[],
+): ChatMessage[] {
+  const out: ChatMessage[] = [];
+  for (const m of history) {
+    if (m.role !== "user" && m.role !== "assistant") continue;
+    const clean = sanitizeUserInput(m.content);
+    if (clean.flagged || !clean.sanitized) continue;
+    out.push({ role: m.role, content: clean.sanitized });
+  }
+  return out;
+}
+
+/**
+ * History ready for model APIs: sanitized, injection-flagged turns dropped,
+ * user/assistant content delimited as untrusted data.
+ */
+export function prepareHistoryForModel(history: ChatMessage[]): ChatMessage[] {
+  const out: ChatMessage[] = [];
+  for (const m of history) {
+    if (m.role !== "user" && m.role !== "assistant") continue;
+    const clean = sanitizeUserInput(m.content);
+    if (clean.flagged || !clean.sanitized) continue;
+    out.push({
+      role: m.role,
+      content:
+        m.role === "user"
+          ? wrapUserContent(clean.sanitized)
+          : wrapAssistantContent(clean.sanitized),
+    });
+  }
+  return out;
+}
+
+/**
+ * Map already-sanitized context history into delimited model turns
+ * (used by planner/extractor when context history is unwrapped text).
+ */
+export function mapHistoryToModelTurns(
+  history: ChatMessage[],
+): Array<{ role: "user" | "assistant"; content: string }> {
+  const out: Array<{ role: "user" | "assistant"; content: string }> = [];
+  for (const m of history) {
+    if (m.role === "user") {
+      out.push({ role: "user", content: wrapUserContent(m.content) });
+    } else if (m.role === "assistant") {
+      out.push({ role: "assistant", content: wrapAssistantContent(m.content) });
+    }
+  }
+  return out;
 }
