@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
+    "setup:local": "node scripts/setup-local.mjs",
     "migrate": "tsx --env-file=.env.local scripts/migrate.ts",
     "ingest": "tsx --env-file=.env.local --require ./scripts/shim-server-only.cjs scripts/ingest.ts",
     "enrich": "tsx --env-file=.env.local --require ./scripts/shim-server-only.cjs scripts/enrich.ts",
