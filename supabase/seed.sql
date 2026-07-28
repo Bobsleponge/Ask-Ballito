@@ -1,0 +1,3 @@
+-- Optional local seed data applied after migrations on `supabase db reset`.
+-- City registry and schema live in migrations; leave empty unless you need
+-- deterministic fixtures for local QA.
