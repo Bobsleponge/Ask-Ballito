@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { loadTopAiUsage } from "@/lib/admin/ai-usage-actions";
+import { loadRoutingMetrics } from "@/lib/admin/routing-metrics";
+import { getRankWeightsFile } from "@/services/ai/rank-config";
 import { AbuseSuspendButton } from "@/components/admin/abuse-suspend-button";
 import {
   Table,
@@ -19,8 +21,17 @@ function formatUsd(n: number): string {
   return `$${n.toFixed(4)}`;
 }
 
+function formatPct(n: number): string {
+  return `${(n * 100).toFixed(1)}%`;
+}
+
 export default async function AdminAiUsagePage() {
-  const { rows, totalEstimatedCostUsd, totalCalls } = await loadTopAiUsage(25);
+  const [{ rows, totalEstimatedCostUsd, totalCalls }, routing, rankWeights] =
+    await Promise.all([
+      loadTopAiUsage(25),
+      loadRoutingMetrics(),
+      Promise.resolve(getRankWeightsFile()),
+    ]);
 
   return (
     <div className="space-y-8">
@@ -45,6 +56,71 @@ export default async function AdminAiUsagePage() {
           · {totalCalls.toLocaleString()} calls
         </p>
       </div>
+
+      <section className="space-y-3">
+        <h2 className="text-xl font-semibold tracking-tight">
+          Intelligence routing (7d)
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          From ConversationOrchestrator telemetry. Targets: ≥70% no-LLM, median
+          deterministic under 800ms.
+        </p>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <Metric label="Turns" value={routing.totalTurns.toLocaleString()} />
+          <Metric
+            label="Cache hit rate"
+            value={formatPct(routing.cacheHitRate)}
+          />
+          <Metric
+            label="Knowledge resolve %"
+            value={formatPct(routing.knowledgeResolutionRate)}
+          />
+          <Metric
+            label="Search resolve %"
+            value={formatPct(routing.searchResolutionRate)}
+          />
+          <Metric
+            label="FACT/SQL resolve %"
+            value={formatPct(routing.factResolutionRate)}
+          />
+          <Metric label="LLM usage %" value={formatPct(routing.llmUsageRate)} />
+          <Metric
+            label="Avg latency"
+            value={`${Math.round(routing.avgLatencyMs)} ms`}
+          />
+          <Metric
+            label="Avg resolver"
+            value={`${Math.round(routing.avgKnowledgeResolverMs)} ms`}
+          />
+          <Metric label="Extract rate" value={formatPct(routing.extractRate)} />
+          <Metric label="Narrate rate" value={formatPct(routing.narrateRate)} />
+          <Metric
+            label="Hybrid/SQL rate"
+            value={formatPct(routing.sqlOrHybridRate)}
+          />
+          <Metric
+            label="Cost / request"
+            value={formatUsd(routing.costPerRequest)}
+          />
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          <Distribution
+            title="Route distribution"
+            data={routing.routeDistribution}
+          />
+          <Distribution
+            title="Query class distribution"
+            data={routing.queryClassDistribution}
+          />
+        </div>
+
+        <p className="text-xs text-muted-foreground">
+          Active rank config: <code>{rankWeights.version}</code> — similarity{" "}
+          {rankWeights.weights.similarity}, keyword{" "}
+          {rankWeights.weights.keywordBoost}
+        </p>
+      </section>
 
       {rows.length === 0 ? (
         <p className="text-sm text-muted-foreground">
@@ -99,6 +175,44 @@ export default async function AdminAiUsagePage() {
             ))}
           </TableBody>
         </Table>
+      )}
+    </div>
+  );
+}
+
+function Metric(props: { label: string; value: string }) {
+  return (
+    <div className="rounded-lg border border-border/60 px-4 py-3">
+      <p className="text-xs text-muted-foreground">{props.label}</p>
+      <p className="text-lg font-semibold tabular-nums tracking-tight">
+        {props.value}
+      </p>
+    </div>
+  );
+}
+
+function Distribution(props: {
+  title: string;
+  data: Record<string, number>;
+}) {
+  const entries = Object.entries(props.data).sort((a, b) => b[1] - a[1]);
+  const total = entries.reduce((s, [, n]) => s + n, 0) || 1;
+  return (
+    <div className="space-y-2">
+      <h3 className="text-sm font-medium">{props.title}</h3>
+      {entries.length === 0 ? (
+        <p className="text-sm text-muted-foreground">No routing data yet.</p>
+      ) : (
+        <ul className="space-y-1 text-sm">
+          {entries.map(([key, n]) => (
+            <li key={key} className="flex justify-between gap-4">
+              <span className="font-mono text-xs">{key}</span>
+              <span className="tabular-nums text-muted-foreground">
+                {n} ({((n / total) * 100).toFixed(0)}%)
+              </span>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );

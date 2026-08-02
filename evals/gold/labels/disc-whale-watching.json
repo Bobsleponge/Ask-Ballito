@@ -1,0 +1,11 @@
+{
+  "questionId": "disc-whale-watching",
+  "expectTop1Ids": [
+    "5b6c7e18-c31a-4bba-912e-f0c34b31b024"
+  ],
+  "expectTop3Ids": [
+    "5b6c7e18-c31a-4bba-912e-f0c34b31b024",
+    "3ecbaa5e-b054-40ba-83f0-a16761c7ed6e"
+  ],
+  "notes": "curated-from-candidates v1; vertical=attractions; names=Dolphin Coast Tourist Services | Dolphin Coast Adventures"
+}

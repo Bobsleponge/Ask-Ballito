@@ -94,6 +94,7 @@ export interface Database {
           lng: number | null;
           photos: Json;
           metadata: Json;
+          field_meta: Json;
           embedding: string | null;
           embedding_text: string | null;
           search_ingested_at: string | null;
@@ -121,6 +122,7 @@ export interface Database {
           lng?: number | null;
           photos?: Json;
           metadata?: Json;
+          field_meta?: Json;
           embedding?: string | null;
           embedding_text?: string | null;
           search_ingested_at?: string | null;
@@ -516,6 +518,146 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["city_events"]["Insert"]>;
         Relationships: [];
       };
+      knowledge_cards: {
+        Row: {
+          id: string;
+          city_slug: string;
+          slug: string;
+          title: string;
+          query_class: string;
+          match_patterns: string[];
+          search_queries: string[];
+          business_ids: string[];
+          body_md: string;
+          rule: Json;
+          members: Json;
+          render: Json;
+          content_hash: string | null;
+          version: number;
+          refreshed_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          city_slug: string;
+          slug: string;
+          title: string;
+          query_class?: string;
+          match_patterns?: string[];
+          search_queries?: string[];
+          business_ids?: string[];
+          body_md?: string;
+          rule?: Json;
+          members?: Json;
+          render?: Json;
+          content_hash?: string | null;
+          version?: number;
+          refreshed_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["knowledge_cards"]["Insert"]>;
+        Relationships: [];
+      };
+      taxonomy_dimensions: {
+        Row: { id: string; slug: string; label: string; multi_value: boolean; applies_to: string[]; created_at: string };
+        Insert: { id?: string; slug: string; label: string; multi_value?: boolean; applies_to?: string[]; created_at?: string };
+        Update: Partial<Database["public"]["Tables"]["taxonomy_dimensions"]["Insert"]>;
+        Relationships: [];
+      };
+      taxonomy_terms: {
+        Row: { id: string; dimension_id: string; slug: string; label: string; parent_id: string | null; synonyms: string[]; created_at: string };
+        Insert: { id?: string; dimension_id: string; slug: string; label: string; parent_id?: string | null; synonyms?: string[]; created_at?: string };
+        Update: Partial<Database["public"]["Tables"]["taxonomy_terms"]["Insert"]>;
+        Relationships: [];
+      };
+      listing_terms: {
+        Row: { id: string; listing_kind: string; listing_id: string; term_id: string; confidence: number; source: string; verified_at: string | null; verification_method: string; created_at: string };
+        Insert: { id?: string; listing_kind: string; listing_id: string; term_id: string; confidence?: number; source?: string; verified_at?: string | null; verification_method?: string; created_at?: string };
+        Update: Partial<Database["public"]["Tables"]["listing_terms"]["Insert"]>;
+        Relationships: [];
+      };
+      places: {
+        Row: { id: string; city_slug: string; place_kind: string; slug: string; title: string; summary: string | null; lat: number | null; lng: number | null; props: Json; field_meta: Json; popularity_score: number; status: string; embedding: string | null; embedding_text: string | null; created_at: string; updated_at: string };
+        Insert: { id?: string; city_slug: string; place_kind: string; slug: string; title: string; summary?: string | null; lat?: number | null; lng?: number | null; props?: Json; field_meta?: Json; popularity_score?: number; status?: string; embedding?: string | null; embedding_text?: string | null; created_at?: string; updated_at?: string };
+        Update: Partial<Database["public"]["Tables"]["places"]["Insert"]>;
+        Relationships: [];
+      };
+      city_faqs: {
+        Row: { id: string; city_slug: string; slug: string; match_patterns: string[]; question: string; answer: string; status: string; created_at: string; updated_at: string };
+        Insert: { id?: string; city_slug: string; slug: string; match_patterns?: string[]; question: string; answer: string; status?: string; created_at?: string; updated_at?: string };
+        Update: Partial<Database["public"]["Tables"]["city_faqs"]["Insert"]>;
+        Relationships: [];
+      };
+      listing_relations: {
+        Row: { id: string; city_slug: string; subject_kind: string; subject_id: string; predicate: string; object_kind: string; object_id: string; confidence: number; source: string; verified_at: string | null; verification_method: string; created_at: string };
+        Insert: { id?: string; city_slug: string; subject_kind: string; subject_id: string; predicate: string; object_kind: string; object_id: string; confidence?: number; source?: string; verified_at?: string | null; verification_method?: string; created_at?: string };
+        Update: Partial<Database["public"]["Tables"]["listing_relations"]["Insert"]>;
+        Relationships: [];
+      };
+      eval_runs: {
+        Row: {
+          id: string;
+          environment: string;
+          git_sha: string | null;
+          rank_config_version: string | null;
+          started_at: string;
+          finished_at: string | null;
+          question_count: number;
+          summary: Json;
+          notes: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          environment?: string;
+          git_sha?: string | null;
+          rank_config_version?: string | null;
+          started_at?: string;
+          finished_at?: string | null;
+          question_count?: number;
+          summary?: Json;
+          notes?: string | null;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["eval_runs"]["Insert"]>;
+        Relationships: [];
+      };
+      eval_results: {
+        Row: {
+          id: string;
+          run_id: string;
+          question_id: string;
+          query: string;
+          intent_expected: string | null;
+          intent_detected: string | null;
+          pass_intent: boolean | null;
+          pass_top1: boolean | null;
+          pass_top3: boolean | null;
+          pass_top5: boolean | null;
+          metrics: Json;
+          suggestions: Json;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          run_id: string;
+          question_id: string;
+          query: string;
+          intent_expected?: string | null;
+          intent_detected?: string | null;
+          pass_intent?: boolean | null;
+          pass_top1?: boolean | null;
+          pass_top3?: boolean | null;
+          pass_top5?: boolean | null;
+          metrics?: Json;
+          suggestions?: Json;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["eval_results"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<never, never>;
     Functions: {
@@ -543,6 +685,41 @@ export interface Database {
           photos: Json;
           metadata: Json;
           similarity: number;
+        }[];
+      };
+      hybrid_match_businesses: {
+        Args: {
+          p_city_slug: string;
+          query_embedding: string;
+          query_text: string;
+          match_count?: number;
+          similarity_threshold?: number;
+          p_category?: string | null;
+          p_lat?: number | null;
+          p_lng?: number | null;
+          p_radius_meters?: number | null;
+          p_min_rating?: number | null;
+          p_min_rating_count?: number | null;
+          p_verified_only?: boolean;
+        };
+        Returns: {
+          id: string;
+          name: string;
+          category: string | null;
+          description: string | null;
+          address: string | null;
+          website: string | null;
+          phone: string | null;
+          rating: number | null;
+          rating_count: number | null;
+          price_level: number | null;
+          lat: number | null;
+          lng: number | null;
+          photos: Json;
+          metadata: Json;
+          similarity: number;
+          fts_rank: number;
+          fused_score: number;
         }[];
       };
       purge_old_ai_logs: {

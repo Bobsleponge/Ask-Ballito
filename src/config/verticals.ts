@@ -538,8 +538,8 @@ export const VERTICALS: readonly Vertical[] = [
   {
     slug: "auto-parts",
     label: "Auto Parts & Glass",
-    description: "Auto parts, spares, and windscreens.",
-    query: "auto parts spares windscreen and car glass",
+    description: "Auto parts, spares, car batteries, and windscreens.",
+    query: "auto parts spares car batteries windscreen and car glass",
     topN: LOCAL_FILL_TOP,
   },
   {

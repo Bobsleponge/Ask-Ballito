@@ -1,0 +1,1707 @@
+[
+  {
+    "id": "biz-food-0",
+    "query": "Best sushi in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true,
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-food-1",
+    "query": "Best pizza in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true,
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-food-2",
+    "query": "Best steak in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true,
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-food-3",
+    "query": "Best seafood in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true,
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-food-4",
+    "query": "Best thai in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true,
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-food-5",
+    "query": "Best indian in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true,
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-food-6",
+    "query": "Best italian in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true,
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-food-7",
+    "query": "Best burgers in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true,
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-food-8",
+    "query": "Best tapas in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true,
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-food-9",
+    "query": "Best brunch in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true,
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-food-10",
+    "query": "Best lunch in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true,
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-food-11",
+    "query": "Best dinner in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true,
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-food-12",
+    "query": "Best fine dining in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true,
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-food-13",
+    "query": "Best takeaways in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true,
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-food-14",
+    "query": "Best bakery in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true,
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-trade-0",
+    "query": "plumber in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true,
+    "expectVertical": "services"
+  },
+  {
+    "id": "biz-trade-1",
+    "query": "electrician in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true,
+    "expectVertical": "services"
+  },
+  {
+    "id": "biz-trade-2",
+    "query": "locksmith in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true,
+    "expectVertical": "services"
+  },
+  {
+    "id": "biz-trade-3",
+    "query": "handyman in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true,
+    "expectVertical": "services"
+  },
+  {
+    "id": "biz-trade-4",
+    "query": "tow truck in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true,
+    "expectVertical": "services"
+  },
+  {
+    "id": "biz-beauty-0",
+    "query": "gel nails Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "biz-beauty-1",
+    "query": "balayage Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "biz-beauty-2",
+    "query": "haircut Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "biz-beauty-3",
+    "query": "barber Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "biz-beauty-4",
+    "query": "spa massage Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "biz-beauty-5",
+    "query": "beauty salon Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "biz-health-0",
+    "query": "doctor open now",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "biz-health-1",
+    "query": "GP Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "biz-health-2",
+    "query": "pharmacy near me",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "biz-health-3",
+    "query": "dentist Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "biz-health-4",
+    "query": "emergency vet",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "biz-health-5",
+    "query": "physio Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "biz-product-0",
+    "query": "gaming mouse",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "biz-product-1",
+    "query": "buy laptop Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "biz-product-2",
+    "query": "iphone charger",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "biz-product-3",
+    "query": "guitar restring",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "disc-0",
+    "query": "best breakfast",
+    "city": "ballito",
+    "expectClass": "DISCOVERY",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "disc-1",
+    "query": "best beaches",
+    "city": "ballito",
+    "expectClass": "DISCOVERY",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "disc-2",
+    "query": "family activities",
+    "city": "ballito",
+    "expectClass": "DISCOVERY",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "disc-3",
+    "query": "coffee shops",
+    "city": "ballito",
+    "expectClass": "DISCOVERY",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "disc-4",
+    "query": "rainy day activities",
+    "city": "ballito",
+    "expectClass": "DISCOVERY",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "disc-5",
+    "query": "romantic restaurants",
+    "city": "ballito",
+    "expectClass": "DISCOVERY",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "disc-6",
+    "query": "dog friendly venues",
+    "city": "ballito",
+    "expectClass": "DISCOVERY",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "disc-7",
+    "query": "best coffee near me",
+    "city": "ballito",
+    "expectClass": "DISCOVERY",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "disc-8",
+    "query": "kid-friendly activities in Ballito",
+    "city": "ballito",
+    "expectClass": "DISCOVERY",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "disc-9",
+    "query": "Best breakfast near me in Ballito",
+    "city": "ballito",
+    "expectClass": "DISCOVERY",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "place-0",
+    "query": "hotel with sea view",
+    "city": "ballito",
+    "expectClass": "PLACE_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "place-1",
+    "query": "accommodation Ballito",
+    "city": "ballito",
+    "expectClass": "PLACE_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "place-2",
+    "query": "Airbnb Ballito",
+    "city": "ballito",
+    "expectClass": "PLACE_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "place-3",
+    "query": "guest house Salt Rock",
+    "city": "ballito",
+    "expectClass": "PLACE_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "place-4",
+    "query": "property for sale in Ballito",
+    "city": "ballito",
+    "expectClass": "PLACE_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "place-5",
+    "query": "estate agents Ballito",
+    "city": "ballito",
+    "expectClass": "PLACE_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "event-0",
+    "query": "events this weekend",
+    "city": "ballito",
+    "expectClass": "EVENT_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "event-1",
+    "query": "what is happening tonight",
+    "city": "ballito",
+    "expectClass": "EVENT_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "event-2",
+    "query": "live music this weekend",
+    "city": "ballito",
+    "expectClass": "EVENT_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "event-3",
+    "query": "markets in Ballito",
+    "city": "ballito",
+    "expectClass": "EVENT_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "live-0",
+    "query": "weather today",
+    "city": "ballito",
+    "expectClass": "LIVE_INFORMATION",
+    "expectSkipExtractor": true
+  },
+  {
+    "id": "live-1",
+    "query": "will it rain",
+    "city": "ballito",
+    "expectClass": "LIVE_INFORMATION",
+    "expectSkipExtractor": true
+  },
+  {
+    "id": "live-2",
+    "query": "forecast this weekend",
+    "city": "ballito",
+    "expectClass": "LIVE_INFORMATION",
+    "expectSkipExtractor": true
+  },
+  {
+    "id": "live-3",
+    "query": "what is open now",
+    "city": "ballito",
+    "expectClass": "LIVE_INFORMATION",
+    "expectSkipExtractor": true
+  },
+  {
+    "id": "fact-0",
+    "query": "what is ask ballito",
+    "city": "ballito",
+    "expectClass": "FACT",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "fact-1",
+    "query": "how does this work",
+    "city": "ballito",
+    "expectClass": "FACT",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "fact-2",
+    "query": "who are you",
+    "city": "ballito",
+    "expectClass": "FACT",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "fact-3",
+    "query": "what can you help with",
+    "city": "ballito",
+    "expectClass": "FACT",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "plan-0",
+    "query": "help me plan a proposal",
+    "city": "ballito",
+    "expectClass": "PLANNING",
+    "expectSkipExtractor": false
+  },
+  {
+    "id": "plan-1",
+    "query": "plan a weekend itinerary",
+    "city": "ballito",
+    "expectClass": "PLANNING",
+    "expectSkipExtractor": false
+  },
+  {
+    "id": "plan-2",
+    "query": "plan my birthday party",
+    "city": "ballito",
+    "expectClass": "PLANNING",
+    "expectSkipExtractor": false
+  },
+  {
+    "id": "plan-3",
+    "query": "things to do this weekend",
+    "city": "ballito",
+    "expectClass": "PLANNING",
+    "expectSkipExtractor": false
+  },
+  {
+    "id": "cmp-0",
+    "query": "compare sushi restaurants",
+    "city": "ballito",
+    "expectClass": "COMPARISON",
+    "expectSkipExtractor": false
+  },
+  {
+    "id": "cmp-1",
+    "query": "which is better Willard or Compensation beach",
+    "city": "ballito",
+    "expectClass": "COMPARISON",
+    "expectSkipExtractor": false
+  },
+  {
+    "id": "cmp-2",
+    "query": "pros and cons of Zimbali",
+    "city": "ballito",
+    "expectClass": "COMPARISON",
+    "expectSkipExtractor": false
+  },
+  {
+    "id": "conv-0",
+    "query": "hi",
+    "city": "ballito",
+    "expectClass": "CONVERSATION",
+    "expectSkipExtractor": false
+  },
+  {
+    "id": "conv-1",
+    "query": "hello",
+    "city": "ballito",
+    "expectClass": "CONVERSATION",
+    "expectSkipExtractor": false
+  },
+  {
+    "id": "conv-2",
+    "query": "thanks",
+    "city": "ballito",
+    "expectClass": "CONVERSATION",
+    "expectSkipExtractor": false
+  },
+  {
+    "id": "conv-3",
+    "query": "ok",
+    "city": "ballito",
+    "expectClass": "CONVERSATION",
+    "expectSkipExtractor": false
+  },
+  {
+    "id": "x-food-0",
+    "query": "coffee near Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-1",
+    "query": "coffee near Salt Rock",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-2",
+    "query": "coffee near Zimbali",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-3",
+    "query": "coffee near Ballito Junction",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-4",
+    "query": "coffee near Willard Beach",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-5",
+    "query": "pizza near Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-6",
+    "query": "pizza near Salt Rock",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-7",
+    "query": "pizza near Zimbali",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-8",
+    "query": "pizza near Ballito Junction",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-9",
+    "query": "pizza near Willard Beach",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-10",
+    "query": "sushi near Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-11",
+    "query": "sushi near Salt Rock",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-12",
+    "query": "sushi near Zimbali",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-13",
+    "query": "sushi near Ballito Junction",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-14",
+    "query": "sushi near Willard Beach",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-15",
+    "query": "breakfast near Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-16",
+    "query": "breakfast near Salt Rock",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-17",
+    "query": "breakfast near Zimbali",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-18",
+    "query": "breakfast near Ballito Junction",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-19",
+    "query": "breakfast near Willard Beach",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-20",
+    "query": "seafood near Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-21",
+    "query": "seafood near Salt Rock",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-22",
+    "query": "seafood near Zimbali",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-23",
+    "query": "seafood near Ballito Junction",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-24",
+    "query": "seafood near Willard Beach",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-25",
+    "query": "burgers near Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-26",
+    "query": "burgers near Salt Rock",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-27",
+    "query": "burgers near Zimbali",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-28",
+    "query": "burgers near Ballito Junction",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-29",
+    "query": "burgers near Willard Beach",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-30",
+    "query": "thai near Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-31",
+    "query": "thai near Salt Rock",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-32",
+    "query": "thai near Zimbali",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-33",
+    "query": "thai near Ballito Junction",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-34",
+    "query": "thai near Willard Beach",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-35",
+    "query": "steak near Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-36",
+    "query": "steak near Salt Rock",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-37",
+    "query": "steak near Zimbali",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-38",
+    "query": "steak near Ballito Junction",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-39",
+    "query": "steak near Willard Beach",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-40",
+    "query": "wine bar near Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-41",
+    "query": "wine bar near Salt Rock",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-42",
+    "query": "wine bar near Zimbali",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-43",
+    "query": "wine bar near Ballito Junction",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-44",
+    "query": "wine bar near Willard Beach",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-45",
+    "query": "cafe near Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-46",
+    "query": "cafe near Salt Rock",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-47",
+    "query": "cafe near Zimbali",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-48",
+    "query": "cafe near Ballito Junction",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-food-49",
+    "query": "cafe near Willard Beach",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-svc-50",
+    "query": "plumber in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-svc-51",
+    "query": "plumber in Salt Rock",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-svc-52",
+    "query": "electrician in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-svc-53",
+    "query": "electrician in Salt Rock",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-svc-54",
+    "query": "pharmacy in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-svc-55",
+    "query": "pharmacy in Salt Rock",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-svc-56",
+    "query": "vet in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-svc-57",
+    "query": "vet in Salt Rock",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-svc-58",
+    "query": "hotel in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-svc-59",
+    "query": "hotel in Salt Rock",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-svc-60",
+    "query": "gym in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-svc-61",
+    "query": "gym in Salt Rock",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-svc-62",
+    "query": "yoga in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-svc-63",
+    "query": "yoga in Salt Rock",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-svc-64",
+    "query": "surf lesson in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-svc-65",
+    "query": "surf lesson in Salt Rock",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-svc-66",
+    "query": "nail salon in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-svc-67",
+    "query": "nail salon in Salt Rock",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-svc-68",
+    "query": "hair salon in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-svc-69",
+    "query": "hair salon in Salt Rock",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "x-misc-70",
+    "query": "family dinner tonight",
+    "city": "ballito",
+    "expectSkipExtractor": true
+  },
+  {
+    "id": "x-misc-71",
+    "query": "sunset drinks with a view",
+    "city": "ballito",
+    "expectSkipExtractor": true
+  },
+  {
+    "id": "x-misc-72",
+    "query": "outdoor activities this weekend",
+    "city": "ballito",
+    "expectSkipExtractor": true
+  },
+  {
+    "id": "x-misc-73",
+    "query": "indoor activities when it rains",
+    "city": "ballito",
+    "expectSkipExtractor": true
+  },
+  {
+    "id": "x-misc-74",
+    "query": "pet friendly cafe",
+    "city": "ballito",
+    "expectSkipExtractor": true
+  },
+  {
+    "id": "x-misc-75",
+    "query": "romantic dinner Ballito",
+    "city": "ballito",
+    "expectSkipExtractor": true
+  },
+  {
+    "id": "x-misc-76",
+    "query": "best brunch Ballito",
+    "city": "ballito",
+    "expectSkipExtractor": true
+  },
+  {
+    "id": "x-misc-77",
+    "query": "nearest pharmacy in Ballito",
+    "city": "ballito",
+    "expectSkipExtractor": true
+  },
+  {
+    "id": "x-misc-78",
+    "query": "Fun things to do this weekend in Ballito",
+    "city": "ballito",
+    "expectSkipExtractor": true
+  },
+  {
+    "id": "x-misc-79",
+    "query": "Best coffee shops to work from in Ballito",
+    "city": "ballito",
+    "expectSkipExtractor": true
+  },
+  {
+    "id": "more-food-155",
+    "query": "Best ramen in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-food-156",
+    "query": "Best poke in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-food-157",
+    "query": "Best vegan in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-food-158",
+    "query": "Best gluten free in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-food-159",
+    "query": "Best halal in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-food-160",
+    "query": "Best kosher in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-food-161",
+    "query": "Best wings in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-food-162",
+    "query": "Best ribs in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-food-163",
+    "query": "Best tacos in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-food-164",
+    "query": "Best gelato in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-food-165",
+    "query": "Best icecream in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-food-166",
+    "query": "Best smoothie in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-food-167",
+    "query": "Best juice bar in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-food-168",
+    "query": "Best craft beer in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-food-169",
+    "query": "Best cocktail bar in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-food-170",
+    "query": "Best rooftop in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-food-171",
+    "query": "Best shisa nyama in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-food-172",
+    "query": "Best braai in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-food-173",
+    "query": "Best bunny chow in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-food-174",
+    "query": "Best peri peri in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-act-175",
+    "query": "surf Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-act-176",
+    "query": "paddleboard Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-act-177",
+    "query": "kayak Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-act-178",
+    "query": "golf Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-act-179",
+    "query": "padel Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-act-180",
+    "query": "tennis Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-act-181",
+    "query": "hiking Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-act-182",
+    "query": "cycling Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-act-183",
+    "query": "boat cruise Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-act-184",
+    "query": "whale watching Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-act-185",
+    "query": "horse riding Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-act-186",
+    "query": "trampoline Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-act-187",
+    "query": "escape room Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-act-188",
+    "query": "bowling Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-act-189",
+    "query": "cinema Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-act-190",
+    "query": "shopping mall Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-act-191",
+    "query": "spa day Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-act-192",
+    "query": "sunset cruise Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-act-193",
+    "query": "fishing Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-act-194",
+    "query": "diving Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-svc-195",
+    "query": "car wash in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-svc-196",
+    "query": "tyre fitment in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-svc-197",
+    "query": "panel beater in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-svc-198",
+    "query": "geyser repair in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-svc-199",
+    "query": "gate motor in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-svc-200",
+    "query": "alarm technician in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-svc-201",
+    "query": "cleaning service in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-svc-202",
+    "query": "laundry in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-svc-203",
+    "query": "dry cleaning in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-svc-204",
+    "query": "pet grooming in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-svc-205",
+    "query": "dog walker in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-svc-206",
+    "query": "photographer in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-svc-207",
+    "query": "florist in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-svc-208",
+    "query": "catering in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-svc-209",
+    "query": "dj in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-svc-210",
+    "query": "wedding planner in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-svc-211",
+    "query": "removals in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-svc-212",
+    "query": "storage in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-svc-213",
+    "query": "courier in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  },
+  {
+    "id": "more-svc-214",
+    "query": "printing in Ballito",
+    "city": "ballito",
+    "expectClass": "BUSINESS_SEARCH",
+    "expectSkipExtractor": true,
+    "expectDeterministicNarration": true
+  }
+]

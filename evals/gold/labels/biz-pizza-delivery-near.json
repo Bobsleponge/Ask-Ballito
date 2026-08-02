@@ -1,0 +1,10 @@
+{
+  "questionId": "biz-pizza-delivery-near",
+  "expectTop1Ids": [
+    "ba4aedcd-99c6-4e65-94df-f0c682236a55"
+  ],
+  "expectTop3Ids": [
+    "ba4aedcd-99c6-4e65-94df-f0c682236a55"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Mochachos Salt Rock"
+}

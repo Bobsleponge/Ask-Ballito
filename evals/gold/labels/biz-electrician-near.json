@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-electrician-near",
+  "expectTop1Ids": [
+    "194a0850-ff3c-4812-8c52-7b512172539b"
+  ],
+  "expectTop3Ids": [
+    "194a0850-ff3c-4812-8c52-7b512172539b",
+    "0cfb4d8c-a611-46f1-8e04-93ee7b0049e9",
+    "3e64f58c-3aec-4352-a828-7e02662ce2d6"
+  ],
+  "notes": "curated-from-candidates v1; vertical=electrical; names=Develop Direct Electrical | Ohms Electrical | Power Trip Electrical"
+}

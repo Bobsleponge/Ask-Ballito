@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-physiotherapist",
+  "expectTop1Ids": [
+    "b99f5962-9905-440c-963f-1549b1b33fff"
+  ],
+  "expectTop3Ids": [
+    "b99f5962-9905-440c-963f-1549b1b33fff",
+    "4b27f282-a5b5-4f13-9fcb-0bafe35e1c63",
+    "453f1afe-508e-4f58-b9a7-0cf567dac4e7"
+  ],
+  "notes": "curated-from-candidates v1; vertical=physio; names=BALLITO PHYSIOTHERAPIST | Health Matters | KPSMC PHYSIOTHERAPY - BALLITO VIRGIN ACTIVE branch"
+}

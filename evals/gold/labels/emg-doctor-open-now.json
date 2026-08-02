@@ -1,0 +1,12 @@
+{
+  "questionId": "emg-doctor-open-now",
+  "expectTop1Ids": [
+    "b21851b9-4a84-4a92-a2cc-2b2036ffac86"
+  ],
+  "expectTop3Ids": [
+    "b21851b9-4a84-4a92-a2cc-2b2036ffac86",
+    "0e365844-f76a-4e60-be69-da72ac4a4dd4",
+    "f00b0f0a-2bd4-4ab9-96af-d9780b2daa3c"
+  ],
+  "notes": "curated-from-candidates v1; vertical=doctors; names=Ballito Medical Centre | Arch Dentistry Ballito | Village Health Medical Centre"
+}

@@ -16,7 +16,8 @@ export type DiscoverIconId =
   | "briefcase"
   | "cloud"
   | "bookmark"
-  | "bell";
+  | "bell"
+  | "store";
 
 export interface SuggestionCard {
   id: string;
@@ -152,13 +153,7 @@ export interface FutureNavItem {
 }
 
 export const FUTURE_NAV_ITEMS: readonly FutureNavItem[] = [
-  { id: "saved", label: "Saved places", icon: "bookmark", comingSoon: true },
   { id: "jobs", label: "Jobs", icon: "briefcase", comingSoon: true },
-  { id: "weather", label: "Weather", icon: "cloud", comingSoon: true },
-  {
-    id: "notifications",
-    label: "Notifications",
-    icon: "bell",
-    comingSoon: true,
-  },
+  { id: "marketplace", label: "Marketplace", icon: "store", comingSoon: true },
+  { id: "properties", label: "Properties", icon: "home", comingSoon: true },
 ] as const;

@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-pharmacy",
+  "expectTop1Ids": [
+    "46e7ae9e-e924-4bc2-ace4-d23ead4806f4"
+  ],
+  "expectTop3Ids": [
+    "46e7ae9e-e924-4bc2-ace4-d23ead4806f4",
+    "80f920e0-9f9c-4cd5-885f-b723c788c31c",
+    "e6abc3b9-7a09-45e5-b7e8-50bacc6f6e5a"
+  ],
+  "notes": "curated-from-candidates v1; vertical=pharmacies; names=The Local Choice Pharmacy Ballito | Apteka Pharmacy | Thrive Arrie Nel Ballito"
+}

@@ -1,7 +1,16 @@
 import type { PlannerDraft, WorkflowDefinition } from "@/services/planner/types";
 import type { LocationRef } from "@/services/planner/types";
+import { hasHardEligibilityRequirements } from "@/services/planner/eligibility";
 import { isProductPurchaseAsk } from "@/services/planner/product-intent";
 import { isMusicInstrumentAsk } from "@/services/planner/music-intent";
+import {
+  extractAutoProtectionLabel,
+  isAutoProtectionAsk,
+} from "@/services/planner/auto-protection-intent";
+import {
+  extractAutoPartsLabel,
+  isAutoPartsAsk,
+} from "@/services/planner/auto-parts-intent";
 import { isExactNicheAsk } from "@/services/planner/exact-niche-guard";
 import { celebrationTitleHint } from "@/services/planner/special-occasion-intent";
 import { detectMealTime } from "@/services/planner/meal-time-intent";
@@ -113,12 +122,55 @@ export function buildCompositionRequest(
     };
   }
 
+  if (isAutoProtectionAsk(text)) {
+    rules.push("composition_auto_protection_ranked");
+    return {
+      request: {
+        ...defaultCompositionRequest("ranked_list"),
+        titleHint: extractAutoProtectionLabel(text),
+        maxSections: 1,
+        maxItemsPerSection: 10,
+        sectionHints: [],
+        bucketProfile: undefined,
+      },
+      rules,
+    };
+  }
+
+  if (isAutoPartsAsk(text)) {
+    rules.push("composition_auto_parts_ranked");
+    return {
+      request: {
+        ...defaultCompositionRequest("ranked_list"),
+        titleHint: extractAutoPartsLabel(text),
+        maxSections: 1,
+        maxItemsPerSection: 10,
+        sectionHints: [],
+        bucketProfile: undefined,
+      },
+      rules,
+    };
+  }
+
   // Celebration planning — sections come from planner facets when present.
   const facets = (input.planFacets ?? []).filter(
     (f) => f.label?.trim() && f.searchQuery?.trim(),
   );
-  if (input.workflowId === "special_occasion" || facets.length >= 2) {
-    rules.push("composition_plan_facets");
+  const hardConstrained = hasHardEligibilityRequirements(input.constraints);
+  const hardFacets = facets.filter((f) => f.hard === true);
+
+  // QI facets (any count) when hard constraints or hard facets — never DISCOVERY pads.
+  if (
+    input.workflowId === "special_occasion" ||
+    facets.length >= 2 ||
+    (hardConstrained && facets.length >= 1) ||
+    hardFacets.length >= 1
+  ) {
+    rules.push(
+      hardConstrained || hardFacets.length >= 1
+        ? "composition_qi_facets_hard_constraints"
+        : "composition_plan_facets",
+    );
     return {
       request: {
         ...defaultCompositionRequest("grouped_sections"),
@@ -127,14 +179,15 @@ export function buildCompositionRequest(
           input.goalDescription,
           input.goalPrimary,
         ),
-        maxSections: Math.min(6, Math.max(3, facets.length || 4)),
-        maxItemsPerSection: 8,
+        maxSections: Math.min(6, Math.max(2, facets.length || 4)),
+        maxItemsPerSection: 9,
+        minItemsPerSection: hardConstrained ? 1 : 3,
         sectionHints: facets.map((f) => ({
           id: f.id,
           title: f.label,
           kind: "list" as const,
         })),
-        bucketProfile: facets.length >= 1 ? "plan_facets" : "activities",
+        bucketProfile: facets.length >= 1 ? "plan_facets" : undefined,
         planFacets: facets,
       },
       rules,
@@ -261,8 +314,26 @@ export function buildCompositionRequest(
     input.entities.businessTypes.length >= 2 ||
     input.entities.cuisines.length >= 2;
 
+  // Hard-constrained asks: ranked qualifying list — no generic DISCOVERY buckets.
+  if (hardConstrained) {
+    rules.push("composition_hard_constraints_ranked");
+    return {
+      request: {
+        ...defaultCompositionRequest("ranked_list"),
+        titleHint:
+          input.goalDescription.slice(0, 60) || "Matching options",
+        maxSections: 1,
+        maxItemsPerSection: 10,
+        minItemsPerSection: 1,
+        sectionHints: [],
+        bucketProfile: undefined,
+      },
+      rules,
+    };
+  }
+
   // Activities: group beaches / adventures / malls — not a flat card dump.
-  // (special_occasion already handled above)
+  // Only for unconstrained open discovery ("things to do", weekend browse).
   if (input.workflowId === "activities") {
     rules.push("composition_activities_grouped");
     return {

@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-physiotherapist-near",
+  "expectTop1Ids": [
+    "57cd6d93-e84d-43fd-be66-3355974fcae7"
+  ],
+  "expectTop3Ids": [
+    "57cd6d93-e84d-43fd-be66-3355974fcae7",
+    "d868c828-9730-49d1-a33c-25ebea7b0317",
+    "b99f5962-9905-440c-963f-1549b1b33fff"
+  ],
+  "notes": "curated-from-candidates v1; vertical=physio; names=Kijk Optometrists Salt Rock | F45 Training Salt Rock | BALLITO PHYSIOTHERAPIST"
+}

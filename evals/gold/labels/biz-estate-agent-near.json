@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-estate-agent-near",
+  "expectTop1Ids": [
+    "97b3e07a-56f5-4bea-9a20-6f732d3ef758"
+  ],
+  "expectTop3Ids": [
+    "97b3e07a-56f5-4bea-9a20-6f732d3ef758",
+    "57cd6d93-e84d-43fd-be66-3355974fcae7",
+    "bcc57930-a538-4578-b223-7cfaf8787a5d"
+  ],
+  "notes": "curated-from-candidates v1; vertical=estate-agents; names=Local Real Estate | Kijk Optometrists Salt Rock | Salt Rock Hotel"
+}

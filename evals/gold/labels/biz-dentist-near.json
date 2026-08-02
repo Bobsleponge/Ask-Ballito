@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-dentist-near",
+  "expectTop1Ids": [
+    "f769522f-2bf4-484c-b1e4-856c122073cd"
+  ],
+  "expectTop3Ids": [
+    "f769522f-2bf4-484c-b1e4-856c122073cd",
+    "30710aee-b501-4c0f-a0c8-839d2dcb7f56",
+    "1e64cdb1-85ac-43d5-8ea6-86f611a86070"
+  ],
+  "notes": "curated-from-candidates v1; vertical=dentists; names=Dolphin Coast Dental Care | Lock Dental | Dr Kevin Maguire - Shoreline Dental Ballito"
+}

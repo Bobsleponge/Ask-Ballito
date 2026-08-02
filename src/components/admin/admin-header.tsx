@@ -15,6 +15,8 @@ const ADMIN_NAV: {
 }[] = [
   { href: "/admin", label: "Overview", exact: true },
   { href: "/admin/business-claims", label: "Business claims" },
+  { href: "/admin/search-quality", label: "Search quality" },
+  { href: "/admin/ai-usage", label: "AI usage" },
 ];
 
 export function AdminHeader({ user }: { user: SessionUser }) {

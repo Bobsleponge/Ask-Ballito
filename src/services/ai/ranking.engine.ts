@@ -17,6 +17,11 @@ import {
   countAttributes,
   qualityScoreFromMetadata,
 } from "./business-quality";
+import {
+  freshnessSignal,
+  openNowSignal,
+  verifiedSignal,
+} from "@/lib/knowledge/rank-signals";
 
 /** After-hours / emergencyCallOut boosts are for trades — not GPs or hospitals. */
 const MEDICAL_OPEN_NOW_HINTS = new Set([
@@ -40,6 +45,9 @@ export interface RankConfig {
   quality: number;
   distance: number;
   price: number;
+  verified: number;
+  openNow: number;
+  freshness: number;
   /** Hard ceiling — never a fill target. Weak scores are dropped first. */
   limit: number;
   /**
@@ -72,15 +80,18 @@ export interface RankConfig {
 }
 
 export const DEFAULT_RANK_CONFIG: RankConfig = {
-  similarity: 0.38,
-  rating: 0.12,
-  popularity: 0.07,
+  similarity: 0.25,
+  rating: 0.1,
+  popularity: 0.11,
   typeBoost: 0.07,
   attributeBoost: 0.07,
-  keywordBoost: 0.12,
-  quality: 0.09,
+  keywordBoost: 0.22,
+  quality: 0.14,
   distance: 0.1,
-  price: 0.05,
+  price: 0.04,
+  verified: 0.06,
+  openNow: 0.05,
+  freshness: 0.03,
   limit: 25,
   minScore: 12,
   relativeFloor: 0.45,
@@ -122,14 +133,26 @@ function attributeMatchScore(
     [constraints.preferred.petFriendly, attrs.petFriendly],
     [constraints.required.outdoorSeating, attrs.outdoorSeating],
     [constraints.preferred.outdoorSeating, attrs.outdoorSeating],
+    [constraints.required.seaView, attrs.seaView],
     [constraints.preferred.seaView, attrs.seaView],
+    [constraints.required.parking, attrs.parking],
     [constraints.preferred.parking, attrs.parking],
+    [constraints.required.wheelchairAccessible, attrs.wheelchair],
     [constraints.preferred.wheelchairAccessible, attrs.wheelchair],
+    [constraints.required.kidsArea, attrs.kidsArea],
     [constraints.preferred.kidsArea, attrs.kidsArea],
+    [constraints.required.breakfast, attrs.breakfast],
     [constraints.preferred.breakfast, attrs.breakfast],
+    [constraints.required.quiet, attrs.noiseLevel === "quiet"],
     [constraints.preferred.quiet, attrs.noiseLevel === "quiet"],
     [constraints.preferred.rainFriendly, attrs.rainFriendly],
     [constraints.required.rainFriendly, attrs.rainFriendly],
+    [constraints.required.outdoorPlay, attrs.outdoorPlay],
+    [constraints.preferred.outdoorPlay, attrs.outdoorPlay],
+    [constraints.required.indoorPlay, attrs.indoorPlay],
+    [constraints.preferred.indoorPlay, attrs.indoorPlay],
+    [constraints.required.wifi, attrs.wifi],
+    [constraints.preferred.wifi, attrs.wifi],
   ];
 
   for (const [want, have] of pairs) {
@@ -349,7 +372,9 @@ export function rankBusinesses(
     cfg.attributeBoost +
     cfg.keywordBoost +
     cfg.quality +
-    cfg.price;
+    cfg.price +
+    cfg.verified +
+    cfg.freshness;
 
   const ranked = candidates.map((b) => {
     const similarity = b.similarity ?? 0;
@@ -363,6 +388,10 @@ export function rankBusinesses(
       Math.min(100, countAttributes(b.metadata) * 8);
     const qualityNorm = q / 100;
     const price = priceScore(b, constraints);
+    const verified = verifiedSignal(b);
+    const freshness = freshnessSignal(b);
+    const openNow =
+      constraints.openNow === true ? openNowSignal(b) : 0;
     const dist = distanceScore(
       b,
       locationRef,
@@ -376,7 +405,14 @@ export function rankBusinesses(
       distComponent = dist * cfg.distance;
     }
 
-    const denom = weightSum + distWeight || 1;
+    let openWeight = 0;
+    let openComponent = 0;
+    if (constraints.openNow === true) {
+      openWeight = cfg.openNow;
+      openComponent = openNow * cfg.openNow;
+    }
+
+    const denom = weightSum + distWeight + openWeight || 1;
     const raw =
       (similarity * cfg.similarity +
         ratingScore * cfg.rating +
@@ -386,7 +422,10 @@ export function rankBusinesses(
         keywordScore * cfg.keywordBoost +
         qualityNorm * cfg.quality +
         price * cfg.price +
-        distComponent) /
+        verified * cfg.verified +
+        freshness * cfg.freshness +
+        distComponent +
+        openComponent) /
       denom;
 
     const intent = verticalIntentScore(b, cfg.verticalHint);

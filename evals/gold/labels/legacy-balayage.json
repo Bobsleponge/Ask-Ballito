@@ -1,0 +1,12 @@
+{
+  "questionId": "legacy-balayage",
+  "expectTop1Ids": [
+    "2cf67eb0-8793-4699-9880-9830e6df6bd9"
+  ],
+  "expectTop3Ids": [
+    "2cf67eb0-8793-4699-9880-9830e6df6bd9",
+    "77f312f8-d4ee-4e65-b909-f35f4ba2a401",
+    "04743047-ef47-4e52-b01f-35fd49085b42"
+  ],
+  "notes": "curated-from-candidates v1; vertical=hair_salons; names=Colour Reflections hair studio | Carlton Hair Ballito | Skin Balance"
+}

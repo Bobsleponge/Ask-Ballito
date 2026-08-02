@@ -1,0 +1,12 @@
+{
+  "questionId": "acc-luxury-resorts",
+  "expectTop1Ids": [
+    "812377cc-5d33-4569-9bbe-7009c0fe38cd"
+  ],
+  "expectTop3Ids": [
+    "812377cc-5d33-4569-9bbe-7009c0fe38cd",
+    "5113fda3-c7a3-404a-bc14-6ce97f4ce69a",
+    "a8fa90ac-27f7-462e-b86c-205e8fbfd20e"
+  ],
+  "notes": "curated-from-candidates v1; vertical=hotels; names=The Boathouse Luxury Guest House | Coco de Mer | Ballito Accommodation"
+}

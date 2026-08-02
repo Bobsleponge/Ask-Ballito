@@ -1,0 +1,1097 @@
+{
+  "version": 1,
+  "description": "Query Intelligence forensic audit corpus (baseline fails + curated NL + reply-accuracy)",
+  "questions": [
+    {
+      "id": "biz-best-pizza-near",
+      "query": "Best pizza near Salt Rock",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "top1_miss",
+        "wrong_entity_type",
+        "ranking_error",
+        "missing_metadata"
+      ],
+      "passIntent": true,
+      "passTop1": false,
+      "passTop3": true
+    },
+    {
+      "id": "biz-best-sushi-near",
+      "query": "Best sushi near Salt Rock",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "top1_miss",
+        "ranking_error",
+        "missing_metadata"
+      ],
+      "passIntent": true,
+      "passTop1": false,
+      "passTop3": true
+    },
+    {
+      "id": "biz-best-seafood-near",
+      "query": "Best seafood near Salt Rock",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "top1_miss",
+        "top3_miss",
+        "ranking_error",
+        "missing_metadata"
+      ],
+      "passIntent": true,
+      "passTop1": false,
+      "passTop3": false
+    },
+    {
+      "id": "biz-best-thai",
+      "query": "Best Thai in Ballito",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "top1_miss",
+        "top3_miss",
+        "wrong_entity_type",
+        "ranking_error"
+      ],
+      "passIntent": true,
+      "passTop1": false,
+      "passTop3": false
+    },
+    {
+      "id": "biz-romantic-restaurants-near",
+      "query": "Romantic restaurants near Salt Rock",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "top1_miss",
+        "ranking_error",
+        "missing_metadata"
+      ],
+      "passIntent": true,
+      "passTop1": false,
+      "passTop3": true
+    },
+    {
+      "id": "biz-dog-friendly-restaurants-near",
+      "query": "Dog friendly restaurants near Salt Rock",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "top1_miss",
+        "ranking_error",
+        "missing_metadata"
+      ],
+      "passIntent": true,
+      "passTop1": false,
+      "passTop3": true
+    },
+    {
+      "id": "biz-restaurants-with-generators",
+      "query": "Restaurants with generators in Ballito",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "intent_mismatch",
+        "missing_metadata"
+      ],
+      "passIntent": false,
+      "passTop1": true,
+      "passTop3": true
+    },
+    {
+      "id": "biz-restaurants-with-generators-near",
+      "query": "Restaurants with generators near Salt Rock",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "top1_miss",
+        "top3_miss",
+        "ranking_error",
+        "missing_metadata"
+      ],
+      "passIntent": true,
+      "passTop1": false,
+      "passTop3": false
+    },
+    {
+      "id": "biz-restaurants-open-after-9pm",
+      "query": "Restaurants open after 9pm in Ballito",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "intent_mismatch"
+      ],
+      "passIntent": false,
+      "passTop1": true,
+      "passTop3": true
+    },
+    {
+      "id": "biz-restaurants-open-after-9pm-near",
+      "query": "Restaurants open after 9pm near Salt Rock",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "top1_miss",
+        "top3_miss",
+        "ranking_error",
+        "missing_metadata"
+      ],
+      "passIntent": true,
+      "passTop1": false,
+      "passTop3": false
+    },
+    {
+      "id": "biz-family-friendly-restaurants",
+      "query": "Family friendly restaurants in Ballito",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "intent_mismatch",
+        "ranking_error"
+      ],
+      "passIntent": false,
+      "passTop1": true,
+      "passTop3": true
+    },
+    {
+      "id": "biz-family-friendly-restaurants-near",
+      "query": "Family friendly restaurants near Salt Rock",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "top1_miss",
+        "ranking_error",
+        "missing_metadata"
+      ],
+      "passIntent": true,
+      "passTop1": false,
+      "passTop3": true
+    },
+    {
+      "id": "biz-wheelchair-accessible-restaurant-near",
+      "query": "Wheelchair accessible restaurant near Salt Rock",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "top1_miss",
+        "ranking_error",
+        "missing_metadata"
+      ],
+      "passIntent": true,
+      "passTop1": false,
+      "passTop3": true
+    },
+    {
+      "id": "biz-restaurant-with-parking",
+      "query": "Restaurant with parking in Ballito",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "top1_miss",
+        "ranking_error",
+        "missing_metadata"
+      ],
+      "passIntent": true,
+      "passTop1": false,
+      "passTop3": true
+    },
+    {
+      "id": "biz-restaurant-with-parking-near",
+      "query": "Restaurant with parking near Salt Rock",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "top1_miss",
+        "top3_miss",
+        "ranking_error",
+        "missing_metadata"
+      ],
+      "passIntent": true,
+      "passTop1": false,
+      "passTop3": false
+    },
+    {
+      "id": "biz-cocktail-bars",
+      "query": "Cocktail bars in Ballito",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "top1_miss",
+        "wrong_entity_type",
+        "ranking_error"
+      ],
+      "passIntent": true,
+      "passTop1": false,
+      "passTop3": true
+    },
+    {
+      "id": "biz-cocktail-bars-near",
+      "query": "Cocktail bars near Salt Rock",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "top1_miss",
+        "wrong_entity_type",
+        "missing_metadata"
+      ],
+      "passIntent": true,
+      "passTop1": false,
+      "passTop3": true
+    },
+    {
+      "id": "biz-live-music-venues",
+      "query": "Live music venues in Ballito",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "intent_mismatch",
+        "wrong_entity_type"
+      ],
+      "passIntent": false,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "biz-surf-lessons",
+      "query": "Surf lessons in Ballito",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "top1_miss",
+        "top3_miss",
+        "wrong_entity_type",
+        "ranking_error"
+      ],
+      "passIntent": true,
+      "passTop1": false,
+      "passTop3": false
+    },
+    {
+      "id": "biz-surf-lessons-near",
+      "query": "Surf lessons near Salt Rock",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "top1_miss",
+        "top3_miss",
+        "ranking_error",
+        "missing_metadata"
+      ],
+      "passIntent": true,
+      "passTop1": false,
+      "passTop3": false
+    },
+    {
+      "id": "biz-dog-groomer",
+      "query": "Dog groomer in Ballito",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "intent_mismatch",
+        "wrong_entity_type"
+      ],
+      "passIntent": false,
+      "passTop1": true,
+      "passTop3": true
+    },
+    {
+      "id": "biz-physiotherapist",
+      "query": "Physiotherapist in Ballito",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "intent_mismatch"
+      ],
+      "passIntent": false,
+      "passTop1": true,
+      "passTop3": true
+    },
+    {
+      "id": "biz-dentist-near",
+      "query": "Dentist near Salt Rock",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "top1_miss",
+        "top3_miss",
+        "ranking_error",
+        "missing_metadata"
+      ],
+      "passIntent": true,
+      "passTop1": false,
+      "passTop3": false
+    },
+    {
+      "id": "biz-seafood-restaurant-near",
+      "query": "Seafood restaurant near Salt Rock",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "top1_miss",
+        "ranking_error",
+        "missing_metadata"
+      ],
+      "passIntent": true,
+      "passTop1": false,
+      "passTop3": true
+    },
+    {
+      "id": "biz-breakfast-near-the-beach-near",
+      "query": "Breakfast near the beach near Salt Rock",
+      "city": "ballito",
+      "source": "baseline_worst",
+      "suggestions": [
+        "top1_miss",
+        "ranking_error",
+        "missing_metadata"
+      ],
+      "passIntent": true,
+      "passTop1": false,
+      "passTop3": true
+    },
+    {
+      "id": "nl-kids-play",
+      "query": "somewhere my kids can play",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-rainy-toddlers",
+      "query": "rainy day activities with toddlers",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-propose",
+      "query": "I am going to propose to my wife",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-adult-downtime",
+      "query": "day off from the kids for my husband",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-somewhere-nice",
+      "query": "somewhere nice for dinner",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-fun-weekend",
+      "query": "Fun outdoor activities this weekend",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-kids-birthday",
+      "query": "its my kids birthday on monday",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-house-party",
+      "query": "planning a house party need food and a DJ",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-what-to-do",
+      "query": "what can we do in Ballito with the family",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-indoor-kids",
+      "query": "indoor play centre for kids",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-beach-day",
+      "query": "best beach for a family picnic",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-date-night",
+      "query": "romantic date night ideas",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-anniversary",
+      "query": "anniversary dinner and flowers",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-generators",
+      "query": "restaurants with generators",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-open-late",
+      "query": "places open after 9pm",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-dog-friendly",
+      "query": "dog friendly cafes near the beach",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-wheelchair",
+      "query": "wheelchair accessible restaurant",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-surf",
+      "query": "where can I learn to surf",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-guitar",
+      "query": "i need to restring my guitar",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-gaming-mouse",
+      "query": "where can I buy a gaming mouse in Ballito",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-plumber",
+      "query": "I need a plumber for a burst pipe",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-taxidermy",
+      "query": "I need a taxidermist in Ballito",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-events",
+      "query": "whats on this weekend",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-live-music",
+      "query": "live music tonight",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-spa",
+      "query": "spa and massage for adults only",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-farm",
+      "query": "animal farm or petting zoo for kids",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-trampoline",
+      "query": "trampoline park near Ballito",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-soft-play",
+      "query": "soft play for toddlers",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-breakfast-beach",
+      "query": "breakfast with a sea view",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "nl-cocktail",
+      "query": "cocktail bar with a view",
+      "city": "ballito",
+      "source": "curated_nl",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null
+    },
+    {
+      "id": "biz-best-breakfast-near",
+      "query": "Best breakfast near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-best-steak-near",
+      "query": "Best steak near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-best-thai-near",
+      "query": "Best Thai near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-best-indian-near",
+      "query": "Best Indian near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-best-italian-near",
+      "query": "Best Italian near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-best-burgers-near",
+      "query": "Best burgers near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-coffee-shops-with-wifi-near",
+      "query": "Coffee shops with WiFi near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-romantic-restaurants",
+      "query": "Romantic restaurants in Ballito",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-romantic-restaurants-where",
+      "query": "Where can I find romantic restaurants?",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-dog-friendly-restaurants",
+      "query": "Dog friendly restaurants in Ballito",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-dog-friendly-restaurants-where",
+      "query": "Where can I find dog friendly restaurants?",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-restaurants-with-generators-where",
+      "query": "Where can I find restaurants with generators?",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-restaurants-open-after-9pm-where",
+      "query": "Where can I find restaurants open after 9pm?",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-family-friendly-restaurants-where",
+      "query": "Where can I find family friendly restaurants?",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-wheelchair-accessible-restaurant",
+      "query": "Wheelchair accessible restaurant in Ballito",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-wheelchair-accessible-restaurant-where",
+      "query": "Where can I find wheelchair accessible restaurant?",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-restaurant-with-parking-where",
+      "query": "Where can I find restaurant with parking?",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-cocktail-bars-where",
+      "query": "Where can I find cocktail bars?",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-live-music-venues-near",
+      "query": "Live music venues near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-live-music-venues-where",
+      "query": "Where can I find live music venues?",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-gel-nails-near",
+      "query": "Gel nails near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-balayage-hair-colour-near",
+      "query": "Balayage hair colour near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-best-spa-near",
+      "query": "Best spa near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-gym-membership-near",
+      "query": "Gym membership near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-surf-lessons-where",
+      "query": "Where can I find surf lessons?",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-car-wash-near",
+      "query": "Car wash near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-dog-groomer-near",
+      "query": "Dog groomer near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-dog-groomer-where",
+      "query": "Where can I find dog groomer?",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-estate-agent-near",
+      "query": "Estate agent near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-physiotherapist-near",
+      "query": "Physiotherapist near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-physiotherapist-where",
+      "query": "Where can I find physiotherapist?",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-dentist",
+      "query": "Dentist in Ballito",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-dentist-where",
+      "query": "Where can I find dentist?",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-pharmacy-near",
+      "query": "Pharmacy near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-vet-near",
+      "query": "Vet near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-plumber-near",
+      "query": "Plumber near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-electrician-near",
+      "query": "Electrician near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-italian-restaurant-near",
+      "query": "Italian restaurant near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-cafe-to-work-from-near",
+      "query": "Cafe to work from near Salt Rock",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    },
+    {
+      "id": "biz-kids-menu-restaurants",
+      "query": "Kids menu restaurants in Ballito",
+      "city": "ballito",
+      "source": "gold_open",
+      "suggestions": [],
+      "passIntent": null,
+      "passTop1": null,
+      "passTop3": null,
+      "intent": "BUSINESS_SEARCH"
+    }
+  ]
+}

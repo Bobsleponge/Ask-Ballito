@@ -167,7 +167,7 @@ check("best restaurants rank demotes Steers below fine dining", () => {
       {
         id: "s1",
         capability: "business_search",
-        type: "search",
+        type: "business_search",
         query: "best restaurants in Ballito",
         params: { verticalHint: "restaurants" },
         priority: 1,

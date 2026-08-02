@@ -1,0 +1,11 @@
+{
+  "questionId": "biz-seafood-restaurant-near",
+  "expectTop1Ids": [
+    "c2b2a41b-1532-4396-b31c-fc03cad579e3"
+  ],
+  "expectTop3Ids": [
+    "c2b2a41b-1532-4396-b31c-fc03cad579e3",
+    "ba4aedcd-99c6-4e65-94df-f0c682236a55"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Butcher and Wine Restaurant | Mochachos Salt Rock"
+}

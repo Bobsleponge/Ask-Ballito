@@ -30,8 +30,10 @@ export function buildEnrichmentSystem(): string {
     "services: specific offerings customers would ask for, only when evidenced (e.g. 'acrylic nails' only if reviews/listing say acrylic).",
     "keywords: short searchable aliases drawn from those same evidenced services/terms. Lowercase preferred.",
     "attributes: set amenity/capability flags only when clearly evidenced; otherwise leave unset/null.",
-    "Common attribute keys include: familyFriendly, romantic, kidsArea, seaView, wheelchair, petFriendly, breakfast, parking, outdoorSeating, noiseLevel (quiet|moderate|lively), bookingRequired, rainFriendly, lateNight, emergencyCallOut, afterHours, freeQuotes, insuredRegistered, residential, commercial, takeaway, delivery, reservations, walkIns, appointmentsOnly, medicalAidAccepted, homeVisits, open24Hours, towingRoadside, onlineBooking, cardPayments, wifi, and other booleans matching the listing schema.",
-    "Prefer vertical-relevant flags (e.g. emergencyCallOut for plumbers/trades; outdoorSeating for restaurants) and leave others unset.",
+    "Common attribute keys include: familyFriendly, romantic, kidsArea, seaView, wheelchair, petFriendly, breakfast, parking, outdoorSeating, outdoorPlay, indoorPlay, noiseLevel (quiet|moderate|lively), bookingRequired, rainFriendly, lateNight, emergencyCallOut, afterHours, freeQuotes, insuredRegistered, residential, commercial, takeaway, delivery, reservations, walkIns, appointmentsOnly, medicalAidAccepted, homeVisits, open24Hours, towingRoadside, onlineBooking, cardPayments, wifi, and other booleans matching the listing schema.",
+    "Set outdoorPlay / indoorPlay when evidence shows outdoor vs indoor play or activity space (parks, trails, farms, soft play, trampoline parks). outdoorSeating is dining patio only — do not use it for adventure parks.",
+    "familyFriendly / kidsArea: set only with clear evidence (kids menus, play areas, family reviews). These flags are eligibility gates for constrained asks — precision over guesswork.",
+    "Prefer vertical-relevant flags (e.g. emergencyCallOut for plumbers/trades; outdoorSeating for restaurants; outdoorPlay for attractions) and leave others unset.",
     "summary: optional one sentence grounded strictly in the sources — no marketing fluff.",
     "Prefer precision over recall — fabricated services destroy search quality.",
   ].join(" ");

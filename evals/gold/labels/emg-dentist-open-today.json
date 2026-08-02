@@ -1,0 +1,12 @@
+{
+  "questionId": "emg-dentist-open-today",
+  "expectTop1Ids": [
+    "30710aee-b501-4c0f-a0c8-839d2dcb7f56"
+  ],
+  "expectTop3Ids": [
+    "30710aee-b501-4c0f-a0c8-839d2dcb7f56",
+    "0e365844-f76a-4e60-be69-da72ac4a4dd4",
+    "f769522f-2bf4-484c-b1e4-856c122073cd"
+  ],
+  "notes": "curated-from-candidates v1; vertical=dentists; names=Lock Dental | Arch Dentistry Ballito | Dolphin Coast Dental Care"
+}

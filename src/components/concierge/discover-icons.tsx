@@ -13,6 +13,7 @@ import {
   Cloud,
   Bookmark,
   Bell,
+  Store,
 } from "lucide-react";
 import type { DiscoverIconId } from "@/config/discover";
 
@@ -30,6 +31,7 @@ const ICON_MAP: Record<DiscoverIconId, LucideIcon> = {
   cloud: Cloud,
   bookmark: Bookmark,
   bell: Bell,
+  store: Store,
 };
 
 export function discoverIcon(id: DiscoverIconId): LucideIcon {

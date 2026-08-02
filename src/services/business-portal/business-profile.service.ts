@@ -69,6 +69,13 @@ export class BusinessProfileService {
       updated_by: userId,
     });
 
+    // Canonical write-through: owner edits own businesses.* scalars.
+    await writeThroughBusinessScalars(businessId, {
+      description: row.description,
+      phone: row.phone,
+      website: row.website,
+    });
+
     await refreshBusinessSearchEmbedding(businessId);
     await scheduleSearchRestudy(businessId).catch((err) => {
       console.warn(
@@ -218,6 +225,54 @@ function normalizeWebsite(value: string | null | undefined): string | null {
   if (!trimmed) return null;
   if (/^https?:\/\//i.test(trimmed)) return trimmed;
   return `https://${trimmed}`;
+}
+
+/**
+ * Owner listing edits write through to businesses (canonical store) and stamp
+ * field_meta with owner_claim provenance.
+ */
+async function writeThroughBusinessScalars(
+  businessId: string,
+  fields: {
+    description: string | null;
+    phone: string | null;
+    website: string | null;
+  },
+): Promise<void> {
+  const { parseFieldMeta, setFieldMeta } = await import(
+    "@/lib/knowledge/field-meta"
+  );
+  const admin = createAdminClient();
+  const { data: row } = await admin
+    .from("businesses")
+    .select("field_meta")
+    .eq("id", businessId)
+    .maybeSingle();
+
+  let meta = parseFieldMeta(
+    (row as { field_meta?: unknown } | null)?.field_meta,
+  );
+  meta = setFieldMeta(meta, "description", "owner_claim");
+  meta = setFieldMeta(meta, "phone", "owner_claim");
+  meta = setFieldMeta(meta, "website", "owner_claim");
+
+  const { error } = await admin
+    .from("businesses")
+    .update({
+      description: fields.description,
+      phone: fields.phone,
+      website: fields.website,
+      field_meta: meta as Json,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", businessId);
+
+  if (error) {
+    console.warn(
+      "[profile] writeThroughBusinessScalars failed:",
+      error.message,
+    );
+  }
 }
 
 export const businessProfileService = new BusinessProfileService();

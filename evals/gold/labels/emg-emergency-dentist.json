@@ -1,0 +1,12 @@
+{
+  "questionId": "emg-emergency-dentist",
+  "expectTop1Ids": [
+    "f769522f-2bf4-484c-b1e4-856c122073cd"
+  ],
+  "expectTop3Ids": [
+    "f769522f-2bf4-484c-b1e4-856c122073cd",
+    "d3f27b45-9afa-4cc1-abe1-8078092f7384",
+    "30710aee-b501-4c0f-a0c8-839d2dcb7f56"
+  ],
+  "notes": "curated-from-candidates v1; vertical=dentists; names=Dolphin Coast Dental Care | Dr Danielle Walmsley | Lock Dental"
+}

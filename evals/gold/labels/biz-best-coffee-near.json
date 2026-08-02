@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-best-coffee-near",
+  "expectTop1Ids": [
+    "32de6c44-7014-4c69-8ff9-5ba9828dc90b"
+  ],
+  "expectTop3Ids": [
+    "32de6c44-7014-4c69-8ff9-5ba9828dc90b",
+    "6fa9107c-8dff-4255-a3eb-2fdaa728f6de",
+    "fb1e38a3-2e57-4611-928f-5686e511338c"
+  ],
+  "notes": "curated-from-candidates v1; vertical=cafes; names=SKY ?????? Coffee Salt Rock | Tip Top Bakery Boutique New Salt Rock City | Local Coffee Ballito"
+}

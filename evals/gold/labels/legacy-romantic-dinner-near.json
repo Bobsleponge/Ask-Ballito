@@ -1,0 +1,12 @@
+{
+  "questionId": "legacy-romantic-dinner-near",
+  "expectTop1Ids": [
+    "c2b2a41b-1532-4396-b31c-fc03cad579e3"
+  ],
+  "expectTop3Ids": [
+    "c2b2a41b-1532-4396-b31c-fc03cad579e3",
+    "bf8cbe42-06e4-4e0b-bb50-a6ff8e2d12bf",
+    "8a3a68fa-b200-48e5-87ad-0f97b0d6cdf5"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Butcher and Wine Restaurant | Donna Modern Italian | Mozambik Ballito"
+}

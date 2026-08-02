@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-estate-agent",
+  "expectTop1Ids": [
+    "64a082f5-1f7c-4e71-962a-177e37014f91"
+  ],
+  "expectTop3Ids": [
+    "64a082f5-1f7c-4e71-962a-177e37014f91",
+    "97b3e07a-56f5-4bea-9a20-6f732d3ef758",
+    "04877d8b-809c-4d78-bce8-ad4c5f4a0aa3"
+  ],
+  "notes": "curated-from-candidates v1; vertical=estate-agents; names=Ballito Real Estate | Local Real Estate | Only Realty - Select (Ballito/Umhlanga)"
+}

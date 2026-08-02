@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-toy-shop-near",
+  "expectTop1Ids": [
+    "ef2658b2-36e3-435b-8568-ada0405264ad"
+  ],
+  "expectTop3Ids": [
+    "ef2658b2-36e3-435b-8568-ada0405264ad",
+    "e2217cd4-0392-47ce-a140-3579fd21db81",
+    "507ddc3f-9fdf-41db-a8c3-8dd9242c18e6"
+  ],
+  "notes": "curated-from-candidates v1; vertical=shopping; names=New Salt Rock City Centre | ToyZone Ballito | Tire n Wheel"
+}

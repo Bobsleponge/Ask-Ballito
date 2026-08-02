@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-best-italian-near",
+  "expectTop1Ids": [
+    "bf8cbe42-06e4-4e0b-bb50-a6ff8e2d12bf"
+  ],
+  "expectTop3Ids": [
+    "bf8cbe42-06e4-4e0b-bb50-a6ff8e2d12bf",
+    "ba4aedcd-99c6-4e65-94df-f0c682236a55",
+    "872eb332-7c9a-42ad-9c23-565353b04031"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Donna Modern Italian | Mochachos Salt Rock | Abbiocco Italian Restaurant and Deli"
+}

@@ -97,7 +97,7 @@ export function composeExperience(
   };
 }
 
-/** Plain-text fallback when LLM explanation is skipped. */
+/** Plain-text fallback (debug / non-UI). Prefer formatCompositionConversational for chat. */
 export function formatCompositionPlain(
   composition: ExperienceComposition,
 ): string {

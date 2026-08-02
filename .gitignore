@@ -40,3 +40,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Regenerable eval dumps
+evals/gold/candidates/
+evals/runs/
+

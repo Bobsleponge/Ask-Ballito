@@ -4,6 +4,9 @@
  */
 
 import { detectTradeKind, type TradeKind } from "./trade-query";
+import { isAutoProtectionAsk } from "./auto-protection-intent";
+import { isAutoPartsAsk } from "./auto-parts-intent";
+import { isMusicInstrumentAsk } from "./music-intent";
 
 const TRADE_VERTICAL: Partial<Record<TradeKind, string>> = {
   plumber: "plumbers",
@@ -22,7 +25,7 @@ const FABRICATION_RE =
   /\b(weld(?:er|ing)?|fabricat(?:e|ion|or)s?|metalwork|metal\s*work|boilermaker|steel\s*work|custom\s*fab|trailer(\s*(repair|fab|fabrication|build|mod))?|panel\s*beat(?:er|ing)?)\b/i;
 
 const AUTOMOTIVE_RE =
-  /\b(mechanic|automotive|auto\s*(repair|service|body)|car\s*(repair|service|wash)|tow(\s*truck)?|towing|tyre|tire|windscreen|roadside)\b/i;
+  /\b(mechanic|automotive|auto\s*(repair|service|body|parts?)|car\s*(repair|service|wash|batter(?:y|ies)|parts?)|tow(\s*truck)?|towing|tyre|tire|windscreen|roadside|ppf|paint\s*protection|car\s*wrap|vehicle\s*wrap|window\s*tint|ceramic\s*coat|auto\s*detail|car\s*detail|jump\s*start)\b/i;
 
 const FITNESS_RE =
   /\b(gym|fitness|personal\s*train|pilates|yoga\s*studio|crossfit)\b/i;
@@ -123,7 +126,7 @@ const APPLIANCE_RE =
   /\b(appliance\s*repair|washing\s*machine\s*repair|fridge\s*repair|oven\s*repair|dishwasher\s*repair)\b/i;
 
 const AUTO_PARTS_RE =
-  /\b(auto\s*parts|car\s*spares|windscreen|car\s*glass|spare\s*parts)\b/i;
+  /\b(auto\s*parts|car\s*spares|car\s*batter(?:y|ies)|windscreen|car\s*glass|spare\s*parts)\b/i;
 
 const TATTOO_RE = /\b(tattoo|piercing\s*studio|body\s*piercing)\b/i;
 
@@ -183,6 +186,17 @@ export function resolveServicesVerticalHint(
 ): string | null {
   const corpus = corpusFrom(message, draft);
   if (!corpus.trim()) return null;
+
+  // Dedicated intents win before broad automotive/beauty patterns.
+  if (isAutoProtectionAsk(message) || isAutoProtectionAsk(corpus)) {
+    return "automotive";
+  }
+  if (isAutoPartsAsk(message) || isAutoPartsAsk(corpus)) {
+    return "auto-parts";
+  }
+  if (isMusicInstrumentAsk(message) || isMusicInstrumentAsk(corpus)) {
+    return "music-instruments";
+  }
 
   if (BEAUTY_RE.test(corpus)) return "spas";
   if (FABRICATION_RE.test(corpus)) return "fabrication";

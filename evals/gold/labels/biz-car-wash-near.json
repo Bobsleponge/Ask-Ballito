@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-car-wash-near",
+  "expectTop1Ids": [
+    "a9650f95-9911-48a3-bbdc-e7106083992c"
+  ],
+  "expectTop3Ids": [
+    "a9650f95-9911-48a3-bbdc-e7106083992c",
+    "aaae64e3-e9a6-4c8b-87c4-247917b5bd6a",
+    "aa2ba2cd-f5b6-4957-9357-4e581d467c73"
+  ],
+  "notes": "curated-from-candidates v1; vertical=car-wash; names=Salt Rock Laundromat | Sasol Salt Rock | Car Care Clinic Umhlali"
+}

@@ -108,5 +108,10 @@ export function mergeConstraints(
     distanceLabel: turn.distanceLabel ?? sticky.distanceLabel ?? null,
     distanceMeters: turn.distanceMeters ?? sticky.distanceMeters ?? null,
     emergency: turn.emergency ?? sticky.emergency ?? null,
+    environmentRequired:
+      turn.environmentRequired ?? sticky.environmentRequired ?? null,
+    environmentPreferred:
+      turn.environmentPreferred ?? sticky.environmentPreferred ?? null,
+    audienceRequired: turn.audienceRequired ?? sticky.audienceRequired ?? null,
   };
 }

@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-best-italian",
+  "expectTop1Ids": [
+    "872eb332-7c9a-42ad-9c23-565353b04031"
+  ],
+  "expectTop3Ids": [
+    "872eb332-7c9a-42ad-9c23-565353b04031",
+    "bf8cbe42-06e4-4e0b-bb50-a6ff8e2d12bf",
+    "87b54c83-fd12-4150-a65a-2f4575d44a65"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Abbiocco Italian Restaurant and Deli | Donna Modern Italian | Al Pescatore Italian Restaurant"
+}

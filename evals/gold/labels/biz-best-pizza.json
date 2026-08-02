@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-best-pizza",
+  "expectTop1Ids": [
+    "e76c9593-7fa3-41dd-bb34-360d4fd4530f"
+  ],
+  "expectTop3Ids": [
+    "e76c9593-7fa3-41dd-bb34-360d4fd4530f",
+    "a3bf3a56-cb32-4437-b094-0df8f487e2e7",
+    "872eb332-7c9a-42ad-9c23-565353b04031"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Doughpamine | Bird & Co Ballito | Abbiocco Italian Restaurant and Deli"
+}

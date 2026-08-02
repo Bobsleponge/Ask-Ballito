@@ -1,0 +1,12 @@
+{
+  "questionId": "emg-emergency-dentist-now",
+  "expectTop1Ids": [
+    "e0244706-222b-49b4-94df-a5e62921b02c"
+  ],
+  "expectTop3Ids": [
+    "e0244706-222b-49b4-94df-a5e62921b02c",
+    "1a94f068-44f9-4f74-8347-dfb55e8da926",
+    "d3f27b45-9afa-4cc1-abe1-8078092f7384"
+  ],
+  "notes": "curated-from-candidates v1; vertical=dentists; names=Family Dental Care - Durban North (Invisalign Provider) | DR. KHALEK ADAM KHADER | Dr Danielle Walmsley"
+}

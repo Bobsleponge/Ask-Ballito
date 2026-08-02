@@ -1,0 +1,11 @@
+{
+  "questionId": "biz-best-pizza-near",
+  "expectTop1Ids": [
+    "e76c9593-7fa3-41dd-bb34-360d4fd4530f"
+  ],
+  "expectTop3Ids": [
+    "e76c9593-7fa3-41dd-bb34-360d4fd4530f",
+    "ba4aedcd-99c6-4e65-94df-f0c682236a55"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Doughpamine | Mochachos Salt Rock"
+}

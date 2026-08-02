@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-best-burgers",
+  "expectTop1Ids": [
+    "ca698ce4-97a3-4079-b364-bebb5e462eed"
+  ],
+  "expectTop3Ids": [
+    "ca698ce4-97a3-4079-b364-bebb5e462eed",
+    "17c0ed8e-a51d-4078-9b9f-ab4556e50f5b",
+    "ae5d2780-edba-417c-8a26-0fd08c4148aa"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Steers Ballito Junction | Burgerack | RocoMamas Ballito Junction"
+}

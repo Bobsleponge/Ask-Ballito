@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-car-wash",
+  "expectTop1Ids": [
+    "7f020c3a-8a2f-4130-b6af-1f5b2ecda97a"
+  ],
+  "expectTop3Ids": [
+    "7f020c3a-8a2f-4130-b6af-1f5b2ecda97a",
+    "298c2737-e1b0-44d6-8ee7-7deda1ff6fb2",
+    "136e9224-a3b9-40ba-a400-71303592a0c0"
+  ],
+  "notes": "curated-from-candidates v1; vertical=car-wash; names=WE CLEAN BALLITO | Checkers LiquorShop Ballito Junction | Tiny Bubbles Laundromat & Dry Cleaners"
+}

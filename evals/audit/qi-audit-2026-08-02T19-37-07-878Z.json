@@ -1,0 +1,2772 @@
+{
+  "summary": {
+    "questionCount": 95,
+    "liveExtractorCompare": false,
+    "legacyShortCircuitEligiblePct": 78.9,
+    "thinShortCircuitDraftPct": 75.8,
+    "shortCircuitLikelyRootCausePct": 26.3,
+    "extractorWouldHelpPct": 27.4,
+    "primaryLayerPct": {
+      "taxonomy_failure": {
+        "count": 5,
+        "pct": 5.3
+      },
+      "missing_data": {
+        "count": 9,
+        "pct": 9.5
+      },
+      "misunderstanding": {
+        "count": 6,
+        "pct": 6.3
+      },
+      "bad_generated_search_query": {
+        "count": 13,
+        "pct": 13.7
+      },
+      "missing_facet": {
+        "count": 6,
+        "pct": 6.3
+      },
+      "ranking_failure": {
+        "count": 56,
+        "pct": 58.9
+      }
+    },
+    "generatedAt": "2026-08-02T19:37:07.877Z"
+  },
+  "traces": [
+    {
+      "id": "biz-best-pizza-near",
+      "query": "Best pizza near Salt Rock",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "taxonomy_failure",
+        "secondaries": [
+          "misunderstanding",
+          "ranking_failure",
+          "missing_data"
+        ],
+        "rationale": "Wrong entity/category relative to gold — taxonomy or vertical mapping.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-best-sushi-near",
+      "query": "Best sushi near Salt Rock",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "missing_data",
+        "secondaries": [
+          "ranking_failure"
+        ],
+        "rationale": "Coverage / metadata gap on listings or knowledge cards.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-best-seafood-near",
+      "query": "Best seafood near Salt Rock",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "missing_data",
+        "secondaries": [
+          "ranking_failure",
+          "retrieval_failure"
+        ],
+        "rationale": "Coverage / metadata gap on listings or knowledge cards.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-best-thai",
+      "query": "Best Thai in Ballito",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.9,
+        "signals": [
+          "biz_restaurant"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "taxonomy_failure",
+        "secondaries": [
+          "misunderstanding",
+          "ranking_failure",
+          "retrieval_failure"
+        ],
+        "rationale": "Wrong entity/category relative to gold — taxonomy or vertical mapping.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-romantic-restaurants-near",
+      "query": "Romantic restaurants near Salt Rock",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "DISCOVERY",
+        "confidence": 0.92,
+        "signals": [
+          "disc_romantic"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 2,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "missing_data",
+        "secondaries": [
+          "ranking_failure"
+        ],
+        "rationale": "Coverage / metadata gap on listings or knowledge cards.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-dog-friendly-restaurants-near",
+      "query": "Dog friendly restaurants near Salt Rock",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "DISCOVERY",
+        "confidence": 0.91,
+        "signals": [
+          "disc_dog"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 2,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "missing_data",
+        "secondaries": [
+          "ranking_failure"
+        ],
+        "rationale": "Coverage / metadata gap on listings or knowledge cards.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-restaurants-with-generators",
+      "query": "Restaurants with generators in Ballito",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "CONVERSATION",
+        "confidence": 0.35,
+        "signals": [
+          "fallback_low_confidence"
+        ],
+        "legacyWouldShortCircuit": false,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": false
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "misunderstanding",
+        "secondaries": [
+          "missing_data"
+        ],
+        "rationale": "Classifier / intent family mismatch — understanding layer failed first.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "biz-restaurants-with-generators-near",
+      "query": "Restaurants with generators near Salt Rock",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "missing_data",
+        "secondaries": [
+          "ranking_failure",
+          "retrieval_failure"
+        ],
+        "rationale": "Coverage / metadata gap on listings or knowledge cards.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-restaurants-open-after-9pm",
+      "query": "Restaurants open after 9pm in Ballito",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "CONVERSATION",
+        "confidence": 0.35,
+        "signals": [
+          "fallback_low_confidence"
+        ],
+        "legacyWouldShortCircuit": false,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": false
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "misunderstanding",
+        "secondaries": [],
+        "rationale": "Classifier / intent family mismatch — understanding layer failed first.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "biz-restaurants-open-after-9pm-near",
+      "query": "Restaurants open after 9pm near Salt Rock",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "bad_generated_search_query",
+        "secondaries": [
+          "ranking_failure",
+          "retrieval_failure",
+          "missing_data"
+        ],
+        "rationale": "Attribute-heavy ask used a thin classifier draft query without structured constraints/concepts.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "biz-family-friendly-restaurants",
+      "query": "Family friendly restaurants in Ballito",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "CONVERSATION",
+        "confidence": 0.35,
+        "signals": [
+          "fallback_low_confidence"
+        ],
+        "legacyWouldShortCircuit": false,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": false
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "misunderstanding",
+        "secondaries": [
+          "ranking_failure"
+        ],
+        "rationale": "Classifier / intent family mismatch — understanding layer failed first.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "biz-family-friendly-restaurants-near",
+      "query": "Family friendly restaurants near Salt Rock",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "bad_generated_search_query",
+        "secondaries": [
+          "ranking_failure",
+          "missing_data"
+        ],
+        "rationale": "Attribute-heavy ask used a thin classifier draft query without structured constraints/concepts.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "biz-wheelchair-accessible-restaurant-near",
+      "query": "Wheelchair accessible restaurant near Salt Rock",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "bad_generated_search_query",
+        "secondaries": [
+          "ranking_failure",
+          "missing_data"
+        ],
+        "rationale": "Attribute-heavy ask used a thin classifier draft query without structured constraints/concepts.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "biz-restaurant-with-parking",
+      "query": "Restaurant with parking in Ballito",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.9,
+        "signals": [
+          "biz_restaurant"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "bad_generated_search_query",
+        "secondaries": [
+          "ranking_failure",
+          "missing_data"
+        ],
+        "rationale": "Attribute-heavy ask used a thin classifier draft query without structured constraints/concepts.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "biz-restaurant-with-parking-near",
+      "query": "Restaurant with parking near Salt Rock",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "bad_generated_search_query",
+        "secondaries": [
+          "ranking_failure",
+          "retrieval_failure",
+          "missing_data"
+        ],
+        "rationale": "Attribute-heavy ask used a thin classifier draft query without structured constraints/concepts.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "biz-cocktail-bars",
+      "query": "Cocktail bars in Ballito",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.9,
+        "signals": [
+          "biz_bar"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 2,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "taxonomy_failure",
+        "secondaries": [
+          "ranking_failure"
+        ],
+        "rationale": "Wrong entity/category relative to gold — taxonomy or vertical mapping.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-cocktail-bars-near",
+      "query": "Cocktail bars near Salt Rock",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "taxonomy_failure",
+        "secondaries": [
+          "misunderstanding",
+          "ranking_failure",
+          "missing_data"
+        ],
+        "rationale": "Wrong entity/category relative to gold — taxonomy or vertical mapping.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-live-music-venues",
+      "query": "Live music venues in Ballito",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "CONVERSATION",
+        "confidence": 0.35,
+        "signals": [
+          "fallback_low_confidence"
+        ],
+        "legacyWouldShortCircuit": false,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": false
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "misunderstanding",
+        "secondaries": [
+          "taxonomy_failure"
+        ],
+        "rationale": "Classifier / intent family mismatch — understanding layer failed first.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "biz-surf-lessons",
+      "query": "Surf lessons in Ballito",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "biz_activity"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "taxonomy_failure",
+        "secondaries": [
+          "misunderstanding",
+          "ranking_failure",
+          "retrieval_failure"
+        ],
+        "rationale": "Wrong entity/category relative to gold — taxonomy or vertical mapping.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-surf-lessons-near",
+      "query": "Surf lessons near Salt Rock",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "missing_data",
+        "secondaries": [
+          "ranking_failure",
+          "retrieval_failure"
+        ],
+        "rationale": "Coverage / metadata gap on listings or knowledge cards.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-dog-groomer",
+      "query": "Dog groomer in Ballito",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "CONVERSATION",
+        "confidence": 0.35,
+        "signals": [
+          "fallback_low_confidence"
+        ],
+        "legacyWouldShortCircuit": false,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": false
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "misunderstanding",
+        "secondaries": [
+          "taxonomy_failure"
+        ],
+        "rationale": "Classifier / intent family mismatch — understanding layer failed first.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "biz-physiotherapist",
+      "query": "Physiotherapist in Ballito",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "CONVERSATION",
+        "confidence": 0.35,
+        "signals": [
+          "fallback_low_confidence"
+        ],
+        "legacyWouldShortCircuit": false,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": false
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "misunderstanding",
+        "secondaries": [],
+        "rationale": "Classifier / intent family mismatch — understanding layer failed first.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "biz-dentist-near",
+      "query": "Dentist near Salt Rock",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "missing_data",
+        "secondaries": [
+          "ranking_failure",
+          "retrieval_failure"
+        ],
+        "rationale": "Coverage / metadata gap on listings or knowledge cards.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-seafood-restaurant-near",
+      "query": "Seafood restaurant near Salt Rock",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "missing_data",
+        "secondaries": [
+          "ranking_failure"
+        ],
+        "rationale": "Coverage / metadata gap on listings or knowledge cards.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-breakfast-near-the-beach-near",
+      "query": "Breakfast near the beach near Salt Rock",
+      "source": "baseline_worst",
+      "classification": {
+        "queryClass": "DISCOVERY",
+        "confidence": 0.92,
+        "signals": [
+          "disc_breakfast"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 2,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "missing_data",
+        "secondaries": [
+          "ranking_failure"
+        ],
+        "rationale": "Coverage / metadata gap on listings or knowledge cards.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-kids-play",
+      "query": "somewhere my kids can play",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "CONVERSATION",
+        "confidence": 0.35,
+        "signals": [
+          "fallback_low_confidence"
+        ],
+        "legacyWouldShortCircuit": false,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": false
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "missing_facet",
+        "secondaries": [],
+        "rationale": "Open-ended / multi-need ask short-circuited with empty planFacets and a single draft query.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "nl-rainy-toddlers",
+      "query": "rainy day activities with toddlers",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "DISCOVERY",
+        "confidence": 0.91,
+        "signals": [
+          "disc_rainy"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 2,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "nl-propose",
+      "query": "I am going to propose to my wife",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "PLANNING",
+        "confidence": 0.9,
+        "signals": [
+          "plan_proposal",
+          "proposal",
+          "celebration"
+        ],
+        "legacyWouldShortCircuit": false,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": false
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "missing_facet",
+        "secondaries": [],
+        "rationale": "Open-ended / multi-need ask short-circuited with empty planFacets and a single draft query.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "nl-adult-downtime",
+      "query": "day off from the kids for my husband",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "PLANNING",
+        "confidence": 0.9,
+        "signals": [
+          "plan_adult_downtime",
+          "adult_downtime"
+        ],
+        "legacyWouldShortCircuit": false,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": false
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "missing_facet",
+        "secondaries": [],
+        "rationale": "Open-ended / multi-need ask short-circuited with empty planFacets and a single draft query.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "nl-somewhere-nice",
+      "query": "somewhere nice for dinner",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.9,
+        "signals": [
+          "biz_restaurant"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-fun-weekend",
+      "query": "Fun outdoor activities this weekend",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "biz_activity"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-kids-birthday",
+      "query": "its my kids birthday on monday",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "PLANNING",
+        "confidence": 0.9,
+        "signals": [
+          "plan_celebration",
+          "celebration"
+        ],
+        "legacyWouldShortCircuit": false,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": false
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "missing_facet",
+        "secondaries": [],
+        "rationale": "Open-ended / multi-need ask short-circuited with empty planFacets and a single draft query.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "nl-house-party",
+      "query": "planning a house party need food and a DJ",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "biz_local_service"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-what-to-do",
+      "query": "what can we do in Ballito with the family",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "CONVERSATION",
+        "confidence": 0.35,
+        "signals": [
+          "fallback_low_confidence"
+        ],
+        "legacyWouldShortCircuit": false,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": false
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "missing_facet",
+        "secondaries": [],
+        "rationale": "Open-ended / multi-need ask short-circuited with empty planFacets and a single draft query.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "nl-indoor-kids",
+      "query": "indoor play centre for kids",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "CONVERSATION",
+        "confidence": 0.35,
+        "signals": [
+          "fallback_low_confidence"
+        ],
+        "legacyWouldShortCircuit": false,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": false
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 2
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-beach-day",
+      "query": "best beach for a family picnic",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "CONVERSATION",
+        "confidence": 0.35,
+        "signals": [
+          "fallback_low_confidence"
+        ],
+        "legacyWouldShortCircuit": false,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": false
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-date-night",
+      "query": "romantic date night ideas",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "DISCOVERY",
+        "confidence": 0.92,
+        "signals": [
+          "disc_romantic"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 2,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-anniversary",
+      "query": "anniversary dinner and flowers",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "PLANNING",
+        "confidence": 0.9,
+        "signals": [
+          "plan_celebration",
+          "celebration"
+        ],
+        "legacyWouldShortCircuit": false,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": false
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "missing_facet",
+        "secondaries": [],
+        "rationale": "Open-ended / multi-need ask short-circuited with empty planFacets and a single draft query.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "nl-generators",
+      "query": "restaurants with generators",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "CONVERSATION",
+        "confidence": 0.35,
+        "signals": [
+          "fallback_low_confidence"
+        ],
+        "legacyWouldShortCircuit": false,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": false
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-open-late",
+      "query": "places open after 9pm",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "CONVERSATION",
+        "confidence": 0.35,
+        "signals": [
+          "fallback_low_confidence"
+        ],
+        "legacyWouldShortCircuit": false,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": false
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "bad_generated_search_query",
+        "secondaries": [],
+        "rationale": "Attribute-heavy ask used a thin classifier draft query without structured constraints/concepts.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "nl-dog-friendly",
+      "query": "dog friendly cafes near the beach",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "DISCOVERY",
+        "confidence": 0.91,
+        "signals": [
+          "disc_dog"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 2,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-wheelchair",
+      "query": "wheelchair accessible restaurant",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.9,
+        "signals": [
+          "biz_restaurant"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "bad_generated_search_query",
+        "secondaries": [],
+        "rationale": "Attribute-heavy ask used a thin classifier draft query without structured constraints/concepts.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "nl-surf",
+      "query": "where can I learn to surf",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "biz_activity"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-guitar",
+      "query": "i need to restring my guitar",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.92,
+        "signals": [
+          "music_instrument"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 6,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-gaming-mouse",
+      "query": "where can I buy a gaming mouse in Ballito",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.9,
+        "signals": [
+          "product_purchase"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 9,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-plumber",
+      "query": "I need a plumber for a burst pipe",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.95,
+        "signals": [
+          "trade",
+          "plumber"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-taxidermy",
+      "query": "I need a taxidermist in Ballito",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "CONVERSATION",
+        "confidence": 0.35,
+        "signals": [
+          "fallback_low_confidence"
+        ],
+        "legacyWouldShortCircuit": false,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": false
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-events",
+      "query": "whats on this weekend",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "EVENT_SEARCH",
+        "confidence": 0.9,
+        "signals": [
+          "event_search"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 3,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-live-music",
+      "query": "live music tonight",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "EVENT_SEARCH",
+        "confidence": 0.9,
+        "signals": [
+          "event_search"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 3,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-spa",
+      "query": "spa and massage for adults only",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.91,
+        "signals": [
+          "biz_beauty"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 2,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-farm",
+      "query": "animal farm or petting zoo for kids",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "CONVERSATION",
+        "confidence": 0.35,
+        "signals": [
+          "fallback_low_confidence"
+        ],
+        "legacyWouldShortCircuit": false,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": false
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-trampoline",
+      "query": "trampoline park near Ballito",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "biz_activity"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-soft-play",
+      "query": "soft play for toddlers",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "CONVERSATION",
+        "confidence": 0.35,
+        "signals": [
+          "fallback_low_confidence"
+        ],
+        "legacyWouldShortCircuit": false,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": false
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-breakfast-beach",
+      "query": "breakfast with a sea view",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "DISCOVERY",
+        "confidence": 0.92,
+        "signals": [
+          "disc_breakfast"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 2,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "nl-cocktail",
+      "query": "cocktail bar with a view",
+      "source": "curated_nl",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.9,
+        "signals": [
+          "biz_bar"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 2,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-best-breakfast-near",
+      "query": "Best breakfast near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "DISCOVERY",
+        "confidence": 0.92,
+        "signals": [
+          "disc_breakfast"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 2,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-best-steak-near",
+      "query": "Best steak near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-best-thai-near",
+      "query": "Best Thai near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-best-indian-near",
+      "query": "Best Indian near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-best-italian-near",
+      "query": "Best Italian near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-best-burgers-near",
+      "query": "Best burgers near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-coffee-shops-with-wifi-near",
+      "query": "Coffee shops with WiFi near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "DISCOVERY",
+        "confidence": 0.92,
+        "signals": [
+          "disc_coffee"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 2,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-romantic-restaurants",
+      "query": "Romantic restaurants in Ballito",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "DISCOVERY",
+        "confidence": 0.92,
+        "signals": [
+          "disc_romantic"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 2,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-romantic-restaurants-where",
+      "query": "Where can I find romantic restaurants?",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "DISCOVERY",
+        "confidence": 0.92,
+        "signals": [
+          "disc_romantic"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 2,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-dog-friendly-restaurants",
+      "query": "Dog friendly restaurants in Ballito",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "DISCOVERY",
+        "confidence": 0.91,
+        "signals": [
+          "disc_dog"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 2,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-dog-friendly-restaurants-where",
+      "query": "Where can I find dog friendly restaurants?",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "DISCOVERY",
+        "confidence": 0.91,
+        "signals": [
+          "disc_dog"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 2,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-restaurants-with-generators-where",
+      "query": "Where can I find restaurants with generators?",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.86,
+        "signals": [
+          "biz_shopping"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-restaurants-open-after-9pm-where",
+      "query": "Where can I find restaurants open after 9pm?",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.86,
+        "signals": [
+          "biz_shopping"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "bad_generated_search_query",
+        "secondaries": [],
+        "rationale": "Attribute-heavy ask used a thin classifier draft query without structured constraints/concepts.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "biz-family-friendly-restaurants-where",
+      "query": "Where can I find family friendly restaurants?",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.86,
+        "signals": [
+          "biz_shopping"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "bad_generated_search_query",
+        "secondaries": [],
+        "rationale": "Attribute-heavy ask used a thin classifier draft query without structured constraints/concepts.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "biz-wheelchair-accessible-restaurant",
+      "query": "Wheelchair accessible restaurant in Ballito",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.9,
+        "signals": [
+          "biz_restaurant"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "bad_generated_search_query",
+        "secondaries": [],
+        "rationale": "Attribute-heavy ask used a thin classifier draft query without structured constraints/concepts.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "biz-wheelchair-accessible-restaurant-where",
+      "query": "Where can I find wheelchair accessible restaurant?",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.9,
+        "signals": [
+          "biz_restaurant"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "bad_generated_search_query",
+        "secondaries": [],
+        "rationale": "Attribute-heavy ask used a thin classifier draft query without structured constraints/concepts.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "biz-restaurant-with-parking-where",
+      "query": "Where can I find restaurant with parking?",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.9,
+        "signals": [
+          "biz_restaurant"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "bad_generated_search_query",
+        "secondaries": [],
+        "rationale": "Attribute-heavy ask used a thin classifier draft query without structured constraints/concepts.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    },
+    {
+      "id": "biz-cocktail-bars-where",
+      "query": "Where can I find cocktail bars?",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.9,
+        "signals": [
+          "biz_bar"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 2,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-live-music-venues-near",
+      "query": "Live music venues near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-live-music-venues-where",
+      "query": "Where can I find live music venues?",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.86,
+        "signals": [
+          "biz_shopping"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-gel-nails-near",
+      "query": "Gel nails near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-balayage-hair-colour-near",
+      "query": "Balayage hair colour near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-best-spa-near",
+      "query": "Best spa near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-gym-membership-near",
+      "query": "Gym membership near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-surf-lessons-where",
+      "query": "Where can I find surf lessons?",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.86,
+        "signals": [
+          "biz_shopping"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-car-wash-near",
+      "query": "Car wash near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-dog-groomer-near",
+      "query": "Dog groomer near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-dog-groomer-where",
+      "query": "Where can I find dog groomer?",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.86,
+        "signals": [
+          "biz_shopping"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-estate-agent-near",
+      "query": "Estate agent near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-physiotherapist-near",
+      "query": "Physiotherapist near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-physiotherapist-where",
+      "query": "Where can I find physiotherapist?",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.86,
+        "signals": [
+          "biz_shopping"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-dentist",
+      "query": "Dentist in Ballito",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.92,
+        "signals": [
+          "biz_healthcare"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-dentist-where",
+      "query": "Where can I find dentist?",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.92,
+        "signals": [
+          "biz_healthcare"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-pharmacy-near",
+      "query": "Pharmacy near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-vet-near",
+      "query": "Vet near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.94,
+        "signals": [
+          "vet"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 2,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-plumber-near",
+      "query": "Plumber near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.95,
+        "signals": [
+          "trade",
+          "plumber"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-electrician-near",
+      "query": "Electrician near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "BUSINESS_SEARCH",
+        "confidence": 0.95,
+        "signals": [
+          "trade",
+          "electrician"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-italian-restaurant-near",
+      "query": "Italian restaurant near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "PLACE_SEARCH",
+        "confidence": 0.88,
+        "signals": [
+          "place_near"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-cafe-to-work-from-near",
+      "query": "Cafe to work from near Salt Rock",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "DISCOVERY",
+        "confidence": 0.92,
+        "signals": [
+          "disc_coffee"
+        ],
+        "legacyWouldShortCircuit": true,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": true
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 2,
+        "planFacetCount": 0,
+        "constraintSignalCount": 0
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "ranking_failure",
+        "secondaries": [],
+        "rationale": "Default: gold entity retrieved but ranked poorly or Top-1 fragile.",
+        "shortCircuitLikelyCause": false,
+        "extractorWouldHelp": false
+      }
+    },
+    {
+      "id": "biz-kids-menu-restaurants",
+      "query": "Kids menu restaurants in Ballito",
+      "source": "gold_open",
+      "classification": {
+        "queryClass": "CONVERSATION",
+        "confidence": 0.35,
+        "signals": [
+          "fallback_low_confidence"
+        ],
+        "legacyWouldShortCircuit": false,
+        "qiPolicyWouldShortCircuit": false,
+        "currentFlagWouldShortCircuit": false
+      },
+      "shortCircuitDraft": {
+        "draftQueryCount": 1,
+        "planFacetCount": 0,
+        "constraintSignalCount": 1
+      },
+      "extractorDraft": null,
+      "failure": {
+        "primary": "bad_generated_search_query",
+        "secondaries": [],
+        "rationale": "Attribute-heavy ask used a thin classifier draft query without structured constraints/concepts.",
+        "shortCircuitLikelyCause": true,
+        "extractorWouldHelp": true
+      }
+    }
+  ]
+}

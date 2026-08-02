@@ -34,8 +34,8 @@ const fixtures = JSON.parse(readFileSync(fixturesPath, "utf8")) as Array<{
   expectVertical?: string;
 }>;
 
-check("eval fixtures load (≥10 queries)", () => {
-  assert.ok(Array.isArray(fixtures) && fixtures.length >= 10);
+check("eval fixtures load (≥100 queries)", () => {
+  assert.ok(Array.isArray(fixtures) && fixtures.length >= 100);
   for (const f of fixtures) {
     assert.ok(f.id && f.query && f.city);
   }
@@ -85,5 +85,11 @@ check("reply-accuracy fixture present", () => {
   assert.ok(Array.isArray(doc.cases) && doc.cases.length >= 4);
 });
 
+check("routing fixtures present (≥200)", () => {
+  const routingPath = join(process.cwd(), "evals", "routing.json");
+  const routing = JSON.parse(readFileSync(routingPath, "utf8")) as unknown[];
+  assert.ok(Array.isArray(routing) && routing.length >= 200);
+});
+
 console.log(`\n${passed} checks passed.`);
-console.log("Also run: npm run verify:replies");
+console.log("Also run: npm run verify:replies && npm run eval:routing");

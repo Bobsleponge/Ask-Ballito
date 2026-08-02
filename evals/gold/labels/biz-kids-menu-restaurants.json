@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-kids-menu-restaurants",
+  "expectTop1Ids": [
+    "ae5d2780-edba-417c-8a26-0fd08c4148aa"
+  ],
+  "expectTop3Ids": [
+    "ae5d2780-edba-417c-8a26-0fd08c4148aa",
+    "a3bf3a56-cb32-4437-b094-0df8f487e2e7",
+    "df4e850e-8e15-4e76-b8bd-d7c179b9a8b6"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=RocoMamas Ballito Junction | Bird & Co Ballito | Catia's Cafe"
+}

@@ -1,0 +1,11 @@
+{
+  "questionId": "disc-rainy-day-activities",
+  "expectTop1Ids": [
+    "c0ceacb4-0688-416c-9083-ebb8062c91e6"
+  ],
+  "expectTop3Ids": [
+    "c0ceacb4-0688-416c-9083-ebb8062c91e6",
+    "c2ac4b13-f5d5-4f2e-afea-7871cd678209"
+  ],
+  "notes": "curated-from-candidates v1; vertical=attractions; names=Sugar Rush Park | Ballito Horse Trails"
+}

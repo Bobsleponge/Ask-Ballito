@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-best-breakfast-near",
+  "expectTop1Ids": [
+    "6fa9107c-8dff-4255-a3eb-2fdaa728f6de"
+  ],
+  "expectTop3Ids": [
+    "6fa9107c-8dff-4255-a3eb-2fdaa728f6de",
+    "32de6c44-7014-4c69-8ff9-5ba9828dc90b",
+    "ba4aedcd-99c6-4e65-94df-f0c682236a55"
+  ],
+  "notes": "curated-from-candidates v1; vertical=cafes; names=Tip Top Bakery Boutique New Salt Rock City | SKY ?????? Coffee Salt Rock | Mochachos Salt Rock"
+}

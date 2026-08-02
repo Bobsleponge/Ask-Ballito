@@ -1,0 +1,12 @@
+{
+  "questionId": "emg-ambulance-number-now",
+  "expectTop1Ids": [
+    "cc02b6b1-e8d3-4e56-a950-fd11e962fd62"
+  ],
+  "expectTop3Ids": [
+    "cc02b6b1-e8d3-4e56-a950-fd11e962fd62",
+    "8afb476b-862f-4ba8-be8f-5b416dc9f8d0",
+    "55a3976c-9907-42ea-8e53-15ee1cd3066c"
+  ],
+  "notes": "curated-from-candidates v1; vertical=hospitals; names=North Coast Emergency Group | IPSS MEDICAL RESCUE | Animal Zone Veterinary Hospital"
+}

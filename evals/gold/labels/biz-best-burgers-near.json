@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-best-burgers-near",
+  "expectTop1Ids": [
+    "17c0ed8e-a51d-4078-9b9f-ab4556e50f5b"
+  ],
+  "expectTop3Ids": [
+    "17c0ed8e-a51d-4078-9b9f-ab4556e50f5b",
+    "c2b2a41b-1532-4396-b31c-fc03cad579e3",
+    "ba4aedcd-99c6-4e65-94df-f0c682236a55"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Burgerack | Butcher and Wine Restaurant | Mochachos Salt Rock"
+}

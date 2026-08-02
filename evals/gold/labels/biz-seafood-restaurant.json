@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-seafood-restaurant",
+  "expectTop1Ids": [
+    "8a3a68fa-b200-48e5-87ad-0f97b0d6cdf5"
+  ],
+  "expectTop3Ids": [
+    "8a3a68fa-b200-48e5-87ad-0f97b0d6cdf5",
+    "87b54c83-fd12-4150-a65a-2f4575d44a65",
+    "777a6357-2f9a-436a-a41c-21adeee2e783"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Mozambik Ballito | Al Pescatore Italian Restaurant | Polipetto Seafood Restaurant & Sushi Bar"
+}

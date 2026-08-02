@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-plumber",
+  "expectTop1Ids": [
+    "21fcc84e-a22f-4642-a730-10a18931df5a"
+  ],
+  "expectTop3Ids": [
+    "21fcc84e-a22f-4642-a730-10a18931df5a",
+    "6a2598c8-2e5b-4300-83c0-fc92ea897870",
+    "3df07786-346d-401b-a1d9-2f3d03136388"
+  ],
+  "notes": "curated-from-candidates v1; vertical=plumbing; names=Rad Plumbing Ballito | MMC Plumbers | Renewable Plumbing and Solar Experts"
+}

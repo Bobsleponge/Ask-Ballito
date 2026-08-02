@@ -1,0 +1,10 @@
+{
+  "questionId": "biz-vet-near",
+  "expectTop1Ids": [
+    "91ac3b7c-6e50-4944-98a8-27c3ef123348"
+  ],
+  "expectTop3Ids": [
+    "91ac3b7c-6e50-4944-98a8-27c3ef123348"
+  ],
+  "notes": "curated-from-candidates v1; vertical=veterinary; names=Salt Rock Veterinary Clinic"
+}

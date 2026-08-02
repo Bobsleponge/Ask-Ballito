@@ -1,0 +1,11 @@
+{
+  "questionId": "biz-romantic-restaurants-near",
+  "expectTop1Ids": [
+    "ba4aedcd-99c6-4e65-94df-f0c682236a55"
+  ],
+  "expectTop3Ids": [
+    "ba4aedcd-99c6-4e65-94df-f0c682236a55",
+    "c2b2a41b-1532-4396-b31c-fc03cad579e3"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Mochachos Salt Rock | Butcher and Wine Restaurant"
+}

@@ -1,0 +1,12 @@
+{
+  "questionId": "acc-hotels-with-ocean-view",
+  "expectTop1Ids": [
+    "812377cc-5d33-4569-9bbe-7009c0fe38cd"
+  ],
+  "expectTop3Ids": [
+    "812377cc-5d33-4569-9bbe-7009c0fe38cd",
+    "c506d95f-d5fb-40ad-b3fd-3065647e6427",
+    "5113fda3-c7a3-404a-bc14-6ce97f4ce69a"
+  ],
+  "notes": "curated-from-candidates v1; vertical=hotels; names=The Boathouse Luxury Guest House | Le Bezz Guesthouse | Coco de Mer"
+}

@@ -1,0 +1,12 @@
+{
+  "questionId": "acc-family-hotels-near-beach",
+  "expectTop1Ids": [
+    "812377cc-5d33-4569-9bbe-7009c0fe38cd"
+  ],
+  "expectTop3Ids": [
+    "812377cc-5d33-4569-9bbe-7009c0fe38cd",
+    "e56bb617-87e4-4c70-94a2-ff7c7edeaacf",
+    "a8fa90ac-27f7-462e-b86c-205e8fbfd20e"
+  ],
+  "notes": "curated-from-candidates v1; vertical=hotels; names=The Boathouse Luxury Guest House | Le Paradis, Ballito Self Catering Apartments | Ballito Accommodation"
+}

@@ -11,6 +11,9 @@
     },
     "src/app/api/cron/purge-ai-logs/route.ts": {
       "maxDuration": 60
+    },
+    "src/app/api/cron/knowledge-cards/route.ts": {
+      "maxDuration": 120
     }
   },
   "crons": [
@@ -21,6 +24,10 @@
     {
       "path": "/api/cron/purge-ai-logs",
       "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/cron/knowledge-cards",
+      "schedule": "30 4 * * *"
     }
   ]
 }

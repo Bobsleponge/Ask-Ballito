@@ -1,0 +1,12 @@
+{
+  "questionId": "emg-ambulance-number",
+  "expectTop1Ids": [
+    "cc02b6b1-e8d3-4e56-a950-fd11e962fd62"
+  ],
+  "expectTop3Ids": [
+    "cc02b6b1-e8d3-4e56-a950-fd11e962fd62",
+    "8afb476b-862f-4ba8-be8f-5b416dc9f8d0",
+    "4c946dd6-2226-479f-81b0-a6f44c8123fc"
+  ],
+  "notes": "curated-from-candidates v1; vertical=hospitals; names=North Coast Emergency Group | IPSS MEDICAL RESCUE | Ballito Vet Hospital"
+}

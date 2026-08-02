@@ -26,6 +26,11 @@ export interface CompositionRequest {
   titleHint: string | null;
   maxSections: number;
   maxItemsPerSection: number;
+  /**
+   * Hide a section unless it has at least this many businesses.
+   * Celebration / proposal plans use 3 so thin florist/photo slices are not shown.
+   */
+  minItemsPerSection?: number;
   sectionHints: SectionHint[];
   /** How to bucket businesses for grouped_sections. */
   bucketProfile?: "activities" | "special_occasion" | "plan_facets" | "default";

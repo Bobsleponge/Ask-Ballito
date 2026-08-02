@@ -1,6 +1,7 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { embedText, toVectorLiteral } from "@/lib/ai/embeddings";
+import { intelligenceFlags } from "@/config/intelligence-flags";
 import type { City } from "@/config/cities";
 import type { BusinessResult, BusinessPhoto } from "@/lib/schemas/business";
 import { enrichBusinessResults } from "@/lib/business-portal/enrich-business-results";
@@ -16,6 +17,15 @@ export interface BusinessSearchParams {
   city?: City;
   limit?: number;
   similarityThreshold?: number;
+  /** Optional category exact match (SQL filter). */
+  category?: string | null;
+  /** Optional geo filter. */
+  lat?: number | null;
+  lng?: number | null;
+  radiusMeters?: number | null;
+  minRating?: number | null;
+  minRatingCount?: number | null;
+  verifiedOnly?: boolean;
 }
 
 function rowToResult(row: {
@@ -34,7 +44,9 @@ function rowToResult(row: {
   photos: unknown;
   metadata: unknown;
   similarity: number;
+  fused_score?: number;
 }): BusinessResult {
+  const fused = row.fused_score;
   return {
     id: row.id,
     name: row.name,
@@ -50,12 +62,17 @@ function rowToResult(row: {
     lng: row.lng,
     photos: (row.photos as unknown as BusinessPhoto[]) ?? [],
     metadata: (row.metadata as Record<string, unknown>) ?? {},
-    similarity: row.similarity ?? 0,
+    // Prefer fused hybrid score when present so ranking sees FTS+vector signal.
+    similarity:
+      typeof fused === "number" && fused > 0
+        ? Math.min(1, fused * 8)
+        : (row.similarity ?? 0),
   };
 }
 
 /**
- * Semantic business search via pgvector. Ranking is handled by RankingEngine.
+ * Hybrid business search (FTS + pgvector) when HYBRID_SEARCH is enabled;
+ * falls back to vector-only + ILIKE lexical merge.
  */
 export class BusinessSearchService {
   async search(params: BusinessSearchParams): Promise<BusinessResult[]> {
@@ -63,6 +80,13 @@ export class BusinessSearchService {
       query,
       limit = 30,
       similarityThreshold = 0.15,
+      category = null,
+      lat = null,
+      lng = null,
+      radiusMeters = null,
+      minRating = null,
+      minRatingCount = null,
+      verifiedOnly = false,
     } = params;
 
     const citySlug = params.citySlug ?? params.city?.slug;
@@ -78,17 +102,46 @@ export class BusinessSearchService {
     const embedding = await embedText(query);
     const admin = createAdminClient();
 
+    if (intelligenceFlags.hybridSearch()) {
+      const { data, error } = await admin.rpc("hybrid_match_businesses", {
+        p_city_slug: citySlug,
+        query_embedding: toVectorLiteral(embedding),
+        query_text: query,
+        match_count: limit,
+        similarity_threshold: similarityThreshold,
+        p_category: category,
+        p_lat: lat,
+        p_lng: lng,
+        p_radius_meters: radiusMeters,
+        p_min_rating: minRating,
+        p_min_rating_count: minRatingCount,
+        p_verified_only: verifiedOnly,
+      });
+
+      if (!error && data) {
+        const results = data
+          .filter((row) => {
+            const meta = row.metadata as Record<string, unknown> | null;
+            return meta?.seeded !== true;
+          })
+          .map(rowToResult);
+        if (results.length > 0) {
+          return enrichBusinessResults(results.slice(0, limit));
+        }
+        // Fall through to vector path if hybrid returns empty (e.g. pre-migration).
+      }
+    }
+
     const { data, error } = await admin.rpc("match_businesses", {
       p_city_slug: citySlug,
       query_embedding: toVectorLiteral(embedding),
       match_count: limit,
       similarity_threshold: similarityThreshold,
-      p_category: null,
+      p_category: category,
     });
 
     if (error) throw new Error(`match_businesses failed: ${error.message}`);
 
-    // Defense in depth: never surface fake/seed rows even if RPC is stale.
     let results = (data ?? [])
       .filter((row) => {
         const meta = row.metadata as Record<string, unknown> | null;
@@ -160,7 +213,6 @@ export class BusinessSearchService {
       .map((row) =>
         rowToResult({
           ...row,
-          // Lexical hits sit just above threshold so ranker can still re-order.
           similarity: 0.22,
         }),
       );
@@ -177,6 +229,10 @@ export class BusinessSearchService {
     city?: City;
     limitPerQuery?: number;
     similarityThreshold?: number;
+    category?: string | null;
+    lat?: number | null;
+    lng?: number | null;
+    radiusMeters?: number | null;
   }): Promise<BusinessResult[]> {
     const {
       queries,
@@ -199,6 +255,10 @@ export class BusinessSearchService {
           query,
           limit: limitPerQuery,
           similarityThreshold,
+          category: params.category,
+          lat: params.lat,
+          lng: params.lng,
+          radiusMeters: params.radiusMeters,
         }),
       ),
     );
@@ -223,42 +283,63 @@ export class BusinessSearchService {
     id: string;
     citySlug: string;
   }): Promise<BusinessResult | null> {
+    const rows = await this.getByIds({
+      ids: [params.id],
+      citySlug: params.citySlug,
+    });
+    return rows[0] ?? null;
+  }
+
+  /**
+   * Load businesses by id (city-scoped), preserving requested order.
+   * Used by knowledge-card fast path.
+   */
+  async getByIds(params: {
+    ids: string[];
+    citySlug: string;
+  }): Promise<BusinessResult[]> {
+    const ids = [...new Set(params.ids.filter(Boolean))];
+    if (ids.length === 0) return [];
+
     const admin = createAdminClient();
     const { data, error } = await admin
       .from("businesses")
       .select(
         "id, name, category, description, address, phone, website, rating, rating_count, price_level, lat, lng, photos, metadata",
       )
-      .eq("id", params.id)
-      .eq("city_slug", params.citySlug)
-      .maybeSingle();
+      .in("id", ids)
+      .eq("city_slug", params.citySlug);
 
-    if (error) throw new Error(`Failed to load business: ${error.message}`);
-    if (!data) return null;
+    if (error) throw new Error(`Failed to load businesses: ${error.message}`);
 
-    const meta = data.metadata as Record<string, unknown> | null;
-    if (meta?.seeded === true) return null;
+    const byId = new Map<string, BusinessResult>();
+    for (const row of data ?? []) {
+      const meta = row.metadata as Record<string, unknown> | null;
+      if (meta?.seeded === true) continue;
+      byId.set(row.id, {
+        id: row.id,
+        name: row.name,
+        category: row.category,
+        description: row.description,
+        address: row.address,
+        phone: row.phone,
+        website: row.website,
+        rating: row.rating,
+        ratingCount: row.rating_count,
+        priceLevel: row.price_level,
+        lat: row.lat,
+        lng: row.lng,
+        photos: (row.photos as unknown as BusinessPhoto[]) ?? [],
+        metadata: (row.metadata as Record<string, unknown>) ?? {},
+        similarity: 0.85,
+      });
+    }
 
-    const [enriched] = await enrichBusinessResults([
-      {
-        id: data.id,
-        name: data.name,
-        category: data.category,
-        description: data.description,
-        address: data.address,
-        phone: data.phone,
-        website: data.website,
-        rating: data.rating,
-        ratingCount: data.rating_count,
-        priceLevel: data.price_level,
-        lat: data.lat,
-        lng: data.lng,
-        photos: (data.photos as unknown as BusinessPhoto[]) ?? [],
-        metadata: (data.metadata as Record<string, unknown>) ?? {},
-      },
-    ]);
+    const ordered = ids
+      .map((id) => byId.get(id))
+      .filter((b): b is BusinessResult => Boolean(b));
 
-    return enriched ?? null;
+    return enrichBusinessResults(ordered);
   }
 }
 

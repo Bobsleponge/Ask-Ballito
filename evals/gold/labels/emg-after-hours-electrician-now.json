@@ -1,0 +1,12 @@
+{
+  "questionId": "emg-after-hours-electrician-now",
+  "expectTop1Ids": [
+    "e63fb989-efa0-47ad-a949-2c30d5701abb"
+  ],
+  "expectTop3Ids": [
+    "e63fb989-efa0-47ad-a949-2c30d5701abb",
+    "0cfb4d8c-a611-46f1-8e04-93ee7b0049e9",
+    "3e64f58c-3aec-4352-a828-7e02662ce2d6"
+  ],
+  "notes": "curated-from-candidates v1; vertical=electrical; names=Obey Electricals & Solar | Ohms Electrical | Power Trip Electrical"
+}

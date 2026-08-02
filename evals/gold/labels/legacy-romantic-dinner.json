@@ -1,0 +1,12 @@
+{
+  "questionId": "legacy-romantic-dinner",
+  "expectTop1Ids": [
+    "df4e850e-8e15-4e76-b8bd-d7c179b9a8b6"
+  ],
+  "expectTop3Ids": [
+    "df4e850e-8e15-4e76-b8bd-d7c179b9a8b6",
+    "8a3a68fa-b200-48e5-87ad-0f97b0d6cdf5",
+    "872eb332-7c9a-42ad-9c23-565353b04031"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Catia's Cafe | Mozambik Ballito | Abbiocco Italian Restaurant and Deli"
+}

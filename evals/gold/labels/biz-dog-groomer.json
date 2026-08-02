@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-dog-groomer",
+  "expectTop1Ids": [
+    "756b8604-a483-407a-8e94-6ce15461d789"
+  ],
+  "expectTop3Ids": [
+    "756b8604-a483-407a-8e94-6ce15461d789",
+    "b431ac52-6c74-47ad-8872-48d4e0901597",
+    "4c8b9331-5196-45f7-bed1-2ebbd89bc74e"
+  ],
+  "notes": "curated-from-candidates v1; vertical=pet-services; names=Diva Dogs - Mobile Pet Groomers - Ballito and Surrounds | Collar & Comb Dog Grooming Parlour | North Coast Mobile Pet Grooming"
+}

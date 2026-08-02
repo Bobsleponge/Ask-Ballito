@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-best-indian",
+  "expectTop1Ids": [
+    "241b08f0-afa2-4363-afe2-20441eb43c37"
+  ],
+  "expectTop3Ids": [
+    "241b08f0-afa2-4363-afe2-20441eb43c37",
+    "c473cb61-226e-4966-9296-25422c1ceb2e",
+    "a3bf3a56-cb32-4437-b094-0df8f487e2e7"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Curry Culture | Tiger's Milk Ballito | Bird & Co Ballito"
+}

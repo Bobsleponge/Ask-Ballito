@@ -10,6 +10,8 @@ import type { BusinessResult } from "@/lib/schemas/business";
 import type { ExperienceComposition } from "@/services/composition/types";
 import { isProductPurchaseAsk } from "./product-intent";
 import { isMusicInstrumentAsk } from "./music-intent";
+import { isAutoProtectionAsk } from "./auto-protection-intent";
+import { isAutoPartsAsk } from "./auto-parts-intent";
 import { detectTradeKind } from "./trade-query";
 
 const BROWSE_RE =
@@ -91,7 +93,14 @@ export function isLeisureBrowseAsk(text: string): boolean {
 export function isExactNicheAsk(text: string): boolean {
   const t = text.trim();
   if (!t) return false;
-  if (isProductPurchaseAsk(t) || isMusicInstrumentAsk(t)) return true;
+  if (
+    isProductPurchaseAsk(t) ||
+    isMusicInstrumentAsk(t) ||
+    isAutoProtectionAsk(t) ||
+    isAutoPartsAsk(t)
+  ) {
+    return true;
+  }
   if (detectTradeKind(t) != null) return true;
   if (isLeisureBrowseAsk(t)) return false;
 

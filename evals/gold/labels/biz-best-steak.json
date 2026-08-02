@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-best-steak",
+  "expectTop1Ids": [
+    "e6af9b5b-623b-42e1-b23f-022fb1a99d7f"
+  ],
+  "expectTop3Ids": [
+    "e6af9b5b-623b-42e1-b23f-022fb1a99d7f",
+    "ca698ce4-97a3-4079-b364-bebb5e462eed",
+    "c2b2a41b-1532-4396-b31c-fc03cad579e3"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Butcher Boys Ballito | Steers Ballito Junction | Butcher and Wine Restaurant"
+}

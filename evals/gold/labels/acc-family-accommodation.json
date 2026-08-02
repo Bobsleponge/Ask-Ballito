@@ -1,0 +1,12 @@
+{
+  "questionId": "acc-family-accommodation",
+  "expectTop1Ids": [
+    "a8fa90ac-27f7-462e-b86c-205e8fbfd20e"
+  ],
+  "expectTop3Ids": [
+    "a8fa90ac-27f7-462e-b86c-205e8fbfd20e",
+    "812377cc-5d33-4569-9bbe-7009c0fe38cd",
+    "e56bb617-87e4-4c70-94a2-ff7c7edeaacf"
+  ],
+  "notes": "curated-from-candidates v1; vertical=hotels; names=Ballito Accommodation | The Boathouse Luxury Guest House | Le Paradis, Ballito Self Catering Apartments"
+}

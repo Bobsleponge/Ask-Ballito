@@ -73,7 +73,7 @@ function planForAsk(ask: string): PlannerPlan {
       {
         id: "s1",
         capability: "business_search",
-        type: "search",
+        type: "business_search",
         query: ask,
         params: { verticalHint: "restaurants" },
         priority: 1,

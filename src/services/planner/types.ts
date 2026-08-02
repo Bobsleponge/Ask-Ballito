@@ -58,6 +58,17 @@ export interface GoalModel {
   description: string;
 }
 
+export type EnvironmentConstraint = "outdoor" | "indoor" | null;
+
+export type AudienceConstraint =
+  | "solo"
+  | "couple"
+  | "family_kids"
+  | "adults_only"
+  | "group"
+  | "unknown"
+  | null;
+
 export interface ConstraintFlags {
   outdoorSeating: boolean | null;
   seaView: boolean | null;
@@ -73,6 +84,11 @@ export interface ConstraintFlags {
   quiet: boolean | null;
   /** Prefer venues good when it rains (indoor / covered). Set by weather bias. */
   rainFriendly: boolean | null;
+  /** Purpose-built / evidenced outdoor play or outdoor activity. */
+  outdoorPlay: boolean | null;
+  /** Purpose-built / evidenced indoor play. */
+  indoorPlay: boolean | null;
+  wifi: boolean | null;
 }
 
 export interface ConstraintModel {
@@ -85,6 +101,14 @@ export interface ConstraintModel {
   openNow: boolean | null;
   emergency: boolean | null;
   partySize: number | null;
+  /**
+   * Hard environment eligibility (outdoor activities vs indoor/rain).
+   * Distinct from dining-only outdoorSeating.
+   */
+  environmentRequired: EnvironmentConstraint;
+  environmentPreferred: EnvironmentConstraint;
+  /** QI audience carried for composition / TRACE; mapped into required flags too. */
+  audienceRequired: AudienceConstraint;
 }
 
 export interface EntityModel {
@@ -122,6 +146,10 @@ export interface PlanFacet {
   label: string;
   searchQuery: string;
   verticalHint: string | null;
+  /** Multi-concept retrieval needles for this facet (Query Intelligence). */
+  searchConcepts?: string[];
+  /** When true, facet need is a hard eligibility / composition requirement. */
+  hard?: boolean;
 }
 
 export interface PlannerDraft {
@@ -135,6 +163,10 @@ export interface PlannerDraft {
   /** Dynamic celebration facets — empty for non-event asks. */
   planFacets: PlanFacet[];
   notes: string | null;
+  /** Top-level retrieval concepts from Query Intelligence (optional). */
+  searchConcepts?: string[];
+  /** Hard venue/type exclusions from Query Intelligence (optional). */
+  hardExclusions?: string[];
 }
 
 export interface PlannerPlan {
@@ -217,6 +249,9 @@ export function emptyConstraintFlags(): ConstraintFlags {
     dinner: null,
     quiet: null,
     rainFriendly: null,
+    outdoorPlay: null,
+    indoorPlay: null,
+    wifi: null,
   };
 }
 
@@ -231,6 +266,9 @@ export function emptyConstraintModel(): ConstraintModel {
     openNow: null,
     emergency: null,
     partySize: null,
+    environmentRequired: null,
+    environmentPreferred: null,
+    audienceRequired: null,
   };
 }
 

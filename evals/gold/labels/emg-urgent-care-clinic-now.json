@@ -1,0 +1,12 @@
+{
+  "questionId": "emg-urgent-care-clinic-now",
+  "expectTop1Ids": [
+    "0cfca90e-23cb-4c89-b6ca-9e9355ddf759"
+  ],
+  "expectTop3Ids": [
+    "0cfca90e-23cb-4c89-b6ca-9e9355ddf759",
+    "a28a6dc8-b5aa-4b9b-b72f-fb7397e005d8",
+    "e0244706-222b-49b4-94df-a5e62921b02c"
+  ],
+  "notes": "curated-from-candidates v1; vertical=doctors; names=CliniCare Medical Centre | Car Care Clinic Ballito | Family Dental Care - Durban North (Invisalign Provider)"
+}

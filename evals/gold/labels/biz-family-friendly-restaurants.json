@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-family-friendly-restaurants",
+  "expectTop1Ids": [
+    "1ed64d59-8454-4e78-a5a4-ce8ed6d25c98"
+  ],
+  "expectTop3Ids": [
+    "1ed64d59-8454-4e78-a5a4-ce8ed6d25c98",
+    "3ec69f16-de2a-43f0-80fe-7668f5106537",
+    "ae5d2780-edba-417c-8a26-0fd08c4148aa"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Skippies Restaurant & Bar Ballito | Kuta-Kola | RocoMamas Ballito Junction"
+}

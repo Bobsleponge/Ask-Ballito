@@ -8,13 +8,20 @@ import {
   enrichCelebrationFacets,
   executionPlanFromFacets,
   filterCelebrationAudienceNoise,
+  filterElevatedCasualDining,
+  filterPlanFacetVerticalFit,
+  isAdultDowntimeAsk,
   isAdultMilestoneAsk,
   isCelebrationAsk,
   isDiningPlanFacet,
   isElevatedCelebrationAsk,
   isKidsCelebrationAsk,
+  isProposalAsk,
   sanitizePlanFacets,
+  CELEBRATION_SECTION_ITEM_CAP,
+  CELEBRATION_SECTION_ITEM_MIN,
 } from "../src/services/planner/special-occasion-intent";
+import { filterByVerticalHint } from "../src/lib/business-vertical-filter";
 import { composePlanFacetSections } from "../src/services/composition/strategies/plan-facets";
 import { resolvePlannerPlan } from "../src/services/planner/resolver";
 import { buildConversationContext } from "../src/services/planner/context";
@@ -127,6 +134,44 @@ check("proposal facets include jewellery step", () => {
   assert.ok(steps.some((s) => s.params.verticalHint === "jewellery"));
 });
 
+check("thin proposal LLM facets expand to a full day plan", () => {
+  assert.equal(isProposalAsk("Plan my proposal for Friday"), true);
+  const thin: PlanFacet[] = [
+    {
+      id: "dinner",
+      label: "Romantic Dinner",
+      searchQuery: "romantic dinner Ballito",
+      verticalHint: "restaurants",
+    },
+    {
+      id: "flowers",
+      label: "Proposal Florist",
+      searchQuery: "florist Ballito",
+      verticalHint: "florists",
+    },
+  ];
+  const enriched = enrichCelebrationFacets(thin, "Plan my proposal for Friday");
+  const hints = enriched.map((f) => f.verticalHint);
+  assert.ok(hints.includes("jewellery"), `got ${hints.join(",")}`);
+  assert.ok(hints.includes("florists"), `got ${hints.join(",")}`);
+  assert.ok(hints.includes("photography"), `got ${hints.join(",")}`);
+  assert.ok(hints.includes("attractions"), `got ${hints.join(",")}`);
+  assert.ok(hints.includes("restaurants"), `got ${hints.join(",")}`);
+  assert.ok(hints.includes("hotels"), `got ${hints.join(",")}`);
+  assert.ok(enriched.length >= 5);
+  assert.equal(CELEBRATION_SECTION_ITEM_CAP, 9);
+  assert.equal(CELEBRATION_SECTION_ITEM_MIN, 3);
+  const steps = executionPlanFromFacets(enriched);
+  assert.ok(steps.every((s) => (s.params.limit as number) >= 9));
+});
+
+check("empty proposal facets get default checklist", () => {
+  const enriched = enrichCelebrationFacets([], "I want to propose in Ballito");
+  assert.ok(enriched.length >= 5);
+  assert.ok(enriched.some((f) => f.verticalHint === "photography"));
+  assert.ok(enriched.some((f) => f.verticalHint === "jewellery"));
+});
+
 check("resolver uses kids facets — not The ring", () => {
   const draft: PlannerDraft = {
     intent: "kids birthday",
@@ -200,12 +245,70 @@ check("compose sections from facet provenance", () => {
     planFacets: kidsFacets,
     maxSections: 6,
     maxItemsPerSection: 4,
+    minItemsPerSection: 1,
   };
   const sections = composePlanFacetSections(ranked, request);
   const titles = sections.map((s) => s.title);
   assert.ok(titles.includes("Party venues & play"));
   assert.ok(titles.includes("Birthday cake"));
   assert.ok(!titles.some((t) => /ring/i.test(t)));
+});
+
+check("plan facets omit sections below the min-of-3 rule", () => {
+  const facets: PlanFacet[] = [
+    {
+      id: "flowers",
+      label: "Proposal florist",
+      searchQuery: "florist",
+      verticalHint: "florists",
+    },
+    {
+      id: "dinner",
+      label: "Romantic dinner",
+      searchQuery: "romantic dinner",
+      verticalHint: "restaurants",
+    },
+  ];
+  const ranked = [
+    biz({
+      id: "f1",
+      name: "Fancy Flowers",
+      metadata: { planFacetId: "flowers", verticals: ["florists"] },
+    }),
+    biz({
+      id: "d1",
+      name: "Dinner One",
+      metadata: { planFacetId: "dinner", verticals: ["restaurants"] },
+    }),
+    biz({
+      id: "d2",
+      name: "Dinner Two",
+      metadata: { planFacetId: "dinner", verticals: ["restaurants"] },
+    }),
+    biz({
+      id: "d3",
+      name: "Dinner Three",
+      metadata: { planFacetId: "dinner", verticals: ["restaurants"] },
+    }),
+    biz({
+      id: "d4",
+      name: "Dinner Four",
+      metadata: { planFacetId: "dinner", verticals: ["restaurants"] },
+    }),
+  ];
+  const sections = composePlanFacetSections(ranked, {
+    ...defaultCompositionRequest("grouped_sections"),
+    bucketProfile: "plan_facets",
+    planFacets: facets,
+    maxSections: 6,
+    maxItemsPerSection: 9,
+    // default min is 3 for plan_facets
+  });
+  assert.ok(!sections.some((s) => s.title === "Proposal florist"));
+  const dinner = sections.find((s) => s.title === "Romantic dinner");
+  assert.ok(dinner);
+  assert.ok(dinner!.businessIds.length >= 3);
+  assert.ok(dinner!.businessIds.length <= 9);
 });
 
 check("family filter drops jewellers keeps play", () => {
@@ -486,13 +589,14 @@ check("celebration keeps checklist facet labels not vibe buckets", () => {
     planFacets: facets,
     maxSections: 6,
     maxItemsPerSection: 6,
+    minItemsPerSection: 1,
   };
   const sections = composePlanFacetSections(ranked, request);
   const titles = sections.map((s) => s.title);
   assert.deepEqual(titles, ["Entertainment", "Birthday cake", "Birthday dinner"]);
   assert.ok(!titles.some((t) => /Fine dining|Sea views|Date night/i.test(t)));
   assert.equal(executionPlanFromFacets(facets)[2]?.params.limit, 30);
-  assert.equal(executionPlanFromFacets(facets)[0]?.params.limit, 8);
+  assert.equal(executionPlanFromFacets(facets)[0]?.params.limit, 18);
 });
 
 check("adult dining-only facets enrich to full party plan", () => {
@@ -733,12 +837,438 @@ check("restaurants mis-tagged to venue move into dinner section", () => {
     planFacets: facets,
     maxSections: 6,
     maxItemsPerSection: 8,
+    minItemsPerSection: 1,
   });
   const dinner = sections.find((s) => s.title === "Birthday Dinner");
   const venue = sections.find((s) => s.title === "Party Venue");
   assert.ok(dinner?.businessIds.includes("e454bf20-4286-4a14-91e5-1ff1b8684b51"));
   assert.ok(!venue?.businessIds.includes("e454bf20-4286-4a14-91e5-1ff1b8684b51"));
   assert.ok(venue?.businessIds.includes("venue1"));
+});
+
+check("nightlife hint aliases to bars", () => {
+  const cleaned = sanitizePlanFacets([
+    {
+      id: "drinks",
+      label: "Cocktails",
+      searchQuery: "cocktail bar Ballito",
+      verticalHint: "nightlife",
+    },
+  ]);
+  assert.equal(cleaned[0]?.verticalHint, "bars");
+  assert.equal(isDiningPlanFacet(cleaned[0]!), true);
+});
+
+check("scenic facets default to attractions", () => {
+  const cleaned = sanitizePlanFacets([
+    {
+      id: "scenic",
+      label: "Scenic Spots",
+      searchQuery: "scenic backdrop peaceful vibes Ballito",
+      verticalHint: null,
+    },
+  ]);
+  assert.equal(cleaned[0]?.verticalHint, "attractions");
+});
+
+check("sea-view dinner stays restaurants not attractions", () => {
+  const cleaned = sanitizePlanFacets([
+    {
+      id: "dinner",
+      label: "Romantic Dinner",
+      searchQuery: "romantic restaurant sea view Ballito",
+      verticalHint: null,
+    },
+  ]);
+  assert.equal(cleaned[0]?.verticalHint, "restaurants");
+});
+
+check("facet fit drops junk from photo florist dinner scenic", () => {
+  const facets: PlanFacet[] = [
+    {
+      id: "dinner",
+      label: "Romantic Dinner",
+      searchQuery: "romantic restaurant",
+      verticalHint: "restaurants",
+    },
+    {
+      id: "photo",
+      label: "Proposal Photography",
+      searchQuery: "proposal photographer",
+      verticalHint: "photography",
+    },
+    {
+      id: "flowers",
+      label: "Floral Arrangements",
+      searchQuery: "florist bouquet",
+      verticalHint: "florists",
+    },
+    {
+      id: "scenic",
+      label: "Scenic Spots",
+      searchQuery: "scenic backdrop",
+      verticalHint: "attractions",
+    },
+  ];
+  const pool = [
+    biz({
+      id: "abbiocco",
+      name: "Abbiocco Italian Restaurant and Deli",
+      category: "Italian Restaurant",
+      metadata: { planFacetId: "dinner", verticals: ["restaurants"] },
+    }),
+    biz({
+      id: "spa-dinner",
+      name: "Blissful Massage",
+      category: "Massage",
+      metadata: { planFacetId: "dinner", verticals: ["spas"] },
+    }),
+    biz({
+      id: "photo-ok",
+      name: "Precision Photography Ballito",
+      category: "Photographer",
+      metadata: { planFacetId: "photo", verticals: ["photography"] },
+    }),
+    biz({
+      id: "attorney",
+      name: "Attorneys Ballito - G Grobbelaar Inc",
+      category: "Attorney",
+      metadata: { planFacetId: "photo", verticals: ["legal"] },
+    }),
+    biz({
+      id: "handyman",
+      name: "The Ballito Handyman",
+      category: "General Contractor",
+      metadata: { planFacetId: "photo", verticals: ["handyman"] },
+    }),
+    biz({
+      id: "florist-ok",
+      name: "Fancy Flowers and Gifts",
+      category: "Florist",
+      metadata: { planFacetId: "flowers", verticals: ["florists"] },
+    }),
+    biz({
+      id: "funeral",
+      name: "Ballito Funeral Directors",
+      category: "Funeral Home",
+      metadata: { planFacetId: "flowers", verticals: ["funeral"] },
+    }),
+    biz({
+      id: "curtains",
+      name: "DECO BALLITO Curtains Blinds Shutters",
+      category: "Curtain store",
+      metadata: { planFacetId: "flowers", verticals: ["blinds-flooring"] },
+    }),
+    biz({
+      id: "beach",
+      name: "Ballito Beach Viewpoint",
+      category: "Tourist attraction",
+      metadata: { planFacetId: "scenic", verticals: ["attractions"] },
+    }),
+    biz({
+      id: "zenju",
+      name: "ZENJU DAY SPA BALLITO",
+      category: "Spa",
+      metadata: { planFacetId: "scenic", verticals: ["spas"] },
+    }),
+    biz({
+      id: "accommodation",
+      name: "Ballito Accommodation",
+      category: "Travel Agency",
+      metadata: { planFacetId: "scenic", verticals: ["travel"] },
+    }),
+  ];
+  const kept = filterPlanFacetVerticalFit(pool, facets).map((b) => b.id);
+  assert.deepEqual(
+    kept.sort(),
+    ["abbiocco", "beach", "florist-ok", "photo-ok"].sort(),
+  );
+});
+
+check("elevated casual drops Mozambik Tiger Milk Skippies", () => {
+  const facets: PlanFacet[] = [
+    {
+      id: "dinner",
+      label: "Romantic Dinner",
+      searchQuery: "romantic dinner",
+      verticalHint: "restaurants",
+    },
+  ];
+  const kept = filterElevatedCasualDining(
+    [
+      biz({
+        id: "moz",
+        name: "Mozambik Ballito",
+        category: "Restaurant",
+        metadata: { planFacetId: "dinner" },
+      }),
+      biz({
+        id: "tiger",
+        name: "Tiger's Milk Ballito",
+        category: "Restaurant",
+        metadata: { planFacetId: "dinner" },
+      }),
+      biz({
+        id: "skip",
+        name: "Skippies Restaurant & Bar Ballito",
+        category: "Family Restaurant",
+        metadata: { planFacetId: "dinner" },
+      }),
+      biz({
+        id: "fine",
+        name: "45 on Eat Street",
+        category: "Fine Dining Restaurant",
+        metadata: { planFacetId: "dinner" },
+      }),
+    ],
+    { elevated: true, facets },
+  );
+  assert.deepEqual(
+    kept.map((b) => b.id),
+    ["fine"],
+  );
+});
+
+check("restaurants vertical filter drops spa from dining deepen pool", () => {
+  const filtered = filterByVerticalHint(
+    [
+      biz({
+        id: "spa",
+        name: "Blissful Massage",
+        category: "Massage",
+        metadata: { verticals: ["spas"] },
+      }),
+      biz({
+        id: "rest",
+        name: "Abbiocco",
+        category: "Italian Restaurant",
+        metadata: { verticals: ["restaurants"] },
+      }),
+      biz({
+        id: "attorney",
+        name: "Attorneys Ballito",
+        category: "Attorney",
+        metadata: { verticals: ["legal"] },
+      }),
+    ],
+    "restaurants",
+  );
+  assert.deepEqual(
+    filtered.map((b) => b.id),
+    ["rest"],
+  );
+});
+
+check("Pass 2 does not soft-assign junk into photography", () => {
+  const facets: PlanFacet[] = [
+    {
+      id: "photo",
+      label: "Proposal Photography",
+      searchQuery: "proposal photographer Ballito",
+      verticalHint: "photography",
+    },
+    {
+      id: "dinner",
+      label: "Romantic Dinner",
+      searchQuery: "romantic dinner",
+      verticalHint: "restaurants",
+    },
+  ];
+  const ranked = [
+    biz({
+      id: "photo-ok",
+      name: "Bowditch Photography",
+      category: "Photographer",
+      metadata: { planFacetId: "photo", verticals: ["photography"] },
+    }),
+    biz({
+      id: "recruit",
+      name: "Talented Recruitment Specialists",
+      category: "Employment agency",
+      description: "specialists services Ballito",
+      // no planFacetId — would soft-match "special" tokens historically
+    }),
+  ];
+  const sections = composePlanFacetSections(ranked, {
+    ...defaultCompositionRequest("grouped_sections"),
+    bucketProfile: "plan_facets",
+    planFacets: facets,
+    maxSections: 6,
+    maxItemsPerSection: 4,
+    minItemsPerSection: 1,
+  });
+  const photo = sections.find((s) => s.title === "Proposal Photography");
+  assert.ok(photo?.businessIds.includes("photo-ok"));
+  assert.ok(!photo?.businessIds.includes("recruit"));
+});
+
+check("adult downtime: detect kids-free / spouse day-off ask", () => {
+  assert.equal(
+    isAdultDowntimeAsk("my husband needs a special day off from the kids"),
+    true,
+  );
+  assert.equal(isCelebrationAsk("my husband needs a special day off from the kids"), false);
+  assert.equal(
+    celebrationTitleHint("my husband needs a special day off from the kids"),
+    "A day off for him",
+  );
+  assert.equal(isAdultDowntimeAsk("plan a birthday party for my son"), false);
+  assert.equal(isAdultDowntimeAsk("anniversary dinner without the kids"), false);
+});
+
+check("adult downtime: rewrite facets away from celebration / mall junk", () => {
+  const bad: PlanFacet[] = [
+    {
+      id: "relaxing",
+      label: "Relaxing Activities",
+      searchQuery: "spa massage Ballito",
+      verticalHint: null,
+    },
+    {
+      id: "quiet",
+      label: "Quiet Restaurants",
+      searchQuery: "quiet restaurants Ballito",
+      verticalHint: "restaurants",
+    },
+    {
+      id: "gents",
+      label: "Gentlemen's Activities",
+      searchQuery: "gentlemen activities Ballito",
+      verticalHint: null,
+    },
+  ];
+  const out = enrichCelebrationFacets(
+    bad,
+    "my husband needs a special day off from the kids",
+  );
+  assert.ok(out.length >= 2 && out.length <= 3);
+  assert.ok(out.some((f) => f.verticalHint === "spas"));
+  assert.ok(out.some(isDiningPlanFacet));
+  assert.ok(
+    out.some((f) => f.verticalHint === "attractions" || /golf|outdoor/i.test(f.label)),
+  );
+  assert.ok(!out.some((f) => /gentlemen/i.test(f.label)));
+});
+
+check("adult downtime: drop Steers and mall/cleaning from facets", () => {
+  const facets = enrichCelebrationFacets(
+    [],
+    "day off from the kids for my husband",
+  );
+  const pool = [
+    biz({
+      id: "spa1",
+      name: "ZENJU DAY SPA BALLITO",
+      category: "Spa",
+      metadata: { planFacetId: "spa_unwind", verticals: ["spas"] },
+    }),
+    biz({
+      id: "steers",
+      name: "Steers Ballito Junction",
+      category: "Hamburger Restaurant",
+      metadata: { planFacetId: "quiet_dining", verticals: ["restaurants"] },
+    }),
+    biz({
+      id: "abbiocco",
+      name: "Abbiocco Italian Restaurant and Deli",
+      category: "Italian Restaurant",
+      metadata: { planFacetId: "quiet_dining", verticals: ["restaurants"] },
+    }),
+    biz({
+      id: "mall",
+      name: "Ballito Lifestyle Centre",
+      category: "Shopping Mall",
+      metadata: { planFacetId: "outdoors", verticals: ["shopping"] },
+    }),
+    biz({
+      id: "clean",
+      name: "WE CLEAN BALLITO",
+      category: "Services",
+      metadata: { planFacetId: "outdoors", verticals: ["cleaning"] },
+    }),
+    biz({
+      id: "horse",
+      name: "Ballito Horse Trails",
+      category: "Sports Activity Location",
+      metadata: { planFacetId: "outdoors", verticals: ["attractions"] },
+    }),
+  ];
+  let filtered = filterElevatedCasualDining(pool, {
+    elevated: true,
+    facets,
+  });
+  filtered = filterPlanFacetVerticalFit(filtered, facets);
+  filtered = filterCelebrationAudienceNoise(filtered, {
+    adultDowntime: true,
+    familyFriendly: false,
+    facets,
+  });
+  const names = filtered.map((b) => b.name);
+  assert.ok(names.includes("ZENJU DAY SPA BALLITO"));
+  assert.ok(names.includes("Abbiocco Italian Restaurant and Deli"));
+  assert.ok(names.includes("Ballito Horse Trails"));
+  assert.ok(!names.includes("Steers Ballito Junction"));
+  assert.ok(!names.includes("Ballito Lifestyle Centre"));
+  assert.ok(!names.includes("WE CLEAN BALLITO"));
+});
+
+check("adult downtime: resolver clears familyFriendly and celebration title", () => {
+  const draft: PlannerDraft = {
+    intent: "adult_downtime",
+    goal: {
+      primary: "plan_special_occasion",
+      description: "day off for husband without kids",
+    },
+    confidence: 0.9,
+    candidateWorkflows: ["special_occasion"],
+    entities: {
+      ...emptyEntityModel(),
+      people: ["husband", "kids"],
+    },
+    constraints: emptyConstraintModel(),
+    draftQueries: ["spa Ballito"],
+    planFacets: [
+      {
+        id: "relaxing",
+        label: "Relaxing Activities",
+        searchQuery: "spa",
+        verticalHint: null,
+      },
+      {
+        id: "quiet",
+        label: "Quiet Restaurants",
+        searchQuery: "restaurants",
+        verticalHint: "restaurants",
+      },
+      {
+        id: "gents",
+        label: "Gentlemen's Activities",
+        searchQuery: "activities",
+        verticalHint: null,
+      },
+    ],
+    notes: "",
+  };
+  const ctx = buildConversationContext({
+    city,
+    history: [],
+    stickySummary: null,
+  });
+  const plan = resolvePlannerPlan(
+    draft,
+    ctx,
+    "my husband needs a special day off from the kids",
+  );
+  assert.equal(plan.workflow, "special_occasion");
+  assert.equal(plan.constraints.preferred.familyFriendly, false);
+  assert.equal(plan.constraints.preferred.quiet, true);
+  assert.equal(plan.composition.titleHint, "A day off for him");
+  assert.ok(
+    plan.diagnostics.rulesApplied.some((r) =>
+      /adult_downtime/.test(r),
+    ),
+  );
+  assert.ok(!/celebration/i.test(plan.composition.titleHint ?? ""));
 });
 
 console.log(`\n${passed} checks passed.`);

@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-best-coffee",
+  "expectTop1Ids": [
+    "fb1e38a3-2e57-4611-928f-5686e511338c"
+  ],
+  "expectTop3Ids": [
+    "fb1e38a3-2e57-4611-928f-5686e511338c",
+    "7eee7748-6d92-4e49-9a9e-16f4c5849901",
+    "123981e8-dece-41e3-b2bd-d155a6812e1e"
+  ],
+  "notes": "curated-from-candidates v1; vertical=cafes; names=Local Coffee Ballito | Coffee LAB | Mia Coquina Cafe"
+}

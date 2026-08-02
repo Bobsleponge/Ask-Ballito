@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "description": "Gold understanding contracts for Query Intelligence evaluation (goal/domain/constraints/facets/concepts/clarify).",
+  "cases": [
+    {
+      "id": "qi-kids-play",
+      "query": "somewhere my kids can play",
+      "city": "ballito",
+      "expectGoalPrimaryIncludes": ["kids", "play", "family", "activity"],
+      "expectDomains": ["activity", "business", "place"],
+      "expectAudience": "family_kids",
+      "expectMinSearchConcepts": 3,
+      "expectConceptHints": ["play", "trampoline", "soft", "park", "indoor", "farm", "adventure"],
+      "expectNeedsClarification": false,
+      "expectHardExclusionsAbsent": false
+    },
+    {
+      "id": "qi-propose",
+      "query": "I am going to propose to my wife",
+      "city": "ballito",
+      "expectGoalPrimaryIncludes": ["propos", "engagement", "special", "occasion"],
+      "expectDomains": ["business", "service"],
+      "expectAudience": "couple",
+      "expectMinFacets": 2,
+      "expectConceptHints": ["ring", "jewel", "flor", "photo", "dinner", "scenic"],
+      "expectNeedsClarification": false,
+      "forbidConceptHints": ["laser", "soft play", "kids party"]
+    },
+    {
+      "id": "qi-adult-downtime",
+      "query": "day off from the kids for my husband",
+      "city": "ballito",
+      "expectGoalPrimaryIncludes": ["adult", "downtime", "spa", "leisure"],
+      "expectAudience": "adults_only",
+      "expectMinSearchConcepts": 2,
+      "expectConceptHints": ["spa", "massage", "golf", "dining", "quiet"],
+      "expectHardExclusionHints": ["kids", "soft play", "mall"],
+      "expectNeedsClarification": false
+    },
+    {
+      "id": "qi-dog-friendly",
+      "query": "dog friendly cafes near the beach",
+      "city": "ballito",
+      "expectGoalPrimaryIncludes": ["dog", "pet", "cafe", "restaurant"],
+      "expectDomains": ["business"],
+      "expectMinSearchConcepts": 1,
+      "expectConceptHints": ["dog", "pet", "cafe"],
+      "expectConstraintFlags": ["petFriendly"],
+      "expectNeedsClarification": false
+    },
+    {
+      "id": "qi-house-party",
+      "query": "planning a house party need food and a DJ",
+      "city": "ballito",
+      "expectMinFacets": 2,
+      "expectConceptHints": ["cater", "platter", "DJ", "entertainment", "party"],
+      "expectHardExclusionHints": ["hotel", "guest house", "wedding venue"],
+      "expectNeedsClarification": false
+    },
+    {
+      "id": "qi-plumber",
+      "query": "I need a plumber for a burst pipe",
+      "city": "ballito",
+      "expectGoalPrimaryIncludes": ["plumb", "service", "trade"],
+      "expectDomains": ["service", "business"],
+      "expectMinSearchConcepts": 1,
+      "expectConceptHints": ["plumb"],
+      "expectNeedsClarification": false
+    },
+    {
+      "id": "qi-gaming-mouse",
+      "query": "where can I buy a gaming mouse in Ballito",
+      "city": "ballito",
+      "expectGoalPrimaryIncludes": ["buy", "product", "gaming", "electron"],
+      "expectDomains": ["business"],
+      "expectConceptHints": ["gaming", "mouse", "electron"],
+      "expectNeedsClarification": false
+    },
+    {
+      "id": "qi-rainy-toddlers",
+      "query": "rainy day activities with toddlers",
+      "city": "ballito",
+      "expectAudience": "family_kids",
+      "expectMinSearchConcepts": 2,
+      "expectConceptHints": ["indoor", "soft play", "toddler", "rain"],
+      "expectConstraintFlags": ["rainFriendly", "kidsArea", "familyFriendly"],
+      "expectNeedsClarification": false
+    },
+    {
+      "id": "qi-breakfast-sea",
+      "query": "breakfast with a sea view",
+      "city": "ballito",
+      "expectDomains": ["business"],
+      "expectConceptHints": ["breakfast", "brunch", "sea", "view"],
+      "expectConstraintFlags": ["breakfast", "seaView"],
+      "expectNeedsClarification": false
+    },
+    {
+      "id": "qi-vague",
+      "query": "somewhere nice",
+      "city": "ballito",
+      "expectNeedsClarification": true,
+      "allowEitherClarifyOrLowConfidence": true
+    },
+    {
+      "id": "qi-outdoor-kids",
+      "query": "Outdoor activities for children around Ballito",
+      "city": "ballito",
+      "expectGoalPrimaryIncludes": ["outdoor", "kids", "children", "activ", "family"],
+      "expectDomains": ["activity", "business", "place"],
+      "expectAudience": "family_kids",
+      "expectMinSearchConcepts": 2,
+      "expectConceptHints": ["outdoor", "park", "play", "family", "adventure", "farm", "trail"],
+      "forbidConceptHints": ["soft play", "indoor play centre", "cinema", "gym"],
+      "expectConstraintFlags": ["familyFriendly"],
+      "expectNeedsClarification": false
+    },
+    {
+      "id": "qi-dog-outdoor-breakfast",
+      "query": "dog-friendly breakfast outdoors",
+      "city": "ballito",
+      "expectDomains": ["business"],
+      "expectConceptHints": ["dog", "pet", "breakfast", "outdoor"],
+      "expectConstraintFlags": ["petFriendly", "breakfast"],
+      "expectNeedsClarification": false
+    },
+    {
+      "id": "qi-quiet-wifi",
+      "query": "quiet coffee shops with WiFi",
+      "city": "ballito",
+      "expectDomains": ["business"],
+      "expectConceptHints": ["quiet", "coffee", "wifi", "cafe"],
+      "expectConstraintFlags": ["quiet", "wifi"],
+      "expectNeedsClarification": false
+    }
+  ]
+}

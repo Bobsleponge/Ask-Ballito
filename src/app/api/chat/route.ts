@@ -244,6 +244,8 @@ export async function POST(request: NextRequest) {
       llmInvoked,
       clarification,
       stream,
+      telemetry,
+      queryTrace,
     } = await conversationService.handle({
       city,
       message: parsed.data.message,
@@ -269,6 +271,15 @@ export async function POST(request: NextRequest) {
           workflow: workflowId,
           llmInvoked,
           clarification,
+          routing: {
+            queryClass: telemetry.queryClass,
+            primaryRoute: telemetry.primaryRoute,
+            cacheHit: telemetry.cacheHit,
+            llmUsed: telemetry.llmUsed,
+            extractorSkipped: telemetry.extractorSkipped,
+            narrationSkipped: telemetry.narrationSkipped,
+            retrievalMode: telemetry.retrievalMode,
+          },
         };
 
         // Trim planner internals in production (reduce attack-surface / info leak).
@@ -284,6 +295,7 @@ export async function POST(request: NextRequest) {
             locationRef: plan.locationRef?.label ?? null,
             compositionStrategy: plan.composition.strategy,
           };
+          if (queryTrace) meta.queryTrace = queryTrace;
         } else {
           meta.plan = {
             workflow: plan.workflow,

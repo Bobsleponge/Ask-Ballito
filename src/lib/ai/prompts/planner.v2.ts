@@ -33,6 +33,9 @@ const constraintFlagsSchema = z.object({
   dinner: z.boolean().nullable(),
   quiet: z.boolean().nullable(),
   rainFriendly: z.boolean().nullable().optional().default(null),
+  outdoorPlay: z.boolean().nullable().optional().default(null),
+  indoorPlay: z.boolean().nullable().optional().default(null),
+  wifi: z.boolean().nullable().optional().default(null),
 });
 
 const planFacetSchema = z.object({
@@ -73,6 +76,28 @@ export const plannerDraftSchema = z.object({
     openNow: z.boolean().nullable(),
     emergency: z.boolean().nullable(),
     partySize: z.number().nullable(),
+    environmentRequired: z
+      .enum(["outdoor", "indoor"])
+      .nullable()
+      .optional()
+      .default(null),
+    environmentPreferred: z
+      .enum(["outdoor", "indoor"])
+      .nullable()
+      .optional()
+      .default(null),
+    audienceRequired: z
+      .enum([
+        "solo",
+        "couple",
+        "family_kids",
+        "adults_only",
+        "group",
+        "unknown",
+      ])
+      .nullable()
+      .optional()
+      .default(null),
   }),
   draftQueries: z.array(z.string()),
   planFacets: z.array(planFacetSchema).max(7),
@@ -91,6 +116,7 @@ export function buildPlannerV2System(cityName: string): string {
     "- Celebrations / life events / parties / proposals / birthdays / anniversaries: fill planFacets with 3–6 concrete needs for THIS ask. Each facet needs id (snake_case), label (short UI section title), searchQuery, and verticalHint (known slug or null).",
     "- Facets must match the audience: kids/family birthday → play venues, cake, family dining (never engagement jewellery or wedding venues). Proposal → ring/florist/photo/scenic/dinner only when relevant. Anniversary → romantic dinner/flowers/photo — not kids laser tag.",
     "- Adult milestone birthdays (30th, 40th, turning 40, etc.): these are ADULT celebrations — never kids/family-friendly dining, never kids entertainment/soft play/laser tag. Build a FULL adult party plan — typically birthday dinner, entertainment (DJ / photographer / photo booth), birthday cake, and a venue when they do not already have one. Prefer ONE strong dinner searchQuery (special occasion / sea view / cocktail-friendly) over multiple restaurant-only facets. Set constraints.budget to upscale unless the user asked for cheap/casual. Set preferred.familyFriendly=false/null.",
+    "- Adult downtime / day off from the kids / husband or wife alone / kids-free day: this is NOT a celebration or party. Do NOT congratulate or frame as \"Plan your celebration\". Fill planFacets with spa/massage, quiet adult dining, and outdoors/golf (or similar leisure) — never shopping malls, clothing stores, cleaning services, or kids venues. Set preferred.familyFriendly=false, preferred.kidsArea=false, preferred.quiet=true. goal.primary can be adult_downtime or plan_special_occasion.",
     "- Do NOT collapse an open-ended birthday/party ask into only restaurants/cocktail bars — include non-dining needs when planning the celebration.",
     "- Do NOT label adult milestone facets as Family Friendly / Kids — that retrieves the wrong places.",
     "- House / at-home / house party: searchQueries should target mobile caterers, platters delivery, party supplies/decor hire, DJ/photo-booth/entertainment hire — NOT hotels, guest houses, or wedding banquet venues (they already have the venue).",

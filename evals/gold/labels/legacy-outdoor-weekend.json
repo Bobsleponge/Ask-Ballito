@@ -1,0 +1,12 @@
+{
+  "questionId": "legacy-outdoor-weekend",
+  "expectTop1Ids": [
+    "c0ceacb4-0688-416c-9083-ebb8062c91e6"
+  ],
+  "expectTop3Ids": [
+    "c0ceacb4-0688-416c-9083-ebb8062c91e6",
+    "4efb64fd-ac8c-4e76-a1cc-84e2bce94e0e",
+    "4decb82c-42a3-451b-b193-194412f2626b"
+  ],
+  "notes": "curated-from-candidates v1; vertical=attractions; names=Sugar Rush Park | Cane Range | Eterna Events (Indoor Fun Park | Party Venue Hire)"
+}

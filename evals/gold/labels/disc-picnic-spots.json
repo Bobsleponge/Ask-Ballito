@@ -1,0 +1,12 @@
+{
+  "questionId": "disc-picnic-spots",
+  "expectTop1Ids": [
+    "1ca490ad-58dd-422d-9ea8-f49be8c0f5f0"
+  ],
+  "expectTop3Ids": [
+    "1ca490ad-58dd-422d-9ea8-f49be8c0f5f0",
+    "c0ceacb4-0688-416c-9083-ebb8062c91e6",
+    "49e964be-27a8-4e93-918f-ac7f7971cbdc"
+  ],
+  "notes": "curated-from-candidates v1; vertical=attractions; names=Tinley Manor Beach to zinkwazi | Sugar Rush Park | Ballito Storage Park"
+}

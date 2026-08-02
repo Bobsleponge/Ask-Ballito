@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-gym-membership-near",
+  "expectTop1Ids": [
+    "d868c828-9730-49d1-a33c-25ebea7b0317"
+  ],
+  "expectTop3Ids": [
+    "d868c828-9730-49d1-a33c-25ebea7b0317",
+    "e77be0bb-ee40-43df-947b-948e09fd4834",
+    "26011b98-36da-4728-ba13-11bdeb144c66"
+  ],
+  "notes": "curated-from-candidates v1; vertical=gyms; names=F45 Training Salt Rock | DynamX Ladies Fitness Studio | Training Ground"
+}

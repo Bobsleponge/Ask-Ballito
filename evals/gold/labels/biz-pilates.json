@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-pilates",
+  "expectTop1Ids": [
+    "bee15a90-c7a7-41d4-9d06-a01c493b47e8"
+  ],
+  "expectTop3Ids": [
+    "bee15a90-c7a7-41d4-9d06-a01c493b47e8",
+    "e35efa94-6961-4932-a29d-8df0c1bf9eb2",
+    "c9544ca0-3561-47f7-b972-b2339050ce6c"
+  ],
+  "notes": "curated-from-candidates v1; vertical=gyms; names=Stretch Pilates | Ballito Fitness Village | Body20 Ballito"
+}

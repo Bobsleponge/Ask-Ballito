@@ -1,0 +1,345 @@
+{
+  "query": "Outdoor activities for children around Ballito",
+  "qi": {
+    "goal": {
+      "primary": "find outdoor activities suitable for children",
+      "description": "Provide options for outdoor activities that are family-friendly and appropriate for children in the Ballito area."
+    },
+    "domains": [
+      "activity",
+      "place"
+    ],
+    "entities": {
+      "locations": [
+        "Ballito"
+      ],
+      "estates": [],
+      "landmarks": [],
+      "businessTypes": [],
+      "cuisines": [],
+      "dates": [],
+      "times": [],
+      "people": []
+    },
+    "explicitConstraints": {
+      "outdoorSeating": null,
+      "seaView": null,
+      "familyFriendly": true,
+      "romantic": null,
+      "petFriendly": null,
+      "parking": null,
+      "wheelchairAccessible": null,
+      "kidsArea": true,
+      "breakfast": null,
+      "lunch": null,
+      "dinner": null,
+      "quiet": null,
+      "rainFriendly": null,
+      "outdoorPlay": true,
+      "indoorPlay": null,
+      "wifi": null
+    },
+    "implicitPreferences": {
+      "outdoorSeating": null,
+      "seaView": null,
+      "familyFriendly": true,
+      "romantic": null,
+      "petFriendly": null,
+      "parking": null,
+      "wheelchairAccessible": null,
+      "kidsArea": true,
+      "breakfast": null,
+      "lunch": null,
+      "dinner": null,
+      "quiet": null,
+      "rainFriendly": null,
+      "outdoorPlay": true,
+      "indoorPlay": null,
+      "wifi": null
+    },
+    "explicitEnvironment": "outdoor",
+    "implicitEnvironment": "outdoor",
+    "hardExclusions": [],
+    "softPreferences": [],
+    "audience": "family_kids",
+    "locationIntent": {
+      "kind": "city",
+      "labels": [
+        "Ballito"
+      ]
+    },
+    "temporalIntent": {
+      "openNow": null,
+      "meal": null,
+      "when": null
+    },
+    "desiredResultType": "ranked_list",
+    "facets": [
+      {
+        "id": "kids_activities",
+        "label": "Children's Outdoor Activities",
+        "need": "To find outdoor activities suitable for children around Ballito",
+        "searchConcepts": [
+          "outdoor playground",
+          "children's outdoor activity",
+          "family outdoor activity",
+          "farm activities",
+          "nature trails",
+          "adventure park"
+        ],
+        "entityKinds": [
+          "place",
+          "business",
+          "event"
+        ],
+        "verticalHint": null,
+        "hard": true
+      }
+    ],
+    "searchConcepts": [
+      "outdoor activities",
+      "children's activities",
+      "family friendly",
+      "Ballito",
+      "outdoor play",
+      "kids play area",
+      "farm activities",
+      "nature trails"
+    ],
+    "diversityRequirements": {
+      "minDistinctConcepts": 3,
+      "avoidNearDuplicates": true
+    },
+    "grouping": {
+      "strategy": "none",
+      "sectionLabels": []
+    },
+    "needsClarification": false,
+    "clarificationQuestion": null,
+    "confidence": 0.95,
+    "candidateWorkflows": [
+      "activities"
+    ]
+  },
+  "draftConstraints": {
+    "required": {
+      "outdoorSeating": null,
+      "seaView": null,
+      "familyFriendly": true,
+      "romantic": null,
+      "petFriendly": null,
+      "parking": null,
+      "wheelchairAccessible": null,
+      "kidsArea": true,
+      "breakfast": null,
+      "lunch": null,
+      "dinner": null,
+      "quiet": null,
+      "rainFriendly": null,
+      "outdoorPlay": true,
+      "indoorPlay": null,
+      "wifi": null
+    },
+    "preferred": {
+      "outdoorSeating": null,
+      "seaView": null,
+      "familyFriendly": true,
+      "romantic": null,
+      "petFriendly": null,
+      "parking": null,
+      "wheelchairAccessible": null,
+      "kidsArea": true,
+      "breakfast": null,
+      "lunch": null,
+      "dinner": null,
+      "quiet": null,
+      "rainFriendly": null,
+      "outdoorPlay": true,
+      "indoorPlay": null,
+      "wifi": null
+    },
+    "avoid": {
+      "outdoorSeating": null,
+      "seaView": null,
+      "familyFriendly": null,
+      "romantic": null,
+      "petFriendly": null,
+      "parking": null,
+      "wheelchairAccessible": null,
+      "kidsArea": null,
+      "breakfast": null,
+      "lunch": null,
+      "dinner": null,
+      "quiet": null,
+      "rainFriendly": null,
+      "outdoorPlay": null,
+      "indoorPlay": null,
+      "wifi": null
+    },
+    "budget": null,
+    "distanceMeters": null,
+    "distanceLabel": null,
+    "openNow": null,
+    "emergency": null,
+    "partySize": null,
+    "environmentRequired": "outdoor",
+    "environmentPreferred": "outdoor",
+    "audienceRequired": "family_kids"
+  },
+  "composition": {
+    "strategy": "grouped_sections",
+    "titleHint": "Provide options for outdoor activities that are family-frien",
+    "maxSections": 2,
+    "maxItemsPerSection": 8,
+    "sectionHints": [
+      {
+        "id": "kids_activities",
+        "title": "Children's Outdoor Activities",
+        "kind": "list"
+      }
+    ],
+    "minItemsPerSection": 1,
+    "bucketProfile": "plan_facets",
+    "planFacets": [
+      {
+        "id": "kids_activities",
+        "label": "Children's Outdoor Activities",
+        "searchQuery": "outdoor playground children's outdoor activity family outdoor activity farm activities nature trails adventure park",
+        "verticalHint": null,
+        "searchConcepts": [
+          "outdoor playground",
+          "children's outdoor activity",
+          "family outdoor activity",
+          "farm activities",
+          "nature trails",
+          "adventure park"
+        ]
+      }
+    ]
+  },
+  "queryTrace": {
+    "query": "Outdoor activities for children around Ballito",
+    "city": "ballito",
+    "classification": {
+      "queryClass": null,
+      "confidence": null,
+      "signals": [],
+      "canSkipExtractor": false,
+      "didShortCircuit": false
+    },
+    "understanding": {
+      "source": "query_intelligence",
+      "goalPrimary": "find outdoor activities suitable for children",
+      "goalDescription": "Provide options for outdoor activities that are family-friendly and appropriate for children in the Ballito area.",
+      "draftQueries": [
+        "outdoor activities",
+        "children's activities",
+        "family friendly",
+        "Ballito",
+        "outdoor play",
+        "kids play area",
+        "farm activities",
+        "nature trails",
+        "outdoor playground",
+        "children's outdoor activity",
+        "family outdoor activity",
+        "adventure park"
+      ],
+      "planFacetCount": 1,
+      "searchConcepts": [
+        "outdoor activities",
+        "children's activities",
+        "family friendly",
+        "Ballito",
+        "outdoor play",
+        "kids play area",
+        "farm activities",
+        "nature trails",
+        "outdoor playground",
+        "children's outdoor activity",
+        "family outdoor activity",
+        "adventure park"
+      ],
+      "hardExclusions": [],
+      "softPreferences": [],
+      "audience": "family_kids",
+      "requiredConstraints": {
+        "familyFriendly": true,
+        "kidsArea": true,
+        "outdoorPlay": true,
+        "environment": "outdoor",
+        "audience": "family_kids"
+      },
+      "preferredConstraints": {
+        "familyFriendly": true,
+        "kidsArea": true,
+        "outdoorPlay": true
+      },
+      "environmentRequired": "outdoor",
+      "facets": [
+        {
+          "id": "kids_activities",
+          "label": "Children's Outdoor Activities",
+          "hard": true,
+          "verticalHint": null
+        }
+      ],
+      "confidence": 0.95,
+      "notes": "qi:v1|audience=family_kids|result=ranked_list|exclusions=|env=outdoor"
+    },
+    "plan": {
+      "workflow": "activities",
+      "executionQueries": [
+        "outdoor activities",
+        "children's activities",
+        "family friendly",
+        "Ballito",
+        "outdoor play",
+        "kids play area",
+        "farm activities",
+        "nature trails",
+        "outdoor playground",
+        "children's outdoor activity",
+        "family outdoor activity",
+        "adventure park"
+      ],
+      "llmRequired": true,
+      "needsClarification": false,
+      "rulesApplied": [
+        "qi_trust_understanding",
+        "seed_activity_business_types",
+        "location_ref_turn",
+        "composition_qi_facets_hard_constraints",
+        "qi_grouped_facet_composition"
+      ],
+      "bucketProfile": "plan_facets",
+      "compositionStrategy": "grouped_sections"
+    },
+    "retrieval": {
+      "candidateCount": 0,
+      "retrievalMode": null
+    },
+    "eligibility": {
+      "hadHardRequirements": false,
+      "inputCount": 0,
+      "eligibleCount": 0,
+      "droppedCount": 0,
+      "dropReasons": {},
+      "droppedSample": []
+    },
+    "composition": {
+      "strategy": null,
+      "sectionCount": 0,
+      "businessCount": 0,
+      "sectionTitles": []
+    },
+    "fitVerify": {
+      "ran": false,
+      "reason": null
+    },
+    "narration": {
+      "llmNarrate": false,
+      "deterministic": true
+    }
+  }
+}

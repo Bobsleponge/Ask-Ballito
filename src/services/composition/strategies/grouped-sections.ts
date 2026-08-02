@@ -72,9 +72,17 @@ export function composeGroupedSections(
     return scoreB - scoreA;
   });
 
+  const minItems =
+    typeof request.minItemsPerSection === "number" &&
+    Number.isFinite(request.minItemsPerSection)
+      ? Math.max(1, Math.floor(request.minItemsPerSection))
+      : 1;
+
   const sections: ExperienceSection[] = [];
   for (const [title, items] of ordered) {
     if (sections.length >= request.maxSections) break;
+    // Precision over fill: omit thin leftover DISCOVERY buckets.
+    if (items.length < minItems) continue;
     const ids = items
       .slice(0, request.maxItemsPerSection)
       .map((b) => b.id);

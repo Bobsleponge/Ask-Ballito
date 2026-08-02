@@ -1,0 +1,12 @@
+{
+  "questionId": "emg-tow-truck-now",
+  "expectTop1Ids": [
+    "2d46c767-6511-4649-b0e6-0a18ce8df074"
+  ],
+  "expectTop3Ids": [
+    "2d46c767-6511-4649-b0e6-0a18ce8df074",
+    "624e3cb0-afdf-4daa-96af-0ee83b0efa8c",
+    "76021792-7a79-46f1-803f-d4002956f48e"
+  ],
+  "notes": "curated-from-candidates v1; vertical=towing; names=Damoz AutoTech | Mr Auto Repair | Tiger Wheel & Tyre Ballito"
+}

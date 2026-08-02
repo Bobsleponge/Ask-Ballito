@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-book-store",
+  "expectTop1Ids": [
+    "239dcea3-a0ca-4736-b3c9-7630ae5853dd"
+  ],
+  "expectTop3Ids": [
+    "239dcea3-a0ca-4736-b3c9-7630ae5853dd",
+    "30501770-1c53-4d85-b67d-4f6f2bfe73cc",
+    "3e0d5dba-29d3-4500-81e4-abac38ea90bb"
+  ],
+  "notes": "curated-from-candidates v1; vertical=shopping; names=Exclusive Books Ballito | 10 Uit 10 Ballito Office National | Footgear Ballito"
+}

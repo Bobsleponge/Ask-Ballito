@@ -1,0 +1,12 @@
+{
+  "questionId": "emg-tow-truck",
+  "expectTop1Ids": [
+    "6d7f4afe-0260-40e8-ae42-941ee39f154a"
+  ],
+  "expectTop3Ids": [
+    "6d7f4afe-0260-40e8-ae42-941ee39f154a",
+    "6cda66b7-d769-4bf4-8a91-f3e24983b2d4",
+    "69ec2a54-b60f-4ce6-ae54-7d1c69dad3dc"
+  ],
+  "notes": "curated-from-candidates v1; vertical=towing; names=Ballito cabs | Ballito Charters& Bus Services RSA | BNM TRAVEL & TOUS"
+}

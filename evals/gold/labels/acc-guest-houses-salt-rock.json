@@ -1,0 +1,12 @@
+{
+  "questionId": "acc-guest-houses-salt-rock",
+  "expectTop1Ids": [
+    "bcc57930-a538-4578-b223-7cfaf8787a5d"
+  ],
+  "expectTop3Ids": [
+    "bcc57930-a538-4578-b223-7cfaf8787a5d",
+    "812377cc-5d33-4569-9bbe-7009c0fe38cd",
+    "c506d95f-d5fb-40ad-b3fd-3065647e6427"
+  ],
+  "notes": "curated-from-candidates v1; vertical=hotels; names=Salt Rock Hotel | The Boathouse Luxury Guest House | Le Bezz Guesthouse"
+}

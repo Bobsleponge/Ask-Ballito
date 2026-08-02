@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-best-thai",
+  "expectTop1Ids": [
+    "c473cb61-226e-4966-9296-25422c1ceb2e"
+  ],
+  "expectTop3Ids": [
+    "c473cb61-226e-4966-9296-25422c1ceb2e",
+    "1ed64d59-8454-4e78-a5a4-ce8ed6d25c98",
+    "241b08f0-afa2-4363-afe2-20441eb43c37"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Tiger's Milk Ballito | Skippies Restaurant & Bar Ballito | Curry Culture"
+}

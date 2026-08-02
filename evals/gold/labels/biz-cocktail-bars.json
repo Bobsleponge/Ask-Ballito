@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-cocktail-bars",
+  "expectTop1Ids": [
+    "c467da18-3399-49e4-a298-cc5d4e315b4a"
+  ],
+  "expectTop3Ids": [
+    "c467da18-3399-49e4-a298-cc5d4e315b4a",
+    "7091e3bf-cec0-4467-85ff-ce5d5a2e48ad",
+    "850c2776-a92d-46b9-8d14-602973be0c6b"
+  ],
+  "notes": "curated-from-candidates v1; vertical=nightlife; names=Alchemy | Saint Yves Bar | Good Vibes Caf?????? & Bar Ballito"
+}

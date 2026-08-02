@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-balayage-hair-colour-near",
+  "expectTop1Ids": [
+    "2cf67eb0-8793-4699-9880-9830e6df6bd9"
+  ],
+  "expectTop3Ids": [
+    "2cf67eb0-8793-4699-9880-9830e6df6bd9",
+    "6173a35b-464f-40b6-a34b-ba67061b1acf",
+    "d4d9edcf-30ba-4abe-9043-f1bcf1808502"
+  ],
+  "notes": "curated-from-candidates v1; vertical=hair_salons; names=Colour Reflections hair studio | The Artisan Hair Studio | Hair Trendz By Crystal"
+}

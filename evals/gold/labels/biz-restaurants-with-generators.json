@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-restaurants-with-generators",
+  "expectTop1Ids": [
+    "ae5d2780-edba-417c-8a26-0fd08c4148aa"
+  ],
+  "expectTop3Ids": [
+    "ae5d2780-edba-417c-8a26-0fd08c4148aa",
+    "ca698ce4-97a3-4079-b364-bebb5e462eed",
+    "3ec69f16-de2a-43f0-80fe-7668f5106537"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=RocoMamas Ballito Junction | Steers Ballito Junction | Kuta-Kola"
+}

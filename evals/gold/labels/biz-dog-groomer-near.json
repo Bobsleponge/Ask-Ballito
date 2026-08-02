@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-dog-groomer-near",
+  "expectTop1Ids": [
+    "91ac3b7c-6e50-4944-98a8-27c3ef123348"
+  ],
+  "expectTop3Ids": [
+    "91ac3b7c-6e50-4944-98a8-27c3ef123348",
+    "756b8604-a483-407a-8e94-6ce15461d789",
+    "57cd6d93-e84d-43fd-be66-3355974fcae7"
+  ],
+  "notes": "curated-from-candidates v1; vertical=pet-services; names=Salt Rock Veterinary Clinic | Diva Dogs - Mobile Pet Groomers - Ballito and Surrounds | Kijk Optometrists Salt Rock"
+}

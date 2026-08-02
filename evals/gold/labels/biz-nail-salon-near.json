@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-nail-salon-near",
+  "expectTop1Ids": [
+    "489e69c9-3436-4bfd-959b-b6a45aef5990"
+  ],
+  "expectTop3Ids": [
+    "489e69c9-3436-4bfd-959b-b6a45aef5990",
+    "736c24ca-e80c-4b2c-a65b-bd02cbf2b694",
+    "6173a35b-464f-40b6-a34b-ba67061b1acf"
+  ],
+  "notes": "curated-from-candidates v1; vertical=beauticians; names=Redlip Studio | My Nail Lady | The Artisan Hair Studio"
+}

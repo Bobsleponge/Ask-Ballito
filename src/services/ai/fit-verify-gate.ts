@@ -5,6 +5,8 @@
 
 import { isExactNicheAsk } from "@/services/planner/exact-niche-guard";
 import { isMusicInstrumentAsk } from "@/services/planner/music-intent";
+import { isAutoProtectionAsk } from "@/services/planner/auto-protection-intent";
+import { isAutoPartsAsk } from "@/services/planner/auto-parts-intent";
 import { isProductPurchaseAsk } from "@/services/planner/product-intent";
 import { detectMealTime } from "@/services/planner/meal-time-intent";
 import { detectTradeKind } from "@/services/planner/trade-query";
@@ -79,6 +81,8 @@ export function shouldFitVerify(input: FitVerifyGateInput): FitVerifyGateResult 
   if (
     isProductPurchaseAsk(msg) ||
     isMusicInstrumentAsk(msg) ||
+    isAutoProtectionAsk(msg) ||
+    isAutoPartsAsk(msg) ||
     detectTradeKind(msg) != null ||
     isExactNicheAsk(msg)
   ) {

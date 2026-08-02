@@ -12,18 +12,70 @@ import { scrubInvalidBizMarkers } from "@/lib/chat/ground-assistant-text";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { expandRelatedServiceQueries } from "@/config/service-related-queries";
 import {
+  CLASSIFIER_SHORT_CIRCUIT_THRESHOLD,
+  intelligenceFlags,
+} from "@/config/intelligence-flags";
+import { shouldShortCircuitExtractor } from "@/config/short-circuit-policy";
+import { matchKnowledgeCardSeed } from "@/config/knowledge-cards";
+import { findKnowledgeCard } from "@/services/knowledge/knowledge-cards.service";
+import { resolveKnowledge } from "@/services/knowledge-resolver";
+import type { ResolutionType } from "@/services/knowledge-resolver/types";
+import { getRankConfigVersion, loadRankConfig } from "@/services/ai/rank-config";
+import {
   buildConversationContext,
   parseStickySummary,
   plannerExtractorService,
+  queryIntelligenceService,
   resolvePlannerPlan,
   FALLBACK_DRAFT,
   detectMealTime,
+  hashStickyPayload,
+  filterByHardExclusions,
+  filterByHardEligibility,
+  hasHardEligibilityRequirements,
+  summarizeRequiredConstraints,
+  type ConstraintFlags,
+  type PlannerDraft,
   type PlannerPlan,
 } from "@/services/planner";
+
+function compactNonNullFlags(
+  flags: ConstraintFlags,
+): Record<string, boolean | string | null> {
+  const out: Record<string, boolean | string | null> = {};
+  for (const key of Object.keys(flags) as (keyof ConstraintFlags)[]) {
+    if (flags[key] != null) out[key] = flags[key];
+  }
+  return out;
+}
+import {
+  classifyQuery,
+  draftFromClassification,
+  resolveFromClassification,
+} from "@/services/classifier";
+import {
+  emptyQueryTrace,
+  type QueryTrace,
+} from "@/services/eval/query-trace";
+import {
+  answerCacheKey,
+  getCachedAnswer,
+  setCachedAnswer,
+} from "@/services/routing/answer-cache";
+import {
+  captureTurnRouting,
+  telemetryToLogFields,
+} from "@/services/routing/telemetry";
+import {
+  createTurnTelemetry,
+  primaryRouteFromPaths,
+  type RoutePath,
+  type TurnTelemetry,
+} from "@/services/routing/types";
 import {
   composeExperience,
   emptyComposition,
-  formatCompositionPlain,
+  formatCompositionConversational,
   withCompositionGrounding,
   type ExperienceComposition,
 } from "@/services/composition";
@@ -60,6 +112,20 @@ import {
   musicSearchQueries,
 } from "@/services/planner/music-intent";
 import {
+  autoProtectionEmptyMessage,
+  autoProtectionSearchQueries,
+  extractAutoProtectionLabel,
+  filterAutoProtectionSpecialists,
+  isAutoProtectionAsk,
+} from "@/services/planner/auto-protection-intent";
+import {
+  autoPartsEmptyMessage,
+  autoPartsSearchQueries,
+  extractAutoPartsLabel,
+  filterAutoPartsSpecialists,
+  isAutoPartsAsk,
+} from "@/services/planner/auto-parts-intent";
+import {
   applyAskFitToComposition,
   exactNicheEmptyMessage,
   extractExactNicheLabel,
@@ -69,6 +135,8 @@ import {
 import {
   filterCelebrationAudienceNoise,
   filterElevatedCasualDining,
+  filterPlanFacetVerticalFit,
+  isAdultDowntimeAsk,
   isDiningPlanFacet,
   isElevatedCelebrationAsk,
   withPlanFacet,
@@ -86,6 +154,21 @@ import type { BusinessResult } from "@/lib/schemas/business";
 const FLAGGED_INPUT_REPLY =
   "I can help with local recommendations — restaurants, activities, places to stay, and more. Tell me what you're looking for.";
 
+/** PostGIS prefilter coords from plan LocationRef — never city centre. */
+function searchGeoFromPlan(
+  plan: PlannerPlan,
+  city: City,
+): { lat?: number; lng?: number; radiusMeters?: number } {
+  const ref = plan.locationRef;
+  if (ref?.lat == null || ref?.lng == null) return {};
+  return {
+    lat: ref.lat,
+    lng: ref.lng,
+    radiusMeters:
+      plan.constraints.distanceMeters ?? city.defaultRadiusMeters,
+  };
+}
+
 export interface ConversationParams {
   city: City;
   message: string;
@@ -95,6 +178,11 @@ export interface ConversationParams {
   /** Ids to omit from the returned recommendation set. */
   excludeBusinessIds?: string[];
   retry?: boolean;
+  /**
+   * Evaluation mode: skip answer-cache read/write so baselines are not
+   * poisoned by (or poison) production cache entries.
+   */
+  skipAnswerCache?: boolean;
 }
 
 export interface ConversationResult {
@@ -105,10 +193,29 @@ export interface ConversationResult {
   llmInvoked: boolean;
   clarification: boolean;
   stream: AsyncGenerator<string, void, unknown>;
+  telemetry: TurnTelemetry;
+  /** Present when QUERY_TRACE=1 — end-to-end forensic audit payload. */
+  queryTrace?: QueryTrace;
 }
 
 async function* textStream(text: string): AsyncGenerator<string, void, unknown> {
   yield text;
+}
+
+function routePathForResolution(type: ResolutionType): RoutePath {
+  switch (type) {
+    case "KNOWLEDGE_CARD":
+      return "knowledge";
+    case "LIVE_DATA":
+    case "SQL":
+      return "sql";
+    case "FACT":
+      return "capability";
+    case "CACHE":
+      return "cache";
+    default:
+      return "knowledge";
+  }
 }
 
 function mergeBusinessesBySimilarity(
@@ -148,6 +255,7 @@ async function tryRelatedServiceFallback(opts: {
         city: opts.city,
         query,
         limit: 25,
+        ...searchGeoFromPlan(opts.plan, opts.city),
       }),
     ),
   );
@@ -271,7 +379,26 @@ async function logOrchestration(opts: {
   llmInvoked: boolean;
   latencyMs: number;
   message: string;
+  citySlug: string;
+  telemetry: TurnTelemetry;
 }) {
+  const telemetry: TurnTelemetry = {
+    ...opts.telemetry,
+    latencyMs: opts.latencyMs,
+    candidateCount: opts.businesses.length,
+    llmUsed:
+      opts.telemetry.llmStages.extract ||
+      opts.telemetry.llmStages.narrate ||
+      opts.telemetry.llmStages.fitVerify,
+    primaryRoute: primaryRouteFromPaths(opts.telemetry.routePaths),
+  };
+
+  captureTurnRouting({
+    userId: opts.userId,
+    citySlug: opts.citySlug,
+    telemetry,
+  });
+
   captureServerEvent({
     distinctId: opts.userId ?? "anonymous",
     event: "composition_strategy",
@@ -280,6 +407,9 @@ async function logOrchestration(opts: {
       workflow: opts.plan.workflow,
       business_count: opts.businesses.length,
       llm_invoked: opts.llmInvoked,
+      query_class: telemetry.queryClass,
+      primary_route: telemetry.primaryRoute,
+      cache_hit: telemetry.cacheHit,
     },
   });
 
@@ -314,7 +444,7 @@ async function logOrchestration(opts: {
     service: "ConversationOrchestrator",
     promptVersion: null,
     model: null,
-    input: { message: opts.message, city: opts.plan.workflow },
+    input: { message: opts.message, city: opts.citySlug },
     output: {
       plan: opts.plan,
       workflowId: opts.plan.workflow,
@@ -342,6 +472,7 @@ async function logOrchestration(opts: {
       llmInvoked: opts.llmInvoked,
       locationRef: opts.plan.locationRef,
       diagnostics: opts.plan.diagnostics,
+      routing: telemetryToLogFields(telemetry),
     },
     latencyMs: opts.latencyMs,
     status: "success",
@@ -371,7 +502,7 @@ async function* streamWithGrounding(
 
 /**
  * Planner v2 orchestrator:
- * sanitize → context → extract → resolve → capabilities → rank → compose → explain
+ * classify → cache → knowledge resolver → (extract|short-circuit) → resolve → capabilities → rank → compose → explain
  */
 export class ConversationService {
   async handle(params: ConversationParams): Promise<ConversationResult> {
@@ -383,8 +514,11 @@ export class ConversationService {
       conversationId,
       excludeBusinessIds = [],
       retry = false,
+      skipAnswerCache = false,
     } = params;
+    const bypassAnswerCache = retry || skipAnswerCache;
     const start = Date.now();
+    const telemetry = createTurnTelemetry();
     const clean = sanitizeUserInput(message);
     const excludeSet = new Set(
       excludeBusinessIds.map((id) => id.trim()).filter(Boolean),
@@ -395,6 +529,26 @@ export class ConversationService {
         ? list
         : list.filter((b) => !excludeSet.has(b.id));
 
+    const finishLog = async (opts: {
+      plan: PlannerPlan;
+      businesses: BusinessResult[];
+      composition: ExperienceComposition;
+      llmInvoked: boolean;
+    }) => {
+      await logOrchestration({
+        userId,
+        conversationId,
+        plan: opts.plan,
+        businesses: opts.businesses,
+        composition: opts.composition,
+        llmInvoked: opts.llmInvoked,
+        latencyMs: Date.now() - start,
+        message: clean.sanitized,
+        citySlug: city.slug,
+        telemetry,
+      });
+    };
+
     // Prompt-injection patterns: refuse the model call, return a safe reply.
     if (clean.flagged) {
       captureAbuseEvent({
@@ -403,8 +557,10 @@ export class ConversationService {
         properties: { reasons: clean.reasons, area: "message" },
       });
       const context = buildConversationContext({ city, history: [] });
-    const plan = resolvePlannerPlan(FALLBACK_DRAFT, context, clean.sanitized);
+      const plan = resolvePlannerPlan(FALLBACK_DRAFT, context, clean.sanitized);
       const empty = emptyComposition(plan.composition.strategy);
+      telemetry.routePaths.push("capability");
+      telemetry.queryClass = "CONVERSATION";
       await logAiCall({
         service: "ConversationOrchestrator",
         promptVersion: null,
@@ -414,7 +570,7 @@ export class ConversationService {
           flagged: true,
           reasons: clean.reasons,
         },
-        output: { blocked: true },
+        output: { blocked: true, routing: telemetryToLogFields(telemetry) },
         latencyMs: Date.now() - start,
         status: "success",
         userId,
@@ -428,6 +584,7 @@ export class ConversationService {
         llmInvoked: false,
         clarification: false,
         stream: textStream(FLAGGED_INPUT_REPLY),
+        telemetry,
       };
     }
 
@@ -449,18 +606,488 @@ export class ConversationService {
       }
     }
 
+    const stickyHash = hashStickyPayload(stickySummary);
     const context = buildConversationContext({
       city,
       history: contextHistory,
       stickySummary,
     });
-    const draft = await plannerExtractorService.extract({
-      context,
+
+    // --- Query classification (before any LLM / retrieval) ---
+    const classification = classifyQuery({
       message: clean.sanitized,
-      userId,
-      conversationId,
+      citySlug: city.slug,
     });
-    const resolved = resolvePlannerPlan(draft, context, clean.sanitized);
+    telemetry.queryClass = classification.queryClass;
+    telemetry.classifierConfidence = classification.confidence;
+    telemetry.classifierSignals = classification.signals;
+
+    if (intelligenceFlags.classifierShadow()) {
+      captureServerEvent({
+        distinctId: userId ?? "anonymous",
+        event: "classifier_shadow",
+        properties: {
+          query_class: classification.queryClass,
+          confidence: classification.confidence,
+          signals: classification.signals,
+          can_skip_extractor: classification.canSkipExtractor,
+          city: city.slug,
+        },
+      });
+    }
+
+    // --- Answer cache ---
+    if (intelligenceFlags.answerCache() && !bypassAnswerCache) {
+      const cacheKey = answerCacheKey({
+        citySlug: city.slug,
+        message: clean.sanitized,
+        stickyHash,
+        rankConfigVersion: getRankConfigVersion(),
+      });
+      const cached = await getCachedAnswer(cacheKey);
+      if (cached) {
+        telemetry.cacheHit = true;
+        telemetry.routePaths.push("cache");
+        telemetry.narrationSkipped = true;
+        const plan = resolvePlannerPlan(
+          FALLBACK_DRAFT,
+          context,
+          clean.sanitized,
+        );
+        // Prefer cached plan snapshot fields where possible
+        const cachedPlan: PlannerPlan = {
+          ...plan,
+          workflow: cached.planSnapshot.workflow,
+          responseMode: cached.planSnapshot.responseMode,
+          llmRequired: false,
+          intent: cached.planSnapshot.intent,
+          goal: cached.planSnapshot.goal,
+        };
+        await finishLog({
+          plan: cachedPlan,
+          businesses: cached.businesses,
+          composition: cached.composition,
+          llmInvoked: false,
+        });
+        return {
+          plan: cachedPlan,
+          workflowId: cachedPlan.workflow,
+          businesses: cached.businesses,
+          composition: cached.composition,
+          llmInvoked: false,
+          clarification: false,
+          stream: textStream(cached.text),
+          telemetry,
+        };
+      }
+    }
+
+    // --- Knowledge Resolver (flagged) or legacy knowledge-card fast path ---
+    let knowledgeCardSeedQueries: string[] = [];
+
+    if (intelligenceFlags.knowledgeResolver()) {
+      const resolverStarted = Date.now();
+      const resolution = await resolveKnowledge({
+        message: clean.sanitized,
+        city,
+        classification,
+        context,
+        excludeBusinessIds: excludeSet,
+        retry,
+      });
+      telemetry.stageLatencyMs.knowledge_resolver = Date.now() - resolverStarted;
+      telemetry.knowledgeResolutionType = resolution.type;
+      telemetry.knowledgeResolverPlugin =
+        resolution.pluginId === "none" ? null : resolution.pluginId;
+      telemetry.knowledgeResolved = resolution.answered;
+
+      if (resolution.signals?.length) {
+        classification.signals.push(...resolution.signals);
+      }
+      if (
+        resolution.draftQueries?.length &&
+        classification.draftQueries.length === 0
+      ) {
+        classification.draftQueries.push(...resolution.draftQueries);
+      } else if (resolution.draftQueries?.length) {
+        for (const q of resolution.draftQueries) {
+          if (!classification.draftQueries.includes(q)) {
+            classification.draftQueries.push(q);
+          }
+        }
+      }
+      telemetry.classifierSignals = classification.signals;
+
+      if (resolution.answered && resolution.text) {
+        const plan =
+          resolution.plan ??
+          (() => {
+            const base = resolveFromClassification(
+              classification,
+              context,
+              clean.sanitized,
+            );
+            return {
+              ...base,
+              llmRequired: false,
+              responseMode: "fast_path" as const,
+              diagnostics: {
+                ...base.diagnostics,
+                rulesApplied: [
+                  ...base.diagnostics.rulesApplied,
+                  `knowledge_resolver:${resolution.pluginId}`,
+                ],
+              },
+            };
+          })();
+
+        const businesses = resolution.businesses ?? [];
+        const composition =
+          resolution.composition ??
+          emptyComposition(plan.composition.strategy);
+
+        telemetry.routePaths.push(routePathForResolution(resolution.type));
+        telemetry.retrievalMode =
+          resolution.type === "KNOWLEDGE_CARD" ? "knowledge" : "none";
+        telemetry.narrationSkipped = true;
+        telemetry.extractorSkipped = true;
+        telemetry.candidateCount = businesses.length;
+
+        if (intelligenceFlags.answerCache() && !bypassAnswerCache) {
+          const cacheKey = answerCacheKey({
+            citySlug: city.slug,
+            message: clean.sanitized,
+            stickyHash,
+            rankConfigVersion: getRankConfigVersion(),
+          });
+          await setCachedAnswer(cacheKey, {
+            text: resolution.text,
+            businesses,
+            composition,
+            planSnapshot: {
+              workflow: plan.workflow,
+              responseMode: plan.responseMode,
+              llmRequired: false,
+              intent: plan.intent,
+              goal: plan.goal,
+            },
+            queryClass: telemetry.queryClass,
+            cachedAt: new Date().toISOString(),
+          });
+        }
+
+        await finishLog({
+          plan,
+          businesses,
+          composition,
+          llmInvoked: false,
+        });
+
+        return {
+          plan,
+          workflowId: plan.workflow,
+          businesses,
+          composition,
+          llmInvoked: false,
+          clarification: false,
+          stream: textStream(resolution.text),
+          telemetry,
+        };
+      }
+
+      if (resolution.pluginId === "knowledge-card") {
+        telemetry.routePaths.push("knowledge");
+      }
+    } else if (intelligenceFlags.knowledgeCards()) {
+      // Legacy inline knowledge-card path (KNOWLEDGE_RESOLVER off).
+      const storedCard = await findKnowledgeCard({
+        citySlug: city.slug,
+        message: clean.sanitized,
+      });
+      if (storedCard) {
+        classification.signals.push(`knowledge_card:${storedCard.slug}`);
+
+        const cardIds = storedCard.businessIds.filter((id) => !excludeSet.has(id));
+        if (cardIds.length > 0 && !retry) {
+          const loaded = await businessSearchService.getByIds({
+            ids: cardIds,
+            citySlug: city.slug,
+          });
+          if (loaded.length > 0) {
+            if (storedCard.searchQueries.length > 0) {
+              classification.draftQueries = [
+                ...storedCard.searchQueries,
+                ...classification.draftQueries,
+              ];
+            }
+            let cardPlan = resolveFromClassification(
+              classification,
+              context,
+              clean.sanitized,
+            );
+            cardPlan = {
+              ...cardPlan,
+              llmRequired: false,
+              responseMode: "execute_and_explain",
+              composition: {
+                ...cardPlan.composition,
+                strategy: "ranked_list",
+                titleHint: storedCard.title,
+              },
+              diagnostics: {
+                ...cardPlan.diagnostics,
+                rulesApplied: [
+                  ...cardPlan.diagnostics.rulesApplied,
+                  "knowledge_card_fast_path",
+                ],
+              },
+            };
+
+            const ranked = rankBusinesses(
+              loaded,
+              cardPlan,
+              loadRankConfig({
+                limit: Math.min(8, loaded.length),
+                minKeep: Math.min(3, loaded.length),
+                preferVariety: false,
+              }),
+            );
+            const composition = composeExperience(ranked, cardPlan);
+            const seed = matchKnowledgeCardSeed(clean.sanitized);
+            const text =
+              formatCompositionConversational(composition, {
+                introHint:
+                  seed?.bodyTemplate ||
+                  storedCard.render.headline ||
+                  storedCard.bodyMd ||
+                  storedCard.title,
+                cityName: city.name,
+                servicesTone:
+                  cardPlan.workflow === "services" ||
+                  cardPlan.workflow === "healthcare",
+              }) || ranked.map((b) => b.name).join(", ");
+
+            telemetry.routePaths.push("knowledge");
+            telemetry.retrievalMode = "knowledge";
+            telemetry.narrationSkipped = true;
+            telemetry.extractorSkipped = true;
+            telemetry.candidateCount = ranked.length;
+            telemetry.classifierSignals = classification.signals;
+
+            if (intelligenceFlags.answerCache() && !bypassAnswerCache) {
+              const cacheKey = answerCacheKey({
+                citySlug: city.slug,
+                message: clean.sanitized,
+                stickyHash,
+                rankConfigVersion: getRankConfigVersion(),
+              });
+              await setCachedAnswer(cacheKey, {
+                text,
+                businesses: composition.businesses,
+                composition,
+                planSnapshot: {
+                  workflow: cardPlan.workflow,
+                  responseMode: cardPlan.responseMode,
+                  llmRequired: false,
+                  intent: cardPlan.intent,
+                  goal: cardPlan.goal,
+                },
+                queryClass: telemetry.queryClass,
+                cachedAt: new Date().toISOString(),
+              });
+            }
+
+            await finishLog({
+              plan: cardPlan,
+              businesses: composition.businesses,
+              composition,
+              llmInvoked: false,
+            });
+
+            return {
+              plan: cardPlan,
+              workflowId: cardPlan.workflow,
+              businesses: composition.businesses,
+              composition,
+              llmInvoked: false,
+              clarification: false,
+              stream: textStream(text),
+              telemetry,
+            };
+          }
+        }
+
+        // No stored members yet — seed search queries from the card/seed.
+        knowledgeCardSeedQueries =
+          storedCard.searchQueries.length > 0
+            ? storedCard.searchQueries
+            : (matchKnowledgeCardSeed(clean.sanitized)?.searchQueries ?? []);
+        if (
+          knowledgeCardSeedQueries.length > 0 &&
+          classification.draftQueries.length === 0
+        ) {
+          classification.draftQueries.push(...knowledgeCardSeedQueries);
+        }
+        telemetry.routePaths.push("knowledge");
+        telemetry.classifierSignals = classification.signals;
+      }
+    }
+
+    // --- Understand (QI / extract) or short-circuit ---
+    let resolved: PlannerPlan;
+    let understandingDraft: PlannerDraft | null = null;
+    let understandingSource: QueryTrace["understanding"]["source"] =
+      "planner_extractor";
+    const queryTrace = intelligenceFlags.queryTrace()
+      ? emptyQueryTrace(clean.sanitized, city.slug)
+      : null;
+    if (queryTrace) {
+      queryTrace.classification = {
+        queryClass: classification.queryClass,
+        confidence: classification.confidence,
+        signals: classification.signals,
+        canSkipExtractor: classification.canSkipExtractor,
+        didShortCircuit: false,
+      };
+    }
+
+    const shouldShortCircuit = shouldShortCircuitExtractor(classification);
+
+    // QI shadow: log QI draft while still serving legacy short-circuit/extractor.
+    if (
+      intelligenceFlags.qiShadow() &&
+      !intelligenceFlags.queryIntelligence() &&
+      !shouldShortCircuit
+    ) {
+      try {
+        const shadow = await queryIntelligenceService.understand({
+          context,
+          message: clean.sanitized,
+          userId,
+          conversationId,
+        });
+        captureServerEvent({
+          distinctId: userId ?? "anonymous",
+          event: "qi_shadow",
+          properties: {
+            city: city.slug,
+            goal: shadow.draft.goal.primary,
+            concepts: shadow.draft.searchConcepts?.length ?? 0,
+            facets: shadow.draft.planFacets.length,
+            confidence: shadow.draft.confidence,
+          },
+        });
+      } catch {
+        // shadow must never break chat
+      }
+    }
+
+    if (shouldShortCircuit) {
+      telemetry.extractorSkipped = true;
+      understandingSource = "classifier_short_circuit";
+      if (queryTrace) queryTrace.classification.didShortCircuit = true;
+      understandingDraft = draftFromClassification(
+        classification,
+        clean.sanitized,
+      );
+      resolved = resolveFromClassification(
+        classification,
+        context,
+        clean.sanitized,
+      );
+    } else if (intelligenceFlags.queryIntelligence()) {
+      telemetry.llmStages.extract = true;
+      telemetry.routePaths.push("llm_extract");
+      understandingSource = "query_intelligence";
+      const { draft } = await queryIntelligenceService.understand({
+        context,
+        message: clean.sanitized,
+        userId,
+        conversationId,
+      });
+      understandingDraft = draft;
+      resolved = resolvePlannerPlan(draft, context, clean.sanitized);
+    } else {
+      telemetry.llmStages.extract = true;
+      telemetry.routePaths.push("llm_extract");
+      understandingSource = "planner_extractor";
+      const draft = await plannerExtractorService.extract({
+        context,
+        message: clean.sanitized,
+        userId,
+        conversationId,
+      });
+      understandingDraft = draft;
+      resolved = resolvePlannerPlan(draft, context, clean.sanitized);
+    }
+
+    if (queryTrace && understandingDraft) {
+      const audienceFromNotes =
+        understandingDraft.notes?.match(/audience=([a-z_]+)/)?.[1] ?? null;
+      queryTrace.understanding = {
+        source: understandingSource,
+        goalPrimary: understandingDraft.goal.primary,
+        goalDescription: understandingDraft.goal.description,
+        draftQueries: [...understandingDraft.draftQueries],
+        planFacetCount: understandingDraft.planFacets.length,
+        searchConcepts: [
+          ...(understandingDraft.searchConcepts ??
+            understandingDraft.draftQueries),
+        ],
+        hardExclusions: [...(understandingDraft.hardExclusions ?? [])],
+        softPreferences: [],
+        audience:
+          resolved.constraints.audienceRequired ?? audienceFromNotes,
+        requiredConstraints: summarizeRequiredConstraints(
+          resolved.constraints,
+        ),
+        preferredConstraints: compactNonNullFlags(
+          resolved.constraints.preferred,
+        ),
+        environmentRequired: resolved.constraints.environmentRequired,
+        facets: understandingDraft.planFacets.map((f) => ({
+          id: f.id,
+          label: f.label,
+          hard: f.hard === true,
+          verticalHint: f.verticalHint,
+        })),
+        confidence: understandingDraft.confidence,
+        notes: understandingDraft.notes,
+      };
+      queryTrace.plan = {
+        workflow: resolved.workflow,
+        executionQueries: resolved.executionPlan.map((s) => s.query),
+        llmRequired: resolved.llmRequired,
+        needsClarification: resolved.needsClarification,
+        rulesApplied: [...resolved.diagnostics.rulesApplied],
+        bucketProfile: resolved.composition.bucketProfile ?? null,
+        compositionStrategy: resolved.composition.strategy,
+      };
+    }
+
+    // Apply deterministic narration skip from feature flag + classification
+    if (
+      intelligenceFlags.deterministicNarrationSkip() &&
+      classification.preferDeterministicNarration &&
+      classification.confidence >= CLASSIFIER_SHORT_CIRCUIT_THRESHOLD &&
+      resolved.responseMode === "execute_and_explain" &&
+      resolved.workflow !== "special_occasion" &&
+      resolved.workflow !== "relocation"
+    ) {
+      resolved = {
+        ...resolved,
+        llmRequired: false,
+        diagnostics: {
+          ...resolved.diagnostics,
+          rulesApplied: [
+            ...resolved.diagnostics.rulesApplied,
+            "flag_deterministic_narration_skip",
+          ],
+        },
+      };
+      telemetry.narrationSkipped = true;
+    }
+
     const weatherRelevant = isWeatherRelevantWorkflow(resolved.workflow);
     const weatherHorizon = detectWeatherHorizon(clean.sanitized);
     const weather = weatherRelevant
@@ -475,15 +1102,12 @@ export class ConversationService {
       const text =
         plan.clarificationQuestion ??
         "What are you looking for in Ballito?";
-      await logOrchestration({
-        userId,
-        conversationId,
+      telemetry.routePaths.push("capability");
+      await finishLog({
         plan,
         businesses: [],
         composition: empty,
         llmInvoked: false,
-        latencyMs: Date.now() - start,
-        message: clean.sanitized,
       });
       return {
         plan,
@@ -493,6 +1117,7 @@ export class ConversationService {
         llmInvoked: false,
         clarification: true,
         stream: textStream(text),
+        telemetry,
       };
     }
 
@@ -501,6 +1126,17 @@ export class ConversationService {
       city,
       message: clean.sanitized,
     });
+    telemetry.retrievalMode = intelligenceFlags.hybridSearch()
+      ? "hybrid"
+      : "vector";
+    if (execution.businesses.length > 0) {
+      telemetry.routePaths.push(
+        intelligenceFlags.hybridSearch() ? "hybrid" : "sql",
+      );
+    }
+    if (execution.fastPathText) {
+      telemetry.routePaths.push("capability");
+    }
 
     if (
       plan.responseMode === "fast_path" ||
@@ -511,15 +1147,11 @@ export class ConversationService {
       const text =
         execution.fastPathText ??
         def.responseBehaviour.emptyResultsMessage;
-      await logOrchestration({
-        userId,
-        conversationId,
+      await finishLog({
         plan,
         businesses: [],
         composition: empty,
         llmInvoked: false,
-        latencyMs: Date.now() - start,
-        message: clean.sanitized,
       });
       return {
         plan,
@@ -529,11 +1161,12 @@ export class ConversationService {
         llmInvoked: false,
         clarification: false,
         stream: textStream(text),
+        telemetry,
       };
     }
 
     const rankConfig = {
-      ...def.rankConfig,
+      ...loadRankConfig(def.rankConfig),
       // Multi-vertical event plans must not rank against a single jewellery hint.
       verticalHint:
         plan.workflow === "special_occasion"
@@ -553,9 +1186,24 @@ export class ConversationService {
     const musicLabel = musicAsk
       ? extractMusicLabel(clean.sanitized)
       : null;
+    const autoProtectionAsk =
+      !productAsk && !musicAsk && isAutoProtectionAsk(clean.sanitized);
+    const autoProtectionLabel = autoProtectionAsk
+      ? extractAutoProtectionLabel(clean.sanitized)
+      : null;
+    const autoPartsAsk =
+      !productAsk &&
+      !musicAsk &&
+      !autoProtectionAsk &&
+      isAutoPartsAsk(clean.sanitized);
+    const autoPartsLabel = autoPartsAsk
+      ? extractAutoPartsLabel(clean.sanitized)
+      : null;
     const exactNiche =
       !productAsk &&
       !musicAsk &&
+      !autoProtectionAsk &&
+      !autoPartsAsk &&
       plan.workflow !== "special_occasion" &&
       (tradeKind != null || isExactNicheAsk(clean.sanitized));
     const nicheLabel = exactNiche
@@ -566,7 +1214,6 @@ export class ConversationService {
       plan.composition.bucketProfile === "plan_facets" ||
       plan.composition.bucketProfile === "special_occasion";
     const planFacets = plan.composition.planFacets ?? [];
-    const hasDiningFacets = planFacets.some(isDiningPlanFacet);
     const medicalCareAsk =
       plan.workflow === "healthcare" || isHumanMedicalAsk(clean.sanitized);
 
@@ -582,6 +1229,8 @@ export class ConversationService {
       !urgentTrade &&
       !productAsk &&
       !musicAsk &&
+      !autoProtectionAsk &&
+      !autoPartsAsk &&
       !exactNiche &&
       !specialOccasion &&
       !medicalCareAsk &&
@@ -592,11 +1241,25 @@ export class ConversationService {
         plan.composition.strategy === "comparison" ||
         excludeSet.size > 0);
 
-    if (productAsk && productLabel) {
+    const searchGeo = searchGeoFromPlan(plan, city);
+
+    // When QI already emitted multi-concept draftQueries, skip regex deepen loops
+    // that re-interpret the ask (filters still apply below).
+    const skipNicheDeepen =
+      Boolean(understandingDraft?.notes?.startsWith("qi:")) &&
+      intelligenceFlags.qiTrustUnderstanding() &&
+      (understandingDraft?.draftQueries.length ?? 0) >= 2;
+
+    if (productAsk && productLabel && !skipNicheDeepen) {
       const queries = productSearchQueries(productLabel, city.name);
       const extras = await Promise.all(
         queries.map((query) =>
-          businessSearchService.search({ city, query, limit: 25 }),
+          businessSearchService.search({
+            city,
+            query,
+            limit: 25,
+            ...searchGeo,
+          }),
         ),
       );
       candidates = mergeBusinessesBySimilarity([
@@ -604,11 +1267,16 @@ export class ConversationService {
         ...extras.map(withoutExcluded),
       ]);
       candidates = filterProductSpecialists(candidates);
-    } else if (musicAsk && musicLabel) {
+    } else if (musicAsk && musicLabel && !skipNicheDeepen) {
       const queries = musicSearchQueries(musicLabel, city.name);
       const extras = await Promise.all(
         queries.map((query) =>
-          businessSearchService.search({ city, query, limit: 25 }),
+          businessSearchService.search({
+            city,
+            query,
+            limit: 25,
+            ...searchGeo,
+          }),
         ),
       );
       candidates = mergeBusinessesBySimilarity([
@@ -616,27 +1284,85 @@ export class ConversationService {
         ...extras.map(withoutExcluded),
       ]);
       candidates = filterMusicSpecialists(candidates);
-    } else if (specialOccasion && hasDiningFacets) {
-      const diningFacets = planFacets.filter(isDiningPlanFacet);
+    } else if (autoProtectionAsk && autoProtectionLabel && !skipNicheDeepen) {
+      const queries = autoProtectionSearchQueries(
+        autoProtectionLabel,
+        city.name,
+      );
       const extras = await Promise.all(
-        diningFacets.map(async (facet) => {
+        queries.map((query) =>
+          businessSearchService.search({
+            city,
+            query,
+            limit: 25,
+            ...searchGeo,
+          }),
+        ),
+      );
+      candidates = mergeBusinessesBySimilarity([
+        candidates,
+        ...extras.map(withoutExcluded),
+      ]);
+      candidates = filterAutoProtectionSpecialists(candidates);
+    } else if (autoPartsAsk && autoPartsLabel && !skipNicheDeepen) {
+      const queries = autoPartsSearchQueries(autoPartsLabel, city.name);
+      const extras = await Promise.all(
+        queries.map((query) =>
+          businessSearchService.search({
+            city,
+            query,
+            limit: 25,
+            ...searchGeo,
+          }),
+        ),
+      );
+      candidates = mergeBusinessesBySimilarity([
+        candidates,
+        ...extras.map(withoutExcluded),
+      ]);
+      candidates = filterAutoPartsSpecialists(candidates);
+    }
+
+    // Enforcement filters still apply when QI skipped deepen retrieval.
+    if (skipNicheDeepen) {
+      if (productAsk) candidates = filterProductSpecialists(candidates);
+      if (musicAsk) candidates = filterMusicSpecialists(candidates);
+      if (autoProtectionAsk) {
+        candidates = filterAutoProtectionSpecialists(candidates);
+      }
+      if (autoPartsAsk) candidates = filterAutoPartsSpecialists(candidates);
+    }
+
+    if (specialOccasion && planFacets.length > 0) {
+      // Deepen every checklist facet so sections can hit the min-of-3 rule.
+      const extras = await Promise.all(
+        planFacets.map(async (facet) => {
           const raw = await businessSearchService.search({
             city,
             query: facet.searchQuery,
-            limit: 40,
+            limit: isDiningPlanFacet(facet) ? 40 : 25,
+            ...searchGeo,
           });
-          return raw.map((b) => withPlanFacet(b, facet.id, facet.label));
+          const scoped = facet.verticalHint
+            ? filterByVerticalHint(raw, facet.verticalHint)
+            : isDiningPlanFacet(facet)
+              ? filterByVerticalHint(raw, "restaurants")
+              : raw;
+          return scoped.map((b) => withPlanFacet(b, facet.id, facet.label));
         }),
       );
       candidates = mergeBusinessesBySimilarity([
         candidates,
         ...extras.map(withoutExcluded),
       ]);
-    } else if (wantsVariety) {
+    } else if (wantsVariety && candidates.length < 12) {
+      // Only deepen when the primary plan returned a thin pool — avoid a
+      // redundant embed+RPC when we already have enough on-vertical hits.
       const extra = await businessSearchService.search({
         city,
         query: clean.sanitized,
         limit: 40,
+        ...searchGeo,
       });
       candidates = mergeBusinessesBySimilarity([
         candidates,
@@ -651,7 +1377,12 @@ export class ConversationService {
       );
       const extras = await Promise.all(
         queries.map((query) =>
-          businessSearchService.search({ city, query, limit: 25 }),
+          businessSearchService.search({
+            city,
+            query,
+            limit: 25,
+            ...searchGeo,
+          }),
         ),
       );
       candidates = mergeBusinessesBySimilarity([
@@ -663,6 +1394,7 @@ export class ConversationService {
         city,
         query: clean.sanitized,
         limit: 30,
+        ...searchGeo,
       });
       candidates = mergeBusinessesBySimilarity([
         candidates,
@@ -686,7 +1418,12 @@ export class ConversationService {
             ];
       const extras = await Promise.all(
         medicalQueries.map((query) =>
-          businessSearchService.search({ city, query, limit: 25 }),
+          businessSearchService.search({
+            city,
+            query,
+            limit: 25,
+            ...searchGeo,
+          }),
         ),
       );
       candidates = mergeBusinessesBySimilarity([
@@ -719,10 +1456,12 @@ export class ConversationService {
     }
 
     if (specialOccasion) {
+      const adultDowntime = isAdultDowntimeAsk(clean.sanitized);
       candidates = filterCelebrationAudienceNoise(candidates, {
         familyFriendly: plan.constraints.preferred.familyFriendly,
         romantic: plan.constraints.preferred.romantic,
         kidsAsk: plan.constraints.preferred.kidsArea === true,
+        adultDowntime,
         facets: planFacets,
       });
     }
@@ -732,6 +1471,8 @@ export class ConversationService {
       tradeKind != null ||
       productAsk ||
       musicAsk ||
+      autoProtectionAsk ||
+      autoPartsAsk ||
       exactNiche ||
       (isExactVerticalHint(verticalHint) && !medicalCareAsk);
 
@@ -744,20 +1485,83 @@ export class ConversationService {
 
     let ranked: BusinessResult[] = [];
     if (candidates.length > 0) {
-      ranked = rankBusinesses(candidates, plan, {
+      const hardExclusions = understandingDraft?.hardExclusions ?? [];
+      let candidatesForRank =
+        hardExclusions.length > 0
+          ? filterByHardExclusions(candidates, hardExclusions)
+          : candidates;
+      if (
+        hardExclusions.length > 0 &&
+        candidatesForRank.length < candidates.length
+      ) {
+        plan.diagnostics.rulesApplied = [
+          ...plan.diagnostics.rulesApplied,
+          "qi_hard_exclusions_applied",
+        ];
+      }
+
+      // Universal hard eligibility: required dims gate before ranking.
+      const eligibility = filterByHardEligibility(
+        candidatesForRank,
+        plan.constraints,
+      );
+      if (queryTrace) {
+        const dropReasons: Record<string, number> = {};
+        for (const d of eligibility.dropped) {
+          for (const r of d.reasons) {
+            dropReasons[r] = (dropReasons[r] ?? 0) + 1;
+          }
+        }
+        queryTrace.eligibility = {
+          hadHardRequirements: eligibility.hadHardRequirements,
+          inputCount: candidatesForRank.length,
+          eligibleCount: eligibility.eligible.length,
+          droppedCount: eligibility.dropped.length,
+          dropReasons,
+          droppedSample: eligibility.dropped.slice(0, 12).map((d) => ({
+            name: d.name,
+            reasons: [...d.reasons],
+          })),
+        };
+      }
+      if (
+        eligibility.hadHardRequirements &&
+        eligibility.dropped.length > 0
+      ) {
+        plan.diagnostics.rulesApplied = [
+          ...plan.diagnostics.rulesApplied,
+          "hard_eligibility_applied",
+        ];
+      }
+      candidatesForRank = eligibility.eligible;
+
+      // Precision over fill: when hard gates are active, do not pad with weak scores.
+      const hardConstrainedAsk = hasHardEligibilityRequirements(
+        plan.constraints,
+      );
+
+      ranked = rankBusinesses(candidatesForRank, plan, {
         ...rankConfig,
-        preferVariety: wantsVariety && !exactIntent && !specialOccasion,
+        preferVariety:
+          wantsVariety &&
+          !exactIntent &&
+          !specialOccasion &&
+          !hardConstrainedAsk,
         weatherBias: plan.composition.weatherBias ?? null,
         limit: urgentTrade
           ? Math.min(rankConfig.limit ?? 25, tradeLimit ?? 10)
-          : productAsk || musicAsk || exactNiche
+          : productAsk ||
+              musicAsk ||
+              autoProtectionAsk ||
+              autoPartsAsk ||
+              exactNiche
             ? Math.min(rankConfig.limit ?? 25, 10)
             : specialOccasion
               ? Math.max(rankConfig.limit ?? 24, 40)
               : rankConfig.limit,
         // Never force weak/off-trade fillers for exact service / product asks.
         // minKeep: 0 disables the default floor fill (ranking defaults to 6).
-        minKeep: exactIntent
+        minKeep: exactIntent || hardConstrainedAsk
           ? 0
           : medicalCareAsk
             ? 4
@@ -766,7 +1570,7 @@ export class ConversationService {
               : urgentTrade
                 ? 3
                 : undefined,
-        relativeFloor: exactIntent
+        relativeFloor: exactIntent || hardConstrainedAsk
           ? 0.55
           : medicalCareAsk
             ? 0.28
@@ -777,6 +1581,8 @@ export class ConversationService {
                 : undefined,
         ...(productAsk ? { verticalHint: "electronics" } : {}),
         ...(musicAsk ? { verticalHint: "music-instruments" } : {}),
+        ...(autoProtectionAsk ? { verticalHint: "automotive" } : {}),
+        ...(autoPartsAsk ? { verticalHint: "auto-parts" } : {}),
       });
     }
 
@@ -786,17 +1592,29 @@ export class ConversationService {
     if (musicAsk) {
       ranked = filterMusicSpecialists(ranked);
     }
+    if (autoProtectionAsk) {
+      ranked = filterAutoProtectionSpecialists(ranked);
+    }
+    if (autoPartsAsk) {
+      ranked = filterAutoPartsSpecialists(ranked);
+    }
     if (specialOccasion) {
+      const adultDowntime = isAdultDowntimeAsk(clean.sanitized);
       ranked = filterCelebrationAudienceNoise(ranked, {
         familyFriendly: plan.constraints.preferred.familyFriendly,
         romantic: plan.constraints.preferred.romantic,
         kidsAsk: plan.constraints.preferred.kidsArea === true,
+        adultDowntime,
         facets: planFacets,
       });
       ranked = filterElevatedCasualDining(ranked, {
-        elevated: isElevatedCelebrationAsk(clean.sanitized),
+        elevated:
+          isElevatedCelebrationAsk(clean.sanitized) ||
+          adultDowntime ||
+          plan.constraints.preferred.quiet === true,
         facets: planFacets,
       });
+      ranked = filterPlanFacetVerticalFit(ranked, planFacets);
     }
     // Generic exact niche ask-fit (also tightens trade leftovers).
     // Skip for healthcare — typo asks like "docotor open noq" have needles
@@ -805,6 +1623,8 @@ export class ConversationService {
       exactIntent &&
       !productAsk &&
       !musicAsk &&
+      !autoProtectionAsk &&
+      !autoPartsAsk &&
       plan.workflow !== "healthcare" &&
       !isHumanMedicalAsk(clean.sanitized)
     ) {
@@ -830,7 +1650,7 @@ export class ConversationService {
       const related = await tryRelatedServiceFallback({
         city,
         message: clean.sanitized,
-        draftQueries: draft.draftQueries,
+        draftQueries: plan.executionPlan.map((s) => s.query).filter(Boolean),
         plan,
       });
       if (related && related.businesses.length > 0) {
@@ -891,12 +1711,50 @@ export class ConversationService {
       }
     }
 
-    // Final ask-fit for generic exact niches (product/music use specialist gates).
+    if (autoProtectionAsk) {
+      const fitted = filterAutoProtectionSpecialists(composition.businesses);
+      if (fitted.length !== composition.businesses.length) {
+        composition = {
+          ...composition,
+          businesses: fitted,
+          sections: composition.sections
+            .map((section) => ({
+              ...section,
+              businessIds: section.businessIds.filter((id) =>
+                fitted.some((b) => b.id === id),
+              ),
+            }))
+            .filter((section) => section.businessIds.length > 0),
+        };
+      }
+    }
+
+    if (autoPartsAsk) {
+      const fitted = filterAutoPartsSpecialists(composition.businesses);
+      if (fitted.length !== composition.businesses.length) {
+        composition = {
+          ...composition,
+          businesses: fitted,
+          sections: composition.sections
+            .map((section) => ({
+              ...section,
+              businessIds: section.businessIds.filter((id) =>
+                fitted.some((b) => b.id === id),
+              ),
+            }))
+            .filter((section) => section.businessIds.length > 0),
+        };
+      }
+    }
+
+    // Final ask-fit for generic exact niches (specialist intents use their own gates).
     // Never ask-fit healthcare — typo tokens wipe real GPs/clinics.
     if (
       exactIntent &&
       !productAsk &&
       !musicAsk &&
+      !autoProtectionAsk &&
+      !autoPartsAsk &&
       plan.workflow !== "healthcare" &&
       !isHumanMedicalAsk(clean.sanitized) &&
       composition.grounding?.mode !== "related"
@@ -904,13 +1762,24 @@ export class ConversationService {
       composition = applyAskFitToComposition(composition, clean.sanitized);
     }
 
-    // Gated LLM fit verification for multi-part celebrations (not basic asks).
-    const fitGate = shouldFitVerify({
-      userMessage: clean.sanitized,
-      plan,
-      composition,
-    });
+    // Gated LLM fit verification. Demoted when QUERY_INTELLIGENCE is on
+    // (tokens prefer pre-retrieval understanding; re-enable via FIT_VERIFY=1).
+    const fitGate = intelligenceFlags.fitVerify()
+      ? shouldFitVerify({
+          userMessage: clean.sanitized,
+          plan,
+          composition,
+        })
+      : { run: false, reason: "fit_verify_flag_off" };
+    if (queryTrace) {
+      queryTrace.fitVerify = {
+        ran: fitGate.run,
+        reason: fitGate.reason,
+      };
+    }
     if (fitGate.run) {
+      telemetry.llmStages.fitVerify = true;
+      telemetry.routePaths.push("llm_fit_verify");
       composition = await fitVerifyService.verifyCompositionFit({
         userMessage: clean.sanitized,
         plan,
@@ -952,6 +1821,10 @@ export class ConversationService {
           product_label: productLabel,
           music_ask: musicAsk,
           music_label: musicLabel,
+          auto_protection_ask: autoProtectionAsk,
+          auto_protection_label: autoProtectionLabel,
+          auto_parts_ask: autoPartsAsk,
+          auto_parts_label: autoPartsLabel,
           exact_niche: exactNiche,
           niche_label: nicheLabel,
           vertical_hint: verticalHint ?? null,
@@ -968,15 +1841,11 @@ export class ConversationService {
     ) {
       const text =
         "I've already shown the strongest matches for that. Try a slightly different ask — a neighbourhood, vibe, or budget — and I'll dig further.";
-      await logOrchestration({
-        userId,
-        conversationId,
+      await finishLog({
         plan,
         businesses: [],
         composition: empty,
         llmInvoked: false,
-        latencyMs: Date.now() - start,
-        message: clean.sanitized,
       });
       return {
         plan,
@@ -986,10 +1855,28 @@ export class ConversationService {
         llmInvoked: false,
         clarification: false,
         stream: textStream(text),
+        telemetry,
       };
     }
 
     const businesses = composition.businesses;
+
+    if (queryTrace) {
+      queryTrace.retrieval = {
+        candidateCount: telemetry.candidateCount,
+        retrievalMode: telemetry.retrievalMode,
+      };
+      queryTrace.composition = {
+        strategy: composition.strategy,
+        sectionCount: composition.sections.length,
+        businessCount: businesses.length,
+        sectionTitles: composition.sections.map((s) => s.title),
+      };
+      queryTrace.narration = {
+        llmNarrate: Boolean(plan.llmRequired) && businesses.length > 0,
+        deterministic: !plan.llmRequired || businesses.length === 0,
+      };
+    }
 
     // Fail closed: never narrate an empty candidate set (except pure general chat).
     // Product buys always fail closed — never invent a shopping list from thin air.
@@ -997,6 +1884,8 @@ export class ConversationService {
       businesses.length === 0 &&
       (productAsk ||
         musicAsk ||
+        autoProtectionAsk ||
+        autoPartsAsk ||
         exactNiche ||
         exactIntent ||
         plan.responseMode !== "general_reply");
@@ -1008,20 +1897,52 @@ export class ConversationService {
             ? productEmptyMessage(productLabel)
             : musicAsk && musicLabel
               ? musicEmptyMessage(musicLabel)
-              : exactNiche && nicheLabel
-                ? exactNicheEmptyMessage(nicheLabel)
-                : def.responseBehaviour.emptyResultsMessage
-          : formatCompositionPlain(composition) ||
+              : autoProtectionAsk && autoProtectionLabel
+                ? autoProtectionEmptyMessage(autoProtectionLabel)
+                : autoPartsAsk && autoPartsLabel
+                  ? autoPartsEmptyMessage(autoPartsLabel)
+                  : exactNiche && nicheLabel
+                    ? exactNicheEmptyMessage(nicheLabel)
+                    : def.responseBehaviour.emptyResultsMessage
+          : formatCompositionConversational(composition, {
+              cityName: city.name,
+              servicesTone:
+                resolved.workflow === "services" ||
+                resolved.workflow === "healthcare",
+            }) ||
             businesses.map((b) => b.name).join(", ");
-      await logOrchestration({
-        userId,
-        conversationId,
+      telemetry.narrationSkipped = true;
+      if (
+        intelligenceFlags.answerCache() &&
+        !bypassAnswerCache &&
+        businesses.length > 0
+      ) {
+        const cacheKey = answerCacheKey({
+          citySlug: city.slug,
+          message: clean.sanitized,
+          stickyHash,
+          rankConfigVersion: getRankConfigVersion(),
+        });
+        await setCachedAnswer(cacheKey, {
+          text,
+          businesses,
+          composition,
+          planSnapshot: {
+            workflow: plan.workflow,
+            responseMode: plan.responseMode,
+            llmRequired: false,
+            intent: plan.intent,
+            goal: plan.goal,
+          },
+          queryClass: telemetry.queryClass,
+          cachedAt: new Date().toISOString(),
+        });
+      }
+      await finishLog({
         plan,
         businesses,
         composition,
         llmInvoked: false,
-        latencyMs: Date.now() - start,
-        message: clean.sanitized,
       });
       return {
         plan,
@@ -1031,18 +1952,21 @@ export class ConversationService {
         llmInvoked: false,
         clarification: false,
         stream: textStream(text),
+        telemetry,
+        ...(queryTrace ? { queryTrace } : {}),
       };
     }
 
-    await logOrchestration({
-      userId,
-      conversationId,
+    telemetry.llmStages.narrate = true;
+    telemetry.routePaths.push("llm_narrate");
+    if (queryTrace) {
+      queryTrace.narration = { llmNarrate: true, deterministic: false };
+    }
+    await finishLog({
       plan,
       businesses,
       composition,
       llmInvoked: true,
-      latencyMs: Date.now() - start,
-      message: clean.sanitized,
     });
 
     const productPromptHint = productAsk
@@ -1067,8 +1991,34 @@ export class ConversationService {
         ].join("\n")
       : "";
 
+    const autoProtectionPromptHint = autoProtectionAsk
+      ? [
+          "",
+          "AUTO PAINT PROTECTION ASK:",
+          `- User needs: ${autoProtectionLabel ?? "PPF / wrap / tint / detailing"}.`,
+          "- Recommend ONLY listed PPF, wrap, tint, ceramic coating, or detailing specialists.",
+          "- Never pad with unrelated tyre shops, general mechanics, or leisure.",
+          "- If the list is empty, say so plainly — do not invent shops.",
+        ].join("\n")
+      : "";
+
+    const autoPartsPromptHint = autoPartsAsk
+      ? [
+          "",
+          "AUTO PARTS ASK:",
+          `- User needs: ${autoPartsLabel ?? "auto parts"}.`,
+          "- Recommend ONLY listed battery / auto-parts / tyre centres that stock parts.",
+          "- Never pad with restaurants, spas, or unrelated leisure.",
+          "- If the list is empty, say so plainly — do not invent shops.",
+        ].join("\n")
+      : "";
+
     const exactNichePromptHint =
-      exactNiche && !productAsk && !musicAsk
+      exactNiche &&
+      !productAsk &&
+      !musicAsk &&
+      !autoProtectionAsk &&
+      !autoPartsAsk
         ? [
             "",
             "EXACT NICHE ASK:",
@@ -1085,6 +2035,8 @@ export class ConversationService {
       weather?.promptHint,
       productPromptHint,
       musicPromptHint,
+      autoProtectionPromptHint,
+      autoPartsPromptHint,
       exactNichePromptHint,
     ]
       .filter(Boolean)
@@ -1113,6 +2065,8 @@ export class ConversationService {
       llmInvoked: true,
       clarification: false,
       stream,
+      telemetry,
+      ...(queryTrace ? { queryTrace } : {}),
     };
   }
 
@@ -1124,6 +2078,8 @@ export class ConversationService {
     llmInvoked: boolean;
     clarification: boolean;
     text: string;
+    telemetry: TurnTelemetry;
+    queryTrace?: QueryTrace;
   }> {
     const result = await this.handle(params);
     let text = "";
@@ -1139,6 +2095,8 @@ export class ConversationService {
       llmInvoked: result.llmInvoked,
       clarification: result.clarification,
       text: scrubInvalidBizMarkers(text, allowedIds),
+      telemetry: result.telemetry,
+      ...(result.queryTrace ? { queryTrace: result.queryTrace } : {}),
     };
   }
 }

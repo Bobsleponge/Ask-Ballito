@@ -1,92 +1,722 @@
 [
   {
-    "id": "sushi-ballito",
+    "id": "biz-best-breakfast",
+    "query": "Best breakfast in Ballito",
+    "city": "ballito",
+    "expectVertical": "cafes"
+  },
+  {
+    "id": "biz-best-breakfast-near",
+    "query": "Best breakfast near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "cafes"
+  },
+  {
+    "id": "biz-best-breakfast-where",
+    "query": "Where can I find best breakfast?",
+    "city": "ballito",
+    "expectVertical": "cafes"
+  },
+  {
+    "id": "biz-best-pizza",
+    "query": "Best pizza in Ballito",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-pizza-near",
+    "query": "Best pizza near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-pizza-where",
+    "query": "Where can I find best pizza?",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-sushi",
     "query": "Best sushi in Ballito",
     "city": "ballito",
     "expectVertical": "restaurants"
   },
   {
-    "id": "coffee-beach",
-    "query": "Coffee near Willard Beach",
+    "id": "biz-best-sushi-near",
+    "query": "Best sushi near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-sushi-where",
+    "query": "Where can I find best sushi?",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-steak",
+    "query": "Best steak in Ballito",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-steak-near",
+    "query": "Best steak near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-steak-where",
+    "query": "Where can I find best steak?",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-seafood",
+    "query": "Best seafood in Ballito",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-seafood-near",
+    "query": "Best seafood near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-seafood-where",
+    "query": "Where can I find best seafood?",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-thai",
+    "query": "Best Thai in Ballito",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-thai-near",
+    "query": "Best Thai near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-thai-where",
+    "query": "Where can I find best thai?",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-indian",
+    "query": "Best Indian in Ballito",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-indian-near",
+    "query": "Best Indian near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-indian-where",
+    "query": "Where can I find best indian?",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-italian",
+    "query": "Best Italian in Ballito",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-italian-near",
+    "query": "Best Italian near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-italian-where",
+    "query": "Where can I find best italian?",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-burgers",
+    "query": "Best burgers in Ballito",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-burgers-near",
+    "query": "Best burgers near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-best-burgers-where",
+    "query": "Where can I find best burgers?",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-coffee-shops-with-wifi",
+    "query": "Coffee shops with WiFi in Ballito",
     "city": "ballito",
     "expectVertical": "cafes"
   },
   {
-    "id": "family-dinner",
-    "query": "Family friendly dinner tonight",
+    "id": "biz-coffee-shops-with-wifi-near",
+    "query": "Coffee shops with WiFi near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "cafes"
+  },
+  {
+    "id": "biz-coffee-shops-with-wifi-where",
+    "query": "Where can I find coffee shops with wifi?",
+    "city": "ballito",
+    "expectVertical": "cafes"
+  },
+  {
+    "id": "biz-romantic-restaurants",
+    "query": "Romantic restaurants in Ballito",
     "city": "ballito",
     "expectVertical": "restaurants"
   },
   {
-    "id": "gel-nails",
-    "query": "Gel nails appointment",
+    "id": "biz-romantic-restaurants-near",
+    "query": "Romantic restaurants near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-romantic-restaurants-where",
+    "query": "Where can I find romantic restaurants?",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-dog-friendly-restaurants",
+    "query": "Dog friendly restaurants in Ballito",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-dog-friendly-restaurants-near",
+    "query": "Dog friendly restaurants near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-dog-friendly-restaurants-where",
+    "query": "Where can I find dog friendly restaurants?",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-restaurants-with-generators",
+    "query": "Restaurants with generators in Ballito",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-restaurants-with-generators-near",
+    "query": "Restaurants with generators near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-restaurants-with-generators-where",
+    "query": "Where can I find restaurants with generators?",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-restaurants-open-after-9pm",
+    "query": "Restaurants open after 9pm in Ballito",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-restaurants-open-after-9pm-near",
+    "query": "Restaurants open after 9pm near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-restaurants-open-after-9pm-where",
+    "query": "Where can I find restaurants open after 9pm?",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-family-friendly-restaurants",
+    "query": "Family friendly restaurants in Ballito",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-family-friendly-restaurants-near",
+    "query": "Family friendly restaurants near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-family-friendly-restaurants-where",
+    "query": "Where can I find family friendly restaurants?",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-wheelchair-accessible-restaurant",
+    "query": "Wheelchair accessible restaurant in Ballito",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-wheelchair-accessible-restaurant-near",
+    "query": "Wheelchair accessible restaurant near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-wheelchair-accessible-restaurant-where",
+    "query": "Where can I find wheelchair accessible restaurant?",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-restaurant-with-parking",
+    "query": "Restaurant with parking in Ballito",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-restaurant-with-parking-near",
+    "query": "Restaurant with parking near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-restaurant-with-parking-where",
+    "query": "Where can I find restaurant with parking?",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-cocktail-bars",
+    "query": "Cocktail bars in Ballito",
+    "city": "ballito",
+    "expectVertical": "nightlife"
+  },
+  {
+    "id": "biz-cocktail-bars-near",
+    "query": "Cocktail bars near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "nightlife"
+  },
+  {
+    "id": "biz-cocktail-bars-where",
+    "query": "Where can I find cocktail bars?",
+    "city": "ballito",
+    "expectVertical": "nightlife"
+  },
+  {
+    "id": "biz-live-music-venues",
+    "query": "Live music venues in Ballito",
+    "city": "ballito",
+    "expectVertical": "nightlife"
+  },
+  {
+    "id": "biz-live-music-venues-near",
+    "query": "Live music venues near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "nightlife"
+  },
+  {
+    "id": "biz-live-music-venues-where",
+    "query": "Where can I find live music venues?",
+    "city": "ballito",
+    "expectVertical": "nightlife"
+  },
+  {
+    "id": "biz-gel-nails",
+    "query": "Gel nails in Ballito",
     "city": "ballito",
     "expectVertical": "beauticians"
   },
   {
-    "id": "balayage",
-    "query": "Balayage hair colour",
+    "id": "biz-gel-nails-near",
+    "query": "Gel nails near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "beauticians"
+  },
+  {
+    "id": "biz-gel-nails-where",
+    "query": "Where can I find gel nails?",
+    "city": "ballito",
+    "expectVertical": "beauticians"
+  },
+  {
+    "id": "biz-balayage-hair-colour",
+    "query": "Balayage hair colour in Ballito",
     "city": "ballito",
     "expectVertical": "hair_salons"
   },
   {
-    "id": "vet-emergency",
-    "query": "Emergency vet open now",
+    "id": "biz-balayage-hair-colour-near",
+    "query": "Balayage hair colour near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "hair_salons"
+  },
+  {
+    "id": "biz-balayage-hair-colour-where",
+    "query": "Where can I find balayage hair colour?",
+    "city": "ballito",
+    "expectVertical": "hair_salons"
+  },
+  {
+    "id": "biz-best-spa",
+    "query": "Best spa in Ballito",
+    "city": "ballito",
+    "expectVertical": "spas"
+  },
+  {
+    "id": "biz-best-spa-near",
+    "query": "Best spa near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "spas"
+  },
+  {
+    "id": "biz-best-spa-where",
+    "query": "Where can I find best spa?",
+    "city": "ballito",
+    "expectVertical": "spas"
+  },
+  {
+    "id": "biz-gym-membership",
+    "query": "Gym membership in Ballito",
+    "city": "ballito",
+    "expectVertical": "gyms"
+  },
+  {
+    "id": "biz-gym-membership-near",
+    "query": "Gym membership near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "gyms"
+  },
+  {
+    "id": "biz-gym-membership-where",
+    "query": "Where can I find gym membership?",
+    "city": "ballito",
+    "expectVertical": "gyms"
+  },
+  {
+    "id": "biz-surf-lessons",
+    "query": "Surf lessons in Ballito",
+    "city": "ballito",
+    "expectVertical": "attractions"
+  },
+  {
+    "id": "biz-surf-lessons-near",
+    "query": "Surf lessons near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "attractions"
+  },
+  {
+    "id": "biz-surf-lessons-where",
+    "query": "Where can I find surf lessons?",
+    "city": "ballito",
+    "expectVertical": "attractions"
+  },
+  {
+    "id": "biz-car-wash",
+    "query": "Car wash in Ballito",
+    "city": "ballito",
+    "expectVertical": "car-wash"
+  },
+  {
+    "id": "biz-car-wash-near",
+    "query": "Car wash near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "car-wash"
+  },
+  {
+    "id": "biz-car-wash-where",
+    "query": "Where can I find car wash?",
+    "city": "ballito",
+    "expectVertical": "car-wash"
+  },
+  {
+    "id": "biz-dog-groomer",
+    "query": "Dog groomer in Ballito",
+    "city": "ballito",
+    "expectVertical": "pet-services"
+  },
+  {
+    "id": "biz-dog-groomer-near",
+    "query": "Dog groomer near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "pet-services"
+  },
+  {
+    "id": "biz-dog-groomer-where",
+    "query": "Where can I find dog groomer?",
+    "city": "ballito",
+    "expectVertical": "pet-services"
+  },
+  {
+    "id": "biz-estate-agent",
+    "query": "Estate agent in Ballito",
+    "city": "ballito",
+    "expectVertical": "estate-agents"
+  },
+  {
+    "id": "biz-estate-agent-near",
+    "query": "Estate agent near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "estate-agents"
+  },
+  {
+    "id": "biz-estate-agent-where",
+    "query": "Where can I find estate agent?",
+    "city": "ballito",
+    "expectVertical": "estate-agents"
+  },
+  {
+    "id": "biz-physiotherapist",
+    "query": "Physiotherapist in Ballito",
+    "city": "ballito",
+    "expectVertical": "physio"
+  },
+  {
+    "id": "biz-physiotherapist-near",
+    "query": "Physiotherapist near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "physio"
+  },
+  {
+    "id": "biz-physiotherapist-where",
+    "query": "Where can I find physiotherapist?",
+    "city": "ballito",
+    "expectVertical": "physio"
+  },
+  {
+    "id": "biz-dentist",
+    "query": "Dentist in Ballito",
+    "city": "ballito",
+    "expectVertical": "dentists"
+  },
+  {
+    "id": "biz-dentist-near",
+    "query": "Dentist near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "dentists"
+  },
+  {
+    "id": "biz-dentist-where",
+    "query": "Where can I find dentist?",
+    "city": "ballito",
+    "expectVertical": "dentists"
+  },
+  {
+    "id": "biz-pharmacy",
+    "query": "Pharmacy in Ballito",
+    "city": "ballito",
+    "expectVertical": "pharmacies"
+  },
+  {
+    "id": "biz-pharmacy-near",
+    "query": "Pharmacy near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "pharmacies"
+  },
+  {
+    "id": "biz-pharmacy-where",
+    "query": "Where can I find pharmacy?",
+    "city": "ballito",
+    "expectVertical": "pharmacies"
+  },
+  {
+    "id": "biz-vet",
+    "query": "Vet in Ballito",
     "city": "ballito",
     "expectVertical": "veterinary"
   },
   {
-    "id": "outdoor-weekend",
-    "query": "Fun outdoor activities this weekend",
+    "id": "biz-vet-near",
+    "query": "Vet near Salt Rock",
     "city": "ballito",
-    "expectVertical": "activities"
+    "expectVertical": "veterinary"
   },
   {
-    "id": "plumber",
-    "query": "Plumber for a burst pipe",
+    "id": "biz-vet-where",
+    "query": "Where can I find vet?",
     "city": "ballito",
-    "expectVertical": "services"
+    "expectVertical": "veterinary"
   },
   {
-    "id": "hotel-sea",
-    "query": "Hotel with sea view",
+    "id": "biz-plumber",
+    "query": "Plumber in Ballito",
     "city": "ballito",
-    "expectVertical": "accommodation"
+    "expectVertical": "plumbing"
   },
   {
-    "id": "pizza-delivery",
-    "query": "Pizza delivery near me",
+    "id": "biz-plumber-near",
+    "query": "Plumber near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "plumbing"
+  },
+  {
+    "id": "biz-plumber-where",
+    "query": "Where can I find plumber?",
+    "city": "ballito",
+    "expectVertical": "plumbing"
+  },
+  {
+    "id": "biz-electrician",
+    "query": "Electrician in Ballito",
+    "city": "ballito",
+    "expectVertical": "electrical"
+  },
+  {
+    "id": "biz-electrician-near",
+    "query": "Electrician near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "electrical"
+  },
+  {
+    "id": "biz-electrician-where",
+    "query": "Where can I find electrician?",
+    "city": "ballito",
+    "expectVertical": "electrical"
+  },
+  {
+    "id": "biz-italian-restaurant",
+    "query": "Italian restaurant in Ballito",
     "city": "ballito",
     "expectVertical": "restaurants"
   },
   {
-    "id": "kids-haircut",
-    "query": "Kids haircut",
+    "id": "biz-italian-restaurant-near",
+    "query": "Italian restaurant near Salt Rock",
     "city": "ballito",
-    "expectVertical": "hair_salons"
+    "expectVertical": "restaurants"
   },
   {
-    "id": "sunset-drinks",
-    "query": "Sunset drinks with a view",
+    "id": "biz-italian-restaurant-where",
+    "query": "Where can I find italian restaurant?",
     "city": "ballito",
-    "expectVertical": "bars"
+    "expectVertical": "restaurants"
   },
   {
-    "id": "propose-wife",
-    "query": "I am going to propose to my wife",
+    "id": "biz-seafood-restaurant",
+    "query": "Seafood restaurant in Ballito",
     "city": "ballito",
-    "expectVertical": "special_occasion"
+    "expectVertical": "restaurants"
   },
   {
-    "id": "anniversary-plan",
-    "query": "Help me plan our anniversary celebration in Ballito",
+    "id": "biz-seafood-restaurant-near",
+    "query": "Seafood restaurant near Salt Rock",
     "city": "ballito",
-    "expectVertical": "special_occasion"
+    "expectVertical": "restaurants"
   },
   {
-    "id": "kids-birthday",
-    "query": "its my kids birthday on monday",
+    "id": "biz-seafood-restaurant-where",
+    "query": "Where can I find seafood restaurant?",
     "city": "ballito",
-    "expectVertical": "special_occasion"
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-cafe-to-work-from",
+    "query": "Cafe to work from in Ballito",
+    "city": "ballito",
+    "expectVertical": "cafes"
+  },
+  {
+    "id": "biz-cafe-to-work-from-near",
+    "query": "Cafe to work from near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "cafes"
+  },
+  {
+    "id": "biz-cafe-to-work-from-where",
+    "query": "Where can I find cafe to work from?",
+    "city": "ballito",
+    "expectVertical": "cafes"
+  },
+  {
+    "id": "biz-breakfast-near-the-beach",
+    "query": "Breakfast near the beach in Ballito",
+    "city": "ballito",
+    "expectVertical": "cafes"
+  },
+  {
+    "id": "biz-breakfast-near-the-beach-near",
+    "query": "Breakfast near the beach near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "cafes"
+  },
+  {
+    "id": "biz-breakfast-near-the-beach-where",
+    "query": "Where can I find breakfast near the beach?",
+    "city": "ballito",
+    "expectVertical": "cafes"
+  },
+  {
+    "id": "biz-kids-menu-restaurants",
+    "query": "Kids menu restaurants in Ballito",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-kids-menu-restaurants-near",
+    "query": "Kids menu restaurants near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-kids-menu-restaurants-where",
+    "query": "Where can I find kids menu restaurants?",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-halal-restaurants",
+    "query": "Halal restaurants in Ballito",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-halal-restaurants-near",
+    "query": "Halal restaurants near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-halal-restaurants-where",
+    "query": "Where can I find halal restaurants?",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-vegan-restaurants",
+    "query": "Vegan restaurants in Ballito",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-vegan-restaurants-near",
+    "query": "Vegan restaurants near Salt Rock",
+    "city": "ballito",
+    "expectVertical": "restaurants"
+  },
+  {
+    "id": "biz-vegan-restaurants-where",
+    "query": "Where can I find vegan restaurants?",
+    "city": "ballito",
+    "expectVertical": "restaurants"
   }
 ]

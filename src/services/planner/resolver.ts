@@ -1,4 +1,5 @@
 import { normaliseGoalPrimary } from "@/config/goal-vocabulary";
+import { intelligenceFlags } from "@/config/intelligence-flags";
 import { buildCompositionRequest } from "@/services/composition/request";
 import {
   DEFAULT_ACTIVITY_SEARCH_QUERIES,
@@ -28,6 +29,16 @@ import {
   musicSearchQueries,
 } from "./music-intent";
 import {
+  autoProtectionSearchQueries,
+  extractAutoProtectionLabel,
+  isAutoProtectionAsk,
+} from "./auto-protection-intent";
+import {
+  autoPartsSearchQueries,
+  extractAutoPartsLabel,
+  isAutoPartsAsk,
+} from "./auto-parts-intent";
+import {
   extractExactNicheLabel,
   isExactNicheAsk,
 } from "./exact-niche-guard";
@@ -35,6 +46,7 @@ import {
   celebrationTitleHint,
   enrichCelebrationFacets,
   executionPlanFromFacets,
+  isAdultDowntimeAsk,
   isAdultMilestoneAsk,
   isCelebrationAsk,
   isElevatedCelebrationAsk,
@@ -49,6 +61,8 @@ import {
 } from "./meal-time-intent";
 import { resolveServicesVerticalHint } from "./service-vertical";
 import { parseDistanceLabel, resolveLocationRef } from "./location-ref";
+import { hasHardEligibilityRequirements } from "./eligibility";
+import { isQiDraft } from "./qi-to-draft";
 import type {
   ConversationContext,
   ExecutionStep,
@@ -231,8 +245,19 @@ function buildExecutionPlan(
     ];
   }
 
-  if (draft.draftQueries.length > 0 && def.id !== "relocation") {
-    return draft.draftQueries.map((query, i) => ({
+  // Query Intelligence multi-concept facets (non-celebration workflows).
+  if (isQiDraft(draft) && draft.planFacets.length >= 1) {
+    const facets = sanitizePlanFacets(draft.planFacets);
+    if (facets.length >= 1) return executionPlanFromFacets(facets);
+  }
+
+  const conceptQueries =
+    draft.searchConcepts && draft.searchConcepts.length > 0
+      ? draft.searchConcepts
+      : draft.draftQueries;
+
+  if (conceptQueries.length > 0 && def.id !== "relocation") {
+    return conceptQueries.map((query, i) => ({
       id: `draft_${i}`,
       capability: "business_search" as const,
       type: "business_search" as const,
@@ -240,6 +265,9 @@ function buildExecutionPlan(
       params: {
         limit: defaultLimit,
         ...(verticalHint ? { verticalHint } : {}),
+        ...(draft.searchConcepts?.[i]
+          ? { searchConcept: draft.searchConcepts[i] }
+          : {}),
       },
       priority: i + 1,
       optional: false,
@@ -328,8 +356,15 @@ export function resolvePlannerPlan(
   );
   rulesApplied.push(...wfRules);
 
+  const qiUnderstanding =
+    isQiDraft(draft) && intelligenceFlags.qiTrustUnderstanding();
+  if (qiUnderstanding) {
+    rulesApplied.push("qi_trust_understanding");
+  }
+
   // After clearing a false emergency, prefer services for trade/after-hours asks.
   // Never hijack human medical asks into unfiltered trade/call-out search.
+  // Safety guards always run — even when QI understanding is trusted.
   if (
     emergencyFlag !== true &&
     !isHumanMedicalAsk(messageForGuard) &&
@@ -359,8 +394,10 @@ export function resolvePlannerPlan(
   }
 
   // Product / buy asks must not land in leisure "vibe" browsing.
+  // When QI is trusted, skip regex force_* — understanding already chose workflow.
   const productAsk = isProductPurchaseAsk(messageForGuard);
   if (
+    !qiUnderstanding &&
     productAsk &&
     (workflow === "activities" ||
       workflow === "restaurants" ||
@@ -372,12 +409,15 @@ export function resolvePlannerPlan(
     workflow = "general";
     rulesApplied.push("force_general_for_product_ask");
   } else if (productAsk) {
-    rulesApplied.push("product_purchase_ask");
+    rulesApplied.push(
+      qiUnderstanding ? "qi_product_ask_no_force" : "product_purchase_ask",
+    );
   }
 
   // Music / instrument asks → services with music-instruments vertical.
   const musicAsk = !productAsk && isMusicInstrumentAsk(messageForGuard);
   if (
+    !qiUnderstanding &&
     musicAsk &&
     (workflow === "activities" ||
       workflow === "restaurants" ||
@@ -392,10 +432,67 @@ export function resolvePlannerPlan(
     workflow = "services";
     rulesApplied.push("force_services_for_music_ask");
   } else if (musicAsk) {
-    rulesApplied.push("music_instrument_ask");
+    rulesApplied.push(
+      qiUnderstanding ? "qi_music_ask_no_force" : "music_instrument_ask",
+    );
+  }
+
+  // PPF / wrap / tint / ceramic / detailing → automotive services (not exact-niche fail-closed).
+  const autoProtectionAsk =
+    !productAsk && !musicAsk && isAutoProtectionAsk(messageForGuard);
+  if (
+    !qiUnderstanding &&
+    autoProtectionAsk &&
+    (workflow === "activities" ||
+      workflow === "restaurants" ||
+      workflow === "accommodation" ||
+      workflow === "healthcare" ||
+      workflow === "emergency" ||
+      workflow === "general" ||
+      workflow === "relocation" ||
+      workflow === "special_occasion")
+  ) {
+    rejected = [workflow, ...rejected.filter((w) => w !== "services")];
+    workflow = "services";
+    rulesApplied.push("force_services_for_auto_protection_ask");
+  } else if (autoProtectionAsk) {
+    rulesApplied.push(
+      qiUnderstanding
+        ? "qi_auto_protection_ask_no_force"
+        : "auto_protection_ask",
+    );
+  }
+
+  // Car battery / auto parts retail → auto-parts (+ tyres) services.
+  const autoPartsAsk =
+    !productAsk &&
+    !musicAsk &&
+    !autoProtectionAsk &&
+    isAutoPartsAsk(messageForGuard);
+  if (
+    !qiUnderstanding &&
+    autoPartsAsk &&
+    (workflow === "activities" ||
+      workflow === "restaurants" ||
+      workflow === "accommodation" ||
+      workflow === "healthcare" ||
+      workflow === "emergency" ||
+      workflow === "general" ||
+      workflow === "relocation" ||
+      workflow === "special_occasion")
+  ) {
+    rejected = [workflow, ...rejected.filter((w) => w !== "services")];
+    workflow = "services";
+    rulesApplied.push("force_services_for_auto_parts_ask");
+  } else if (autoPartsAsk) {
+    rulesApplied.push(
+      qiUnderstanding ? "qi_auto_parts_ask_no_force" : "auto_parts_ask",
+    );
   }
 
   // Celebration / event planning when the planner supplied dynamic facets.
+  // Adult downtime (kids-free day) also uses facets but is not a party.
+  const adultDowntimeAsk = isAdultDowntimeAsk(messageForGuard);
   const planFacets = enrichCelebrationFacets(
     sanitizePlanFacets(draft.planFacets),
     messageForGuard,
@@ -403,9 +500,12 @@ export function resolvePlannerPlan(
   const celebrationAsk =
     !productAsk &&
     !musicAsk &&
+    !autoProtectionAsk &&
+    !autoPartsAsk &&
     (planFacets.length >= 2 ||
       (isCelebrationAsk(messageForGuard) && planFacets.length >= 1) ||
-      (isSpecialOccasionGoal(goal.primary) && planFacets.length >= 2));
+      (isSpecialOccasionGoal(goal.primary) && planFacets.length >= 2) ||
+      (adultDowntimeAsk && planFacets.length >= 1));
   if (
     celebrationAsk &&
     workflow !== "emergency" &&
@@ -413,9 +513,15 @@ export function resolvePlannerPlan(
   ) {
     rejected = [workflow, ...rejected.filter((w) => w !== "special_occasion")];
     workflow = "special_occasion";
-    rulesApplied.push("force_special_occasion_facets");
+    rulesApplied.push(
+      adultDowntimeAsk
+        ? "force_special_occasion_adult_downtime"
+        : "force_special_occasion_facets",
+    );
   } else if (celebrationAsk) {
-    rulesApplied.push("celebration_facets");
+    rulesApplied.push(
+      adultDowntimeAsk ? "adult_downtime_facets" : "celebration_facets",
+    );
   } else if (
     isSpecialOccasionGoal(goal.primary) &&
     planFacets.length < 2 &&
@@ -431,6 +537,8 @@ export function resolvePlannerPlan(
   const exactNiche =
     !productAsk &&
     !musicAsk &&
+    !autoProtectionAsk &&
+    !autoPartsAsk &&
     !celebrationAsk &&
     isExactNicheAsk(messageForGuard);
   if (
@@ -587,6 +695,59 @@ export function resolvePlannerPlan(
     if (seeded > 0) rulesApplied.push("seed_music_draft_queries");
   }
 
+  if (autoProtectionAsk) {
+    const protectionLabel = extractAutoProtectionLabel(messageForGuard);
+    const seededQueries = autoProtectionSearchQueries(protectionLabel, "Ballito");
+    let seeded = 0;
+    for (const q of seededQueries) {
+      if (
+        !draft.draftQueries.some(
+          (existing) => existing.toLowerCase() === q.toLowerCase(),
+        )
+      ) {
+        draft.draftQueries.push(q);
+        seeded += 1;
+      }
+    }
+    if (
+      !entities.businessTypes.some((t) =>
+        /ppf|wrap|tint|detail|automotive|paint\s*protect/i.test(t),
+      )
+    ) {
+      entities.businessTypes.push(
+        "PPF",
+        "car wrap",
+        "window tint",
+        "auto detailing",
+      );
+    }
+    if (seeded > 0) rulesApplied.push("seed_auto_protection_draft_queries");
+  }
+
+  if (autoPartsAsk) {
+    const partsLabel = extractAutoPartsLabel(messageForGuard);
+    const seededQueries = autoPartsSearchQueries(partsLabel, "Ballito");
+    let seeded = 0;
+    for (const q of seededQueries) {
+      if (
+        !draft.draftQueries.some(
+          (existing) => existing.toLowerCase() === q.toLowerCase(),
+        )
+      ) {
+        draft.draftQueries.push(q);
+        seeded += 1;
+      }
+    }
+    if (
+      !entities.businessTypes.some((t) =>
+        /batter|auto\s*parts|spares|automotive/i.test(t),
+      )
+    ) {
+      entities.businessTypes.push("car battery", "auto parts", "tyre shop");
+    }
+    if (seeded > 0) rulesApplied.push("seed_auto_parts_draft_queries");
+  }
+
   if (exactNiche && draft.draftQueries.length === 0) {
     const label = extractExactNicheLabel(messageForGuard);
     draft.draftQueries.push(
@@ -636,6 +797,9 @@ export function resolvePlannerPlan(
     preferred: { ...emptyConstraintFlags(), ...draft.constraints.preferred },
     required: { ...emptyConstraintFlags(), ...draft.constraints.required },
     avoid: { ...emptyConstraintFlags(), ...draft.constraints.avoid },
+    environmentRequired: draft.constraints.environmentRequired ?? null,
+    environmentPreferred: draft.constraints.environmentPreferred ?? null,
+    audienceRequired: draft.constraints.audienceRequired ?? null,
   });
   if (
     (context.stickyConstraints.openNow != null &&
@@ -659,6 +823,16 @@ export function resolvePlannerPlan(
     if (constraints.preferred.kidsArea == null) {
       constraints.preferred.kidsArea = true;
     }
+  } else if (
+    (celebrationAsk || workflow === "special_occasion") &&
+    adultDowntimeAsk
+  ) {
+    constraints.preferred.familyFriendly = false;
+    constraints.preferred.kidsArea = false;
+    if (constraints.preferred.quiet == null) {
+      constraints.preferred.quiet = true;
+    }
+    rulesApplied.push("infer_adult_downtime_constraints");
   } else if (
     (celebrationAsk || workflow === "special_occasion") &&
     isProposalAsk(messageForGuard) &&
@@ -750,7 +924,8 @@ export function resolvePlannerPlan(
   if (
     entities.people.some((p) => /family|kid|child/i.test(p)) &&
     constraints.preferred.familyFriendly == null &&
-    !isAdultMilestoneAsk(messageForGuard)
+    !isAdultMilestoneAsk(messageForGuard) &&
+    !adultDowntimeAsk
   ) {
     constraints.preferred.familyFriendly = true;
     rulesApplied.push("infer_family_from_people");
@@ -800,6 +975,38 @@ export function resolvePlannerPlan(
       optional: false,
     }));
     rulesApplied.push("music_execution_instruments");
+  } else if (autoProtectionAsk) {
+    const protectionLabel = extractAutoProtectionLabel(messageForGuard);
+    const queries =
+      draftForFields.draftQueries.length > 0
+        ? draftForFields.draftQueries
+        : autoProtectionSearchQueries(protectionLabel, "Ballito");
+    executionPlan = queries.slice(0, 7).map((query, i) => ({
+      id: `auto_protect_${i}`,
+      capability: "business_search" as const,
+      type: "business_search" as const,
+      query,
+      params: { limit: 20, verticalHint: "automotive" },
+      priority: i + 1,
+      optional: false,
+    }));
+    rulesApplied.push("auto_protection_execution");
+  } else if (autoPartsAsk) {
+    const partsLabel = extractAutoPartsLabel(messageForGuard);
+    const queries =
+      draftForFields.draftQueries.length > 0
+        ? draftForFields.draftQueries
+        : autoPartsSearchQueries(partsLabel, "Ballito");
+    executionPlan = queries.slice(0, 7).map((query, i) => ({
+      id: `auto_parts_${i}`,
+      capability: "business_search" as const,
+      type: "business_search" as const,
+      query,
+      params: { limit: 20, verticalHint: "auto-parts" },
+      priority: i + 1,
+      optional: false,
+    }));
+    rulesApplied.push("auto_parts_execution");
   } else if (celebrationAsk || workflow === "special_occasion") {
     const facets =
       planFacets.length >= 1
@@ -838,7 +1045,19 @@ export function resolvePlannerPlan(
   }
 
   let clarify = false;
-  if (workflow === "emergency" || workflow === "special_occasion") {
+  let clarificationQuestion: string | null = null;
+
+  // QI may request clarification explicitly — trust that over regex clarify.
+  if (
+    qiUnderstanding &&
+    typeof draft.notes === "string" &&
+    draft.notes.includes("result=clarify")
+  ) {
+    clarify = true;
+    clarificationQuestion =
+      "What are you looking for in Ballito — a type of place, area, or occasion?";
+    rulesApplied.push("qi_needs_clarification");
+  } else if (workflow === "emergency" || workflow === "special_occasion") {
     clarify = false;
   } else if (
     band === "low" &&
@@ -865,13 +1084,23 @@ export function resolvePlannerPlan(
     rulesApplied.push("clarify_vague_general");
   }
 
-  const clarificationQuestion = clarify
-    ? (def.clarify[missing[0] ?? def.requiredFields[0] ?? "place_type"] ??
-      "What are you looking for in Ballito?")
-    : null;
+  if (clarify && !clarificationQuestion) {
+    clarificationQuestion =
+      def.clarify[missing[0] ?? def.requiredFields[0] ?? "place_type"] ??
+      "What are you looking for in Ballito?";
+  }
 
   let responseMode: PlannerPlan["responseMode"] = "execute_and_explain";
   let llmRequired = true;
+
+  // Deterministic narration skip: classifier / notes may request no LLM explain
+  // for straightforward business / place / discovery searches.
+  const classifierPrefersDeterministic =
+    typeof draft.notes === "string" &&
+    draft.notes.includes("classifier:") &&
+    /BUSINESS_SEARCH|PLACE_SEARCH|EVENT_SEARCH|DISCOVERY|FACT|LIVE_INFORMATION/i.test(
+      draft.intent,
+    );
 
   if (clarify) {
     responseMode = "clarify";
@@ -883,10 +1112,21 @@ export function resolvePlannerPlan(
     workflow === "general" &&
     draft.draftQueries.length === 0 &&
     !productAsk &&
-    !musicAsk
+    !musicAsk &&
+    !autoProtectionAsk &&
+    !autoPartsAsk
   ) {
     responseMode = "general_reply";
     llmRequired = true;
+  } else if (
+    classifierPrefersDeterministic &&
+    draft.confidence >= 0.85 &&
+    workflow !== "special_occasion" &&
+    workflow !== "relocation"
+  ) {
+    responseMode = "execute_and_explain";
+    llmRequired = false;
+    rulesApplied.push("deterministic_narration_skip");
   } else {
     responseMode = "execute_and_explain";
     llmRequired = true;
@@ -946,28 +1186,88 @@ export function resolvePlannerPlan(
       bucketProfile: undefined,
     };
     rulesApplied.push("music_composition_ranked");
+  } else if (autoProtectionAsk) {
+    const protectionLabel = extractAutoProtectionLabel(messageForGuard);
+    composition = {
+      ...compositionRequest,
+      strategy: "ranked_list",
+      titleHint: protectionLabel,
+      maxSections: 1,
+      maxItemsPerSection: 10,
+      sectionHints: [],
+      bucketProfile: undefined,
+    };
+    rulesApplied.push("auto_protection_composition_ranked");
+  } else if (autoPartsAsk) {
+    const partsLabel = extractAutoPartsLabel(messageForGuard);
+    composition = {
+      ...compositionRequest,
+      strategy: "ranked_list",
+      titleHint: partsLabel,
+      maxSections: 1,
+      maxItemsPerSection: 10,
+      sectionHints: [],
+      bucketProfile: undefined,
+    };
+    rulesApplied.push("auto_parts_composition_ranked");
   } else if (celebrationAsk || workflow === "special_occasion") {
     const facetsForComp: PlanFacet[] =
       planFacets.length > 0 ? planFacets : sanitizePlanFacets(draft.planFacets);
+    const hardConstrainedCelebration =
+      hasHardEligibilityRequirements(constraints);
     composition = {
       ...compositionRequest,
-      strategy: "grouped_sections",
+      strategy:
+        facetsForComp.length >= 1 ? "grouped_sections" : "ranked_list",
       titleHint: celebrationTitleHint(
         messageForGuard,
         goal.description,
         goal.primary,
       ),
-      maxSections: Math.min(6, Math.max(3, facetsForComp.length || 4)),
-      maxItemsPerSection: 8,
+      maxSections: adultDowntimeAsk
+        ? Math.min(3, Math.max(2, facetsForComp.length || 3))
+        : Math.min(6, Math.max(3, facetsForComp.length || 4)),
+      maxItemsPerSection: adultDowntimeAsk ? 5 : 9,
+      minItemsPerSection: adultDowntimeAsk || hardConstrainedCelebration ? 1 : 3,
       sectionHints: facetsForComp.map((f) => ({
         id: f.id,
         title: f.label,
         kind: "list" as const,
       })),
-      bucketProfile: facetsForComp.length >= 1 ? "plan_facets" : "activities",
+      // Never fall back to generic DISCOVERY activity buckets for celebrations.
+      bucketProfile: facetsForComp.length >= 1 ? "plan_facets" : undefined,
       planFacets: facetsForComp,
     };
-    rulesApplied.push("celebration_facet_composition");
+    rulesApplied.push(
+      adultDowntimeAsk
+        ? "adult_downtime_facet_composition"
+        : "celebration_facet_composition",
+    );
+  } else if (
+    qiUnderstanding &&
+    planFacets.length >= 1 &&
+    (draft.notes?.includes("result=grouped_facets") ||
+      planFacets.length >= 2 ||
+      hasHardEligibilityRequirements(constraints) ||
+      planFacets.some((f) => f.hard === true))
+  ) {
+    const facetsForComp: PlanFacet[] = planFacets;
+    composition = {
+      ...compositionRequest,
+      strategy: "grouped_sections",
+      titleHint: goal.description.slice(0, 60) || "Ideas for you",
+      maxSections: Math.min(6, Math.max(2, facetsForComp.length)),
+      maxItemsPerSection: 8,
+      minItemsPerSection: 1,
+      sectionHints: facetsForComp.map((f) => ({
+        id: f.id,
+        title: f.label,
+        kind: "list" as const,
+      })),
+      bucketProfile: "plan_facets",
+      planFacets: facetsForComp,
+    };
+    rulesApplied.push("qi_grouped_facet_composition");
   } else if (exactNiche) {
     composition = {
       ...compositionRequest,

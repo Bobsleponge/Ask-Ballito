@@ -1,0 +1,379 @@
+{
+  "summary": {
+    "gitSha": "b673bd3",
+    "rankConfigVersion": "v2",
+    "questionCount": 180,
+    "search": {
+      "labeledCount": 173,
+      "top1Accuracy": 0.7398843930635838,
+      "top3Accuracy": 0.9017341040462428,
+      "top5Accuracy": 0.9595375722543352,
+      "wrongEntityTypeRate": 0.2833333333333333,
+      "rankingErrorRate": 0.4046242774566474,
+      "avgEntityCoverage": 1,
+      "intentAccuracy": 0.8277777777777777
+    },
+    "ai": {
+      "totalQuestions": 180,
+      "llmUsageRate": 0,
+      "avgPromptTokens": 0,
+      "avgCompletionTokens": 0,
+      "avgCostUsd": 0,
+      "costPerQuestion": 0,
+      "questionsAvoidingLlm": 180,
+      "smallModelCount": 180,
+      "largeModelCount": 0,
+      "knowledgeCardHitRate": 0.15,
+      "cacheHitRate": 0,
+      "sqlHitRate": 0,
+      "vectorHitRate": 1,
+      "hybridHitRate": 1,
+      "avgLatencyMs": 333.0722222222222,
+      "p50LatencyMs": 331,
+      "p95LatencyMs": 360,
+      "avgSearchLatencyMs": 333.0722222222222,
+      "avgRankLatencyMs": null,
+      "avgAiLatencyMs": null
+    },
+    "topSuggestionCodes": [
+      {
+        "code": "missing_metadata",
+        "count": 89,
+        "severity": "low"
+      },
+      {
+        "code": "ranking_error",
+        "count": 70,
+        "severity": "medium"
+      },
+      {
+        "code": "wrong_entity_type",
+        "count": 51,
+        "severity": "high"
+      },
+      {
+        "code": "top1_miss",
+        "count": 45,
+        "severity": "high"
+      },
+      {
+        "code": "intent_mismatch",
+        "count": 31,
+        "severity": "high"
+      },
+      {
+        "code": "top3_miss",
+        "count": 17,
+        "severity": "high"
+      },
+      {
+        "code": "missing_knowledge_card",
+        "count": 3,
+        "severity": "medium"
+      }
+    ],
+    "worstQuestions": [
+      {
+        "id": "biz-best-pizza-near",
+        "query": "Best pizza near Salt Rock",
+        "passIntent": true,
+        "passTop1": false,
+        "passTop3": true,
+        "suggestions": [
+          "top1_miss",
+          "wrong_entity_type",
+          "ranking_error",
+          "missing_metadata"
+        ]
+      },
+      {
+        "id": "biz-best-sushi-near",
+        "query": "Best sushi near Salt Rock",
+        "passIntent": true,
+        "passTop1": false,
+        "passTop3": true,
+        "suggestions": [
+          "top1_miss",
+          "ranking_error",
+          "missing_metadata"
+        ]
+      },
+      {
+        "id": "biz-best-seafood-near",
+        "query": "Best seafood near Salt Rock",
+        "passIntent": true,
+        "passTop1": false,
+        "passTop3": false,
+        "suggestions": [
+          "top1_miss",
+          "top3_miss",
+          "ranking_error",
+          "missing_metadata"
+        ]
+      },
+      {
+        "id": "biz-best-thai",
+        "query": "Best Thai in Ballito",
+        "passIntent": true,
+        "passTop1": false,
+        "passTop3": false,
+        "suggestions": [
+          "top1_miss",
+          "top3_miss",
+          "wrong_entity_type",
+          "ranking_error"
+        ]
+      },
+      {
+        "id": "biz-romantic-restaurants-near",
+        "query": "Romantic restaurants near Salt Rock",
+        "passIntent": true,
+        "passTop1": false,
+        "passTop3": true,
+        "suggestions": [
+          "top1_miss",
+          "ranking_error",
+          "missing_metadata"
+        ]
+      },
+      {
+        "id": "biz-dog-friendly-restaurants-near",
+        "query": "Dog friendly restaurants near Salt Rock",
+        "passIntent": true,
+        "passTop1": false,
+        "passTop3": true,
+        "suggestions": [
+          "top1_miss",
+          "ranking_error",
+          "missing_metadata"
+        ]
+      },
+      {
+        "id": "biz-restaurants-with-generators",
+        "query": "Restaurants with generators in Ballito",
+        "passIntent": false,
+        "passTop1": true,
+        "passTop3": true,
+        "suggestions": [
+          "intent_mismatch",
+          "missing_metadata"
+        ]
+      },
+      {
+        "id": "biz-restaurants-with-generators-near",
+        "query": "Restaurants with generators near Salt Rock",
+        "passIntent": true,
+        "passTop1": false,
+        "passTop3": false,
+        "suggestions": [
+          "top1_miss",
+          "top3_miss",
+          "ranking_error",
+          "missing_metadata"
+        ]
+      },
+      {
+        "id": "biz-restaurants-open-after-9pm",
+        "query": "Restaurants open after 9pm in Ballito",
+        "passIntent": false,
+        "passTop1": true,
+        "passTop3": true,
+        "suggestions": [
+          "intent_mismatch"
+        ]
+      },
+      {
+        "id": "biz-restaurants-open-after-9pm-near",
+        "query": "Restaurants open after 9pm near Salt Rock",
+        "passIntent": true,
+        "passTop1": false,
+        "passTop3": false,
+        "suggestions": [
+          "top1_miss",
+          "top3_miss",
+          "ranking_error",
+          "missing_metadata"
+        ]
+      },
+      {
+        "id": "biz-family-friendly-restaurants",
+        "query": "Family friendly restaurants in Ballito",
+        "passIntent": false,
+        "passTop1": true,
+        "passTop3": true,
+        "suggestions": [
+          "intent_mismatch",
+          "ranking_error"
+        ]
+      },
+      {
+        "id": "biz-family-friendly-restaurants-near",
+        "query": "Family friendly restaurants near Salt Rock",
+        "passIntent": true,
+        "passTop1": false,
+        "passTop3": true,
+        "suggestions": [
+          "top1_miss",
+          "ranking_error",
+          "missing_metadata"
+        ]
+      },
+      {
+        "id": "biz-wheelchair-accessible-restaurant-near",
+        "query": "Wheelchair accessible restaurant near Salt Rock",
+        "passIntent": true,
+        "passTop1": false,
+        "passTop3": true,
+        "suggestions": [
+          "top1_miss",
+          "ranking_error",
+          "missing_metadata"
+        ]
+      },
+      {
+        "id": "biz-restaurant-with-parking",
+        "query": "Restaurant with parking in Ballito",
+        "passIntent": true,
+        "passTop1": false,
+        "passTop3": true,
+        "suggestions": [
+          "top1_miss",
+          "ranking_error",
+          "missing_metadata"
+        ]
+      },
+      {
+        "id": "biz-restaurant-with-parking-near",
+        "query": "Restaurant with parking near Salt Rock",
+        "passIntent": true,
+        "passTop1": false,
+        "passTop3": false,
+        "suggestions": [
+          "top1_miss",
+          "top3_miss",
+          "ranking_error",
+          "missing_metadata"
+        ]
+      },
+      {
+        "id": "biz-cocktail-bars",
+        "query": "Cocktail bars in Ballito",
+        "passIntent": true,
+        "passTop1": false,
+        "passTop3": true,
+        "suggestions": [
+          "top1_miss",
+          "wrong_entity_type",
+          "ranking_error"
+        ]
+      },
+      {
+        "id": "biz-cocktail-bars-near",
+        "query": "Cocktail bars near Salt Rock",
+        "passIntent": true,
+        "passTop1": false,
+        "passTop3": true,
+        "suggestions": [
+          "top1_miss",
+          "wrong_entity_type",
+          "missing_metadata"
+        ]
+      },
+      {
+        "id": "biz-live-music-venues",
+        "query": "Live music venues in Ballito",
+        "passIntent": false,
+        "passTop1": null,
+        "passTop3": null,
+        "suggestions": [
+          "intent_mismatch",
+          "wrong_entity_type"
+        ]
+      },
+      {
+        "id": "biz-surf-lessons",
+        "query": "Surf lessons in Ballito",
+        "passIntent": true,
+        "passTop1": false,
+        "passTop3": false,
+        "suggestions": [
+          "top1_miss",
+          "top3_miss",
+          "wrong_entity_type",
+          "ranking_error"
+        ]
+      },
+      {
+        "id": "biz-surf-lessons-near",
+        "query": "Surf lessons near Salt Rock",
+        "passIntent": true,
+        "passTop1": false,
+        "passTop3": false,
+        "suggestions": [
+          "top1_miss",
+          "top3_miss",
+          "ranking_error",
+          "missing_metadata"
+        ]
+      },
+      {
+        "id": "biz-dog-groomer",
+        "query": "Dog groomer in Ballito",
+        "passIntent": false,
+        "passTop1": true,
+        "passTop3": true,
+        "suggestions": [
+          "intent_mismatch",
+          "wrong_entity_type"
+        ]
+      },
+      {
+        "id": "biz-physiotherapist",
+        "query": "Physiotherapist in Ballito",
+        "passIntent": false,
+        "passTop1": true,
+        "passTop3": true,
+        "suggestions": [
+          "intent_mismatch"
+        ]
+      },
+      {
+        "id": "biz-dentist-near",
+        "query": "Dentist near Salt Rock",
+        "passIntent": true,
+        "passTop1": false,
+        "passTop3": false,
+        "suggestions": [
+          "top1_miss",
+          "top3_miss",
+          "ranking_error",
+          "missing_metadata"
+        ]
+      },
+      {
+        "id": "biz-seafood-restaurant-near",
+        "query": "Seafood restaurant near Salt Rock",
+        "passIntent": true,
+        "passTop1": false,
+        "passTop3": true,
+        "suggestions": [
+          "top1_miss",
+          "ranking_error",
+          "missing_metadata"
+        ]
+      },
+      {
+        "id": "biz-breakfast-near-the-beach-near",
+        "query": "Breakfast near the beach near Salt Rock",
+        "passIntent": true,
+        "passTop1": false,
+        "passTop3": true,
+        "suggestions": [
+          "top1_miss",
+          "ranking_error",
+          "missing_metadata"
+        ]
+      }
+    ]
+  }
+}

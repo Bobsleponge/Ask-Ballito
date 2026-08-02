@@ -1,0 +1,12 @@
+{
+  "questionId": "emg-dentist-open-today-now",
+  "expectTop1Ids": [
+    "30710aee-b501-4c0f-a0c8-839d2dcb7f56"
+  ],
+  "expectTop3Ids": [
+    "30710aee-b501-4c0f-a0c8-839d2dcb7f56",
+    "1a94f068-44f9-4f74-8347-dfb55e8da926",
+    "f3a27fe0-ef8a-4a4b-ab8d-cc5a4afc0207"
+  ],
+  "notes": "curated-from-candidates v1; vertical=dentists; names=Lock Dental | DR. KHALEK ADAM KHADER | Dr Greg Pillay -Willow Park Dental Centre"
+}

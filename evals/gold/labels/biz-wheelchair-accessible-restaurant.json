@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-wheelchair-accessible-restaurant",
+  "expectTop1Ids": [
+    "b7faf94c-0967-44e6-aaba-1557b7cca532"
+  ],
+  "expectTop3Ids": [
+    "b7faf94c-0967-44e6-aaba-1557b7cca532",
+    "850c2776-a92d-46b9-8d14-602973be0c6b",
+    "8a3a68fa-b200-48e5-87ad-0f97b0d6cdf5"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Little Food Table | Good Vibes Caf?????? & Bar Ballito | Mozambik Ballito"
+}

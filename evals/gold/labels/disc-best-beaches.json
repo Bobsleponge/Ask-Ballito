@@ -1,0 +1,12 @@
+{
+  "questionId": "disc-best-beaches",
+  "expectTop1Ids": [
+    "e4535d41-72dd-4363-93f5-047b3f9e3203"
+  ],
+  "expectTop3Ids": [
+    "e4535d41-72dd-4363-93f5-047b3f9e3203",
+    "6912cfe7-e71f-40c1-8646-1b8e7a5e7ffd",
+    "b2a7725b-6ec4-4947-bda7-44260ad60e83"
+  ],
+  "notes": "curated-from-candidates v1; vertical=attractions; names=Willard beach | Ballito Beach Rides | Beach Wood Boutique Hotel & Resort"
+}

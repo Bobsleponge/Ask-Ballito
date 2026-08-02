@@ -1,0 +1,12 @@
+{
+  "questionId": "legacy-dog-friendly-best",
+  "expectTop1Ids": [
+    "51efc321-c60f-48a2-862d-458390e62323"
+  ],
+  "expectTop3Ids": [
+    "51efc321-c60f-48a2-862d-458390e62323",
+    "c2b2a41b-1532-4396-b31c-fc03cad579e3",
+    "f5afba72-7339-4544-82f3-d1ee1ba919b0"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Siggi's German Restaurant | Butcher and Wine Restaurant | Jimbos Burger Bar"
+}

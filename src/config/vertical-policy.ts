@@ -177,7 +177,14 @@ const POLICY_BY_HINT: Record<string, VerticalPolicy> = {
   "blinds-flooring": exact("blinds-flooring", ["furniture", "hardware"]),
   paint: exact("paint", ["hardware"]),
   "appliance-repair": exact("appliance-repair", ["handyman"]),
-  "auto-parts": exact("auto-parts", ["automotive", "tyres"]),
+  // Battery / spares asks: parts shops + tyre centres that stock batteries.
+  // Keep exact so generic mechanics are not primary padding.
+  "auto-parts": {
+    hint: "auto-parts",
+    allowlist: ["auto-parts", "tyres"],
+    strictness: "exact",
+    adjacent: ["automotive"],
+  },
   tattoo: exact("tattoo", ["beauticians"]),
   "pet-grooming": exact("pet-grooming", ["pet-shops", "vets"]),
   storage: exact("storage", ["movers"]),

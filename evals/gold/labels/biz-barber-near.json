@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-barber-near",
+  "expectTop1Ids": [
+    "378c8fd0-272d-4d58-b7db-49e378466a1d"
+  ],
+  "expectTop3Ids": [
+    "378c8fd0-272d-4d58-b7db-49e378466a1d",
+    "83f6bd7c-f4b8-4f29-aec8-d62d36406b99",
+    "a8317713-c142-4937-8002-f7e09cddc560"
+  ],
+  "notes": "curated-from-candidates v1; vertical=hair_salons; names=Salvation Barbers | THE GENTLEMANS BARBER | Ali barber Ballito"
+}

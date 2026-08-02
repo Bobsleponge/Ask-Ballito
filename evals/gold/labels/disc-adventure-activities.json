@@ -1,0 +1,12 @@
+{
+  "questionId": "disc-adventure-activities",
+  "expectTop1Ids": [
+    "c2ac4b13-f5d5-4f2e-afea-7871cd678209"
+  ],
+  "expectTop3Ids": [
+    "c2ac4b13-f5d5-4f2e-afea-7871cd678209",
+    "c88e3209-9198-411e-a88f-92a467741e53",
+    "4efb64fd-ac8c-4e76-a1cc-84e2bce94e0e"
+  ],
+  "notes": "curated-from-candidates v1; vertical=attractions; names=Ballito Horse Trails | Adventure Valley | Cane Range"
+}

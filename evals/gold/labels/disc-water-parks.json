@@ -1,0 +1,12 @@
+{
+  "questionId": "disc-water-parks",
+  "expectTop1Ids": [
+    "e4535d41-72dd-4363-93f5-047b3f9e3203"
+  ],
+  "expectTop3Ids": [
+    "e4535d41-72dd-4363-93f5-047b3f9e3203",
+    "c0ceacb4-0688-416c-9083-ebb8062c91e6",
+    "30e024c1-4584-4f03-baf1-68807d9c64b8"
+  ],
+  "notes": "curated-from-candidates v1; vertical=attractions; names=Willard beach | Sugar Rush Park | The Jump Park"
+}

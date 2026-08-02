@@ -1,0 +1,12 @@
+{
+  "questionId": "emg-emergency-plumber-now",
+  "expectTop1Ids": [
+    "6a2598c8-2e5b-4300-83c0-fc92ea897870"
+  ],
+  "expectTop3Ids": [
+    "6a2598c8-2e5b-4300-83c0-fc92ea897870",
+    "3c5d968f-d6a6-42c9-80f2-03ae02f10066",
+    "21fcc84e-a22f-4642-a730-10a18931df5a"
+  ],
+  "notes": "curated-from-candidates v1; vertical=plumbing; names=MMC Plumbers | JAV plumbers | Rad Plumbing Ballito"
+}

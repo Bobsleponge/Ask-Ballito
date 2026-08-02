@@ -78,11 +78,37 @@ export async function refreshBusinessSearchEmbedding(
   });
 
   const embedding = await embedText(embeddingText);
+
+  // Sync owner services/keywords into businesses.metadata so FTS (search_tsv)
+  // picks them up — the tsv trigger only reads metadata, not business_profiles.
+  const prevMeta = (row.metadata as Record<string, unknown>) ?? {};
+  const nextMeta: Record<string, unknown> = { ...prevMeta };
+  if (profile?.services?.length) {
+    nextMeta.services = profile.services;
+  }
+  if (profile?.keywords?.length) {
+    nextMeta.keywords = profile.keywords;
+  }
+  if (ownerAttributes) {
+    nextMeta.attributes = {
+      ...((prevMeta.attributes as Record<string, unknown>) ?? {}),
+      ...ownerAttributes,
+    };
+    nextMeta.attributesSource = "manual";
+  }
+  if (hoursDescriptions.length > 0) {
+    nextMeta.openingHours = {
+      ...((prevMeta.openingHours as Record<string, unknown>) ?? {}),
+      weekdayDescriptions: hoursDescriptions,
+    };
+  }
+
   const { error: updateError } = await admin
     .from("businesses")
     .update({
       embedding: toVectorLiteral(embedding),
       embedding_text: embeddingText,
+      metadata: nextMeta as Json,
       updated_at: new Date().toISOString(),
     })
     .eq("id", businessId);

@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-barber",
+  "expectTop1Ids": [
+    "a8317713-c142-4937-8002-f7e09cddc560"
+  ],
+  "expectTop3Ids": [
+    "a8317713-c142-4937-8002-f7e09cddc560",
+    "6c372f66-c692-4883-b7ac-696ea1279dfb",
+    "83f6bd7c-f4b8-4f29-aec8-d62d36406b99"
+  ],
+  "notes": "curated-from-candidates v1; vertical=hair_salons; names=Ali barber Ballito | Moroccan Cut Ballito | THE GENTLEMANS BARBER"
+}

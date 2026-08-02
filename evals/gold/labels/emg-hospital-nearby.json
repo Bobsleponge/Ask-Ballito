@@ -1,0 +1,12 @@
+{
+  "questionId": "emg-hospital-nearby",
+  "expectTop1Ids": [
+    "f00b0f0a-2bd4-4ab9-96af-d9780b2daa3c"
+  ],
+  "expectTop3Ids": [
+    "f00b0f0a-2bd4-4ab9-96af-d9780b2daa3c",
+    "b21851b9-4a84-4a92-a2cc-2b2036ffac86",
+    "4c946dd6-2226-479f-81b0-a6f44c8123fc"
+  ],
+  "notes": "curated-from-candidates v1; vertical=hospitals; names=Village Health Medical Centre | Ballito Medical Centre | Ballito Vet Hospital"
+}

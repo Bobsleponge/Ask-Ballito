@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-best-steak-near",
+  "expectTop1Ids": [
+    "c2b2a41b-1532-4396-b31c-fc03cad579e3"
+  ],
+  "expectTop3Ids": [
+    "c2b2a41b-1532-4396-b31c-fc03cad579e3",
+    "e6af9b5b-623b-42e1-b23f-022fb1a99d7f",
+    "ba4aedcd-99c6-4e65-94df-f0c682236a55"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Butcher and Wine Restaurant | Butcher Boys Ballito | Mochachos Salt Rock"
+}

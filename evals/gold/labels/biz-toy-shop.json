@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-toy-shop",
+  "expectTop1Ids": [
+    "e2217cd4-0392-47ce-a140-3579fd21db81"
+  ],
+  "expectTop3Ids": [
+    "e2217cd4-0392-47ce-a140-3579fd21db81",
+    "3acd5407-8ffd-4ecc-9f57-1648edb6992a",
+    "77916581-27ee-43fe-8945-004a54222f96"
+  ],
+  "notes": "curated-from-candidates v1; vertical=shopping; names=ToyZone Ballito | Toys R Us | Babies R Us Ballito Junction Regional Mall | Babies R Us Ballito Junction Regional Mall"
+}

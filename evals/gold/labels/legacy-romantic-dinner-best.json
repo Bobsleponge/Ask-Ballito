@@ -1,0 +1,12 @@
+{
+  "questionId": "legacy-romantic-dinner-best",
+  "expectTop1Ids": [
+    "8a3a68fa-b200-48e5-87ad-0f97b0d6cdf5"
+  ],
+  "expectTop3Ids": [
+    "8a3a68fa-b200-48e5-87ad-0f97b0d6cdf5",
+    "850c2776-a92d-46b9-8d14-602973be0c6b",
+    "1ed64d59-8454-4e78-a5a4-ce8ed6d25c98"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Mozambik Ballito | Good Vibes Caf?????? & Bar Ballito | Skippies Restaurant & Bar Ballito"
+}

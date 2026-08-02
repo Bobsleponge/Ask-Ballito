@@ -1,0 +1,12 @@
+{
+  "questionId": "legacy-family-dinner",
+  "expectTop1Ids": [
+    "b7faf94c-0967-44e6-aaba-1557b7cca532"
+  ],
+  "expectTop3Ids": [
+    "b7faf94c-0967-44e6-aaba-1557b7cca532",
+    "ae5d2780-edba-417c-8a26-0fd08c4148aa",
+    "1ed64d59-8454-4e78-a5a4-ce8ed6d25c98"
+  ],
+  "notes": "curated-from-candidates v1; vertical=restaurants; names=Little Food Table | RocoMamas Ballito Junction | Skippies Restaurant & Bar Ballito"
+}

@@ -1,0 +1,12 @@
+{
+  "questionId": "emg-police-station-ballito",
+  "expectTop1Ids": [
+    "f01fcf7a-6f0a-40a0-8224-45315e29fbe1"
+  ],
+  "expectTop3Ids": [
+    "f01fcf7a-6f0a-40a0-8224-45315e29fbe1",
+    "c1637995-40aa-46d7-a662-9ddc903a9425",
+    "541da220-67e5-4230-a3a0-6c3cd052ebde"
+  ],
+  "notes": "curated-from-candidates v1; vertical=government; names=Ballito Service Station ShipTech | Lock Up Storage Ballito | Ballito ISP"
+}

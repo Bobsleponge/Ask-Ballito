@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-best-breakfast",
+  "expectTop1Ids": [
+    "df4e850e-8e15-4e76-b8bd-d7c179b9a8b6"
+  ],
+  "expectTop3Ids": [
+    "df4e850e-8e15-4e76-b8bd-d7c179b9a8b6",
+    "98c72807-e6cc-4408-b7ff-7c75222ab1c2",
+    "a09c5c35-2770-4e12-811c-2d3c12903f4b"
+  ],
+  "notes": "curated-from-candidates v1; vertical=cafes; names=Catia's Cafe | Yoli's Bakery | The Waterberry Coffee Shop"
+}

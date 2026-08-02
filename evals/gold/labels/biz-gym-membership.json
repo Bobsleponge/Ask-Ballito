@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-gym-membership",
+  "expectTop1Ids": [
+    "c9544ca0-3561-47f7-b972-b2339050ce6c"
+  ],
+  "expectTop3Ids": [
+    "c9544ca0-3561-47f7-b972-b2339050ce6c",
+    "e35efa94-6961-4932-a29d-8df0c1bf9eb2",
+    "80444141-0d11-4b31-aae2-f77b3c02ef71"
+  ],
+  "notes": "curated-from-candidates v1; vertical=gyms; names=Body20 Ballito | Ballito Fitness Village | Warriors Gym Ballito"
+}

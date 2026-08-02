@@ -1,0 +1,12 @@
+{
+  "questionId": "emg-doctor-open-now-now",
+  "expectTop1Ids": [
+    "c93d03f7-cbb1-4948-915e-1798c33e64b9"
+  ],
+  "expectTop3Ids": [
+    "c93d03f7-cbb1-4948-915e-1798c33e64b9",
+    "184b24c1-e549-4303-93b9-345b41d59574",
+    "4b27f282-a5b5-4f13-9fcb-0bafe35e1c63"
+  ],
+  "notes": "curated-from-candidates v1; vertical=doctors; names=Dr B Jugadoe | Thrive Family Practice | Health Matters"
+}

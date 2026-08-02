@@ -1,0 +1,12 @@
+{
+  "questionId": "emg-hospital-nearby-now",
+  "expectTop1Ids": [
+    "f53bda12-380a-44be-a3b0-2c3b7f15b3a9"
+  ],
+  "expectTop3Ids": [
+    "f53bda12-380a-44be-a3b0-2c3b7f15b3a9",
+    "2016eb13-ff1e-4d07-93c3-9ab952b9b6d9",
+    "1f578915-866d-4093-b4d9-fece91b0aa39"
+  ],
+  "notes": "curated-from-candidates v1; vertical=hospitals; names=Mediclinic Victoria Hospital | Netcare Alberlito Hospital | Horizon Medical Group"
+}

@@ -1,7 +1,6 @@
 export * from "./types";
-export * from "./intent.v1";
-export * from "./planner.v1";
 export * from "./planner.v2";
+export * from "./query-intelligence.v1";
 export * from "./recommendation.v1";
 export * from "./conversation.v1";
 export * from "./workflows/restaurants.v1";
@@ -17,9 +16,8 @@ export * from "./workflows/special-occasion.v1";
 export * from "./fit-verify.v1";
 export * from "./enrichment.v1";
 
-import { INTENT_PROMPT } from "./intent.v1";
-import { PLANNER_PROMPT } from "./planner.v1";
 import { PLANNER_V2_PROMPT } from "./planner.v2";
+import { QUERY_INTELLIGENCE_V1_PROMPT } from "./query-intelligence.v1";
 import { RECOMMENDATION_PROMPT } from "./recommendation.v1";
 import { CONVERSATION_PROMPT } from "./conversation.v1";
 import { RESTAURANTS_PROMPT } from "./workflows/restaurants.v1";
@@ -37,9 +35,8 @@ import { ENRICHMENT_PROMPT } from "./enrichment.v1";
 
 /** Registry of active prompt versions, for logging and auditing. */
 export const ACTIVE_PROMPTS = {
-  intent: INTENT_PROMPT,
-  planner: PLANNER_PROMPT,
   planner_v2: PLANNER_V2_PROMPT,
+  query_intelligence_v1: QUERY_INTELLIGENCE_V1_PROMPT,
   recommendation: RECOMMENDATION_PROMPT,
   conversation: CONVERSATION_PROMPT,
   restaurants: RESTAURANTS_PROMPT,

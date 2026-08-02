@@ -1,0 +1,10 @@
+{
+  "questionId": "biz-cocktail-bars-near",
+  "expectTop1Ids": [
+    "7091e3bf-cec0-4467-85ff-ce5d5a2e48ad"
+  ],
+  "expectTop3Ids": [
+    "7091e3bf-cec0-4467-85ff-ce5d5a2e48ad"
+  ],
+  "notes": "curated-from-candidates v1; vertical=nightlife; names=Saint Yves Bar"
+}

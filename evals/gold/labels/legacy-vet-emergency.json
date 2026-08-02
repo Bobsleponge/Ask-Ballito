@@ -1,0 +1,12 @@
+{
+  "questionId": "legacy-vet-emergency",
+  "expectTop1Ids": [
+    "55a3976c-9907-42ea-8e53-15ee1cd3066c"
+  ],
+  "expectTop3Ids": [
+    "55a3976c-9907-42ea-8e53-15ee1cd3066c",
+    "4c946dd6-2226-479f-81b0-a6f44c8123fc",
+    "aad2cf52-aa10-4d5a-bb57-1bdc0d7a14eb"
+  ],
+  "notes": "curated-from-candidates v1; vertical=veterinary; names=Animal Zone Veterinary Hospital | Ballito Vet Hospital | BVSBM Ballito Veterinary Sports and Behavioural Medicine"
+}

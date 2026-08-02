@@ -26,6 +26,16 @@ export const BALLITO_FAQ: Record<string, string> = {
     "Ask Ballito is a local AI concierge for Ballito. Ask in plain language for restaurants, things to do, places to stay, and practical local help — I'll find options from our local directory and explain the best fits.",
   "how does this work":
     "Tell me what you need (dinner, coffee, beach day, moving here, etc.). I plan the request, search local businesses, rank the best matches, and explain why they fit.",
+  "who are you":
+    "I'm Ask Ballito — your local guide for Ballito and surrounds. I search a curated business directory and help you find places and services nearby.",
+  "what can you help with":
+    "Restaurants and cafés, beaches and activities, accommodation, healthcare, trades (plumbers, electricians), shopping, property, and emergency contacts. Try “best breakfast” or “plumber for a burst pipe”.",
+  "are you free":
+    "Yes — you can ask as a guest with a daily limit, or sign in for a higher allowance. Business owners can claim and enrich their listings for free during early access.",
+  "which areas do you cover":
+    "I'm focused on Ballito and nearby North Coast spots (Salt Rock, Zimbali, Compensation, and surrounds). Ask about a neighbourhood if you want results near a specific landmark.",
+  "how do i claim my business":
+    "Open your business page or visit the business portal, start a claim, and verify ownership. Once approved you can update hours, menus, photos, and services so search stays accurate.",
 };
 
 export function formatEmergencyContacts(contacts: EmergencyContact[]): string {
@@ -41,7 +51,7 @@ export function formatEmergencyContacts(contacts: EmergencyContact[]): string {
 }
 
 export function matchFaq(message: string): string | null {
-  const key = message.toLowerCase().replace(/[?!.,]/g, "").trim();
+  const key = message.toLowerCase().replace(/[?!.,']/g, "").trim();
   for (const [pattern, answer] of Object.entries(BALLITO_FAQ)) {
     if (key.includes(pattern) || pattern.includes(key)) return answer;
   }

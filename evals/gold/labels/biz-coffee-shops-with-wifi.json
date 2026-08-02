@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-coffee-shops-with-wifi",
+  "expectTop1Ids": [
+    "7eee7748-6d92-4e49-9a9e-16f4c5849901"
+  ],
+  "expectTop3Ids": [
+    "7eee7748-6d92-4e49-9a9e-16f4c5849901",
+    "fb1e38a3-2e57-4611-928f-5686e511338c",
+    "a09c5c35-2770-4e12-811c-2d3c12903f4b"
+  ],
+  "notes": "curated-from-candidates v1; vertical=cafes; names=Coffee LAB | Local Coffee Ballito | The Waterberry Coffee Shop"
+}

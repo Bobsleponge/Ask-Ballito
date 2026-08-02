@@ -1,0 +1,12 @@
+{
+  "questionId": "emg-locksmith-emergency",
+  "expectTop1Ids": [
+    "d0da3b9d-d521-452e-b799-2acb4ea3ace6"
+  ],
+  "expectTop3Ids": [
+    "d0da3b9d-d521-452e-b799-2acb4ea3ace6",
+    "75504595-3ca5-4b82-aad1-ad8411e734ef",
+    "fc5f2d68-cb86-4364-979d-b43dde0bf58d"
+  ],
+  "notes": "curated-from-candidates v1; vertical=locksmith; names=Autokey Locksmiths Ballito | Power Locksmiths , Rewop Home Maintenance Ballito | The Locksmith Co."
+}

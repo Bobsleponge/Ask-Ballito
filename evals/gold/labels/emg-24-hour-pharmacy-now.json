@@ -1,0 +1,12 @@
+{
+  "questionId": "emg-24-hour-pharmacy-now",
+  "expectTop1Ids": [
+    "a0d6b34c-31aa-4c59-92a1-8b80220d1a90"
+  ],
+  "expectTop3Ids": [
+    "a0d6b34c-31aa-4c59-92a1-8b80220d1a90",
+    "80f920e0-9f9c-4cd5-885f-b723c788c31c",
+    "c2f8bac4-59dc-42ac-ba5b-b7b759d55630"
+  ],
+  "notes": "curated-from-candidates v1; vertical=pharmacies; names=Pharmacy at SPAR Salt Rock | Apteka Pharmacy | Bracemed Pharmacy"
+}

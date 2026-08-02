@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-breakfast-near-the-beach",
+  "expectTop1Ids": [
+    "a09c5c35-2770-4e12-811c-2d3c12903f4b"
+  ],
+  "expectTop3Ids": [
+    "a09c5c35-2770-4e12-811c-2d3c12903f4b",
+    "df4e850e-8e15-4e76-b8bd-d7c179b9a8b6",
+    "98c72807-e6cc-4408-b7ff-7c75222ab1c2"
+  ],
+  "notes": "curated-from-candidates v1; vertical=cafes; names=The Waterberry Coffee Shop | Catia's Cafe | Yoli's Bakery"
+}

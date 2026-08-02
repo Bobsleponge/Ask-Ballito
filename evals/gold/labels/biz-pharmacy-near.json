@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-pharmacy-near",
+  "expectTop1Ids": [
+    "a0d6b34c-31aa-4c59-92a1-8b80220d1a90"
+  ],
+  "expectTop3Ids": [
+    "a0d6b34c-31aa-4c59-92a1-8b80220d1a90",
+    "ae1011ba-adec-4778-a6af-ed8cf2ae0eb1",
+    "c2f8bac4-59dc-42ac-ba5b-b7b759d55630"
+  ],
+  "notes": "curated-from-candidates v1; vertical=pharmacies; names=Pharmacy at SPAR Salt Rock | Pharmacy at SPAR Zimbali Oasis | Bracemed Pharmacy"
+}

@@ -22,6 +22,68 @@ code.
 
 ## Getting started
 
+### Windows 11 (fresh machine)
+
+**A. Install system tools** (Admin PowerShell) — no repo required yet:
+
+```powershell
+winget install --id Git.Git -e --accept-package-agreements --accept-source-agreements
+winget install --id OpenJS.NodeJS.LTS -e --accept-package-agreements --accept-source-agreements
+winget install --id Docker.DockerDesktop -e --accept-package-agreements --accept-source-agreements
+```
+
+Or, after cloning, run the same installs via:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\windows\Install-Prereqs.ps1
+```
+
+**B. Start Docker Desktop** and wait until the engine is running (`docker info`). Open a **new** terminal so `git` / `node` are on PATH.
+
+**C. Clone and bootstrap** (OpenAI key required):
+
+```powershell
+git clone https://github.com/Bobsleponge/Ask-Ballito.git
+cd Ask-Ballito
+$env:OPENAI_API_KEY = "sk-..."
+powershell -ExecutionPolicy Bypass -File .\scripts\windows\Setup-App.ps1
+```
+
+If you are already inside the repo with Node + Docker ready:
+
+```powershell
+$env:OPENAI_API_KEY = "sk-..."
+npm run setup:local
+```
+
+**D. Run the app**
+
+```powershell
+npm run dev
+```
+
+Open http://localhost:3000 — the root redirects to `/ballito`.
+
+`setup:local` starts local Supabase in Docker, writes `.env.local`, applies migrations, and seeds demo login accounts.
+
+### macOS / Linux
+
+```bash
+# 1. Install Node 20+ and Docker; start Docker
+# 2. Configure OpenAI (required)
+export OPENAI_API_KEY=sk-...
+
+# 3. Bootstrap (npm install + supabase start + .env.local + migrate)
+npm run setup:local
+
+# 4. Develop
+npm run dev
+```
+
+Open http://localhost:3000 — the root redirects to `/ballito`.
+
+### Manual setup (any OS)
+
 ```bash
 # 1. Install
 npm install
@@ -36,8 +98,6 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open http://localhost:3000 — the root redirects to `/ballito`.
-
 ## Environment variables
 
 See [.env.example](.env.example). Supabase and OpenAI are required; all other
@@ -51,7 +111,7 @@ Migrations live in [`supabase/migrations`](supabase/migrations):
 2. `0002_match_businesses.sql` — semantic search RPC
 3. `0003_rls.sql` — Row Level Security policies
 4. `0004_seed_cities.sql` — city registry seed
-5. `0005_grants.sql` **and** `0005_exclude_seed_from_match.sql` — table grants + exclude fake seed rows from search (apply both)
+5. `0005_exclude_seed_from_match.sql` **and** `00051_grants.sql` — exclude fake seed rows from search + table grants (apply both)
 6. `0006_cap_match_businesses.sql` — cap public RPC `match_count` at 50
 7. `0007_lockdown_data_access.sql` — revoke anon vector RPC; hide embeddings; protect profiles/messages
 8. `0008_ai_logs_retention.sql` — `purge_old_ai_logs()` helper (90-day retention)
@@ -122,6 +182,7 @@ and mirrored to Sentry/PostHog.
 
 | Script | Description |
 | --- | --- |
+| `npm run setup:local` | Docker Supabase + `.env.local` + migrations + demo accounts |
 | `npm run dev` | Start the dev server |
 | `npm run build` | Production build |
 | `npm run typecheck` | TypeScript check |

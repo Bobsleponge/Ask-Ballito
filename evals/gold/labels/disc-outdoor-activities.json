@@ -1,0 +1,12 @@
+{
+  "questionId": "disc-outdoor-activities",
+  "expectTop1Ids": [
+    "c2ac4b13-f5d5-4f2e-afea-7871cd678209"
+  ],
+  "expectTop3Ids": [
+    "c2ac4b13-f5d5-4f2e-afea-7871cd678209",
+    "4efb64fd-ac8c-4e76-a1cc-84e2bce94e0e",
+    "c0ceacb4-0688-416c-9083-ebb8062c91e6"
+  ],
+  "notes": "curated-from-candidates v1; vertical=attractions; names=Ballito Horse Trails | Cane Range | Sugar Rush Park"
+}

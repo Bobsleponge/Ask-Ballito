@@ -1,0 +1,65 @@
+name: Eval live (staging)
+
+# Manual / scheduled live evaluation against staging secrets.
+# Not required on every PR — offline eval gates remain in security.yml.
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Max questions (0 = all)"
+        required: false
+        default: "100"
+      search_only:
+        description: "Search-only (skip full orchestrator)"
+        type: boolean
+        default: true
+  schedule:
+    # Nightly 02:00 UTC — only runs if staging secrets are configured
+    - cron: "0 2 * * *"
+
+jobs:
+  eval-live:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Offline gold gate
+        run: npm run eval:gold
+
+      - name: Live platform eval
+        if: ${{ secrets.SUPABASE_URL != '' && secrets.SUPABASE_SERVICE_ROLE_KEY != '' }}
+        env:
+          EVAL_LIVE: "1"
+          EVAL_ENV: staging
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-4.1-mini' }}
+        run: |
+          LIMIT="${{ github.event.inputs.limit || '100' }}"
+          EXTRA=""
+          if [ "${{ github.event.inputs.search_only || 'true' }}" = "true" ]; then
+            EXTRA="--search-only"
+          fi
+          if [ "$LIMIT" != "0" ]; then
+            EXTRA="$EXTRA --limit=$LIMIT"
+          fi
+          npm run eval:platform -- $EXTRA
+
+      - name: Upload run artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-runs
+          path: evals/runs/
+          if-no-files-found: ignore

@@ -37,6 +37,18 @@ jobs:
       - name: Eval smoke
         run: npm run eval:smoke
 
+      - name: Eval routing
+        run: npm run eval:routing
+
+      - name: Eval Query Intelligence
+        run: npm run eval:qi
+
+      - name: Eval gold dataset
+        run: npm run eval:gold
+
+      - name: Eval retrieval fixtures
+        run: npm run eval:retrieval
+
       - name: npm audit (high+)
         run: npm audit --audit-level=high
         continue-on-error: true

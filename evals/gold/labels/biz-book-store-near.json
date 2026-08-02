@@ -1,0 +1,12 @@
+{
+  "questionId": "biz-book-store-near",
+  "expectTop1Ids": [
+    "36e23e13-32e1-4d33-a610-4056579fbe54"
+  ],
+  "expectTop3Ids": [
+    "36e23e13-32e1-4d33-a610-4056579fbe54",
+    "ef2658b2-36e3-435b-8568-ada0405264ad",
+    "239dcea3-a0ca-4736-b3c9-7630ae5853dd"
+  ],
+  "notes": "curated-from-candidates v1; vertical=shopping; names=Liquor City Salt Rock | New Salt Rock City Centre | Exclusive Books Ballito"
+}
